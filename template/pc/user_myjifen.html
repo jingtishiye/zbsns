@@ -1,0 +1,225 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+<div class="main-wrapper">
+<div class="container wi-padding-top" >
+<div class="row" >
+<div class="col-md-3 col-sm-12">
+<?php include $conf['view_path'].'user_set_menu.html';?>		
+
+				</div>
+				<div class="col-md-9 col-sm-12">
+					<div class="wi-padding bb">
+					
+	<div class="clearfix">										
+
+          <div class="" style="padding-top:0px">
+            <div class="">
+           <div class="pull-right wi-margin-right">
+                  
+                <a data-url="<?php echo r_url('api-tixian',array('type'=>1,'uid'=>$_user['id'])); ?>" data-formid="tixian-form" data-id="tixiantpl"  data-width="auto" data-height="auto" data-title="提现" href="javascript:;" class="openformdialog btn btn-info wi-margin-right"><?php echo $conf['pointname']['point']; ?>提现</a>
+                
+              <a data-url="<?php echo r_url('zhifu-chongzhi',array('type'=>1,'uid'=>$_user['id'])); ?>" data-formid="chongzhi-form" data-async="false"  data-id="chongzhitpl"  data-width="auto" data-height="auto" data-title="充值" href="javascript:;" class="openformdialog btn btn-primary wi-margin-right"><?php echo $conf['pointname']['point']; ?>充值</a>
+              </div>
+              <div class="dongtai">
+                <ul class="trigger-menu" >
+
+                  
+                  <li class="active"><a><i class="fa fa-database"></i>我的积分</a></li>
+                
+                </ul>
+ 
+                
+
+<div class="wi-padding">
+       <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>日期</th>
+                <th>描述</th>
+                <th>积分</th>
+                <th>增减</th>
+                 <th>类型</th>
+             
+            </tr>
+            </thead>
+            <tbody>
+              <?php foreach($pointnotelist as $key=>$vo) { ?>
+                            <tr id="menulist_<?php echo $vo['id']; ?>">
+                                <td>
+                    <?php echo date('Y-m-d H:i:s',$vo['create_time']); ?></td>
+                  
+                  <td>
+                       <a href="<?php echo r_url('thread-'.$vo['itemid']); ?>" title="<?php echo $vo['description']; ?>" target="_self"><?php echo $vo['description']; ?>
+                  </td>
+                <td>
+                  <?php echo $vo['score'].$conf['pointname'][$vo['scoretype']]; ?>
+                       
+                  </td>
+                    <td>
+
+                                       <?php echo $vo['inctype']; ?>
+                  </td>
+                  <td>
+                       <?php switch($vo['type']){
+
+case 1:
+echo '下载附件';
+break;
+case 2:
+echo '下载文档';
+break;
+case 3:
+echo '付费阅读';
+break;
+case 4:
+echo '充值';
+break;
+case 5:
+echo '购买会员';
+break;
+case 6:
+echo '打赏';
+break;
+case 7:
+echo '提现';
+break;
+case 8:
+echo '积分规则';
+break;
+default:
+
+break;
+
+
+
+                       } ?>
+                  </td>
+                  
+                   
+                </tr>
+                     <?php } ?>      
+                        </tbody>
+        </table>
+     
+
+
+   
+
+<div class="pagediv">
+        <div class="pagination"><?php echo $pagination; ?></div>
+</div> 
+</div>
+
+
+              </div>
+            </div>
+
+
+          </div>
+
+       
+	</div>						
+							
+					
+					</div>
+					
+					
+					
+
+
+
+
+
+				</div>
+
+			</div>
+		</div>
+</div>
+<script id="chongzhitpl" type="text/html">
+  <div class="wi-padding">
+        <div class="alert alert-warning" role="alert">
+            最小充值一元，可以折合<?php echo $conf['chongzhi']['bili'].$conf['pointname']['point']; ?>
+        </div>
+<form  id="chongzhi-form" class="layerform reward-note-modal" method="post">
+
+                <div class="clearfix radio">
+ <div class="wi-margin-top clearfix">
+                    <div class="">
+<input class="form-control" value="1"  name="chongzhi" id="chongzhi" />
+</div>
+
+ <div class="col-xs-12 choose-pay">
+  <?php if($conf['paymethod']==3||$conf['paymethod']==2){ ?>
+                <input id="method1" type="radio" name="pay_method" value="weixin"> 
+                <label for="method1" class="option">
+                  <img src="/public/common/images/wechat.png" class="day wechat">
+                </label>
+<?php } ?>
+<?php if($conf['paymethod']==3||$conf['paymethod']==1){ ?>
+                <input id="method2" type="radio" name="pay_method" value="alipay"> 
+                <label for="method2" class="option">
+                  <img src="/public/common/images/alipay.png" class="day alipay"> 
+                </label> 
+<?php } ?>
+    
+
+              
+
+
+</div>
+
+
+</div>
+</div>
+
+<div class="">
+             
+                        <button type="submit" class="btn btn-primary btn-block">立即充值</button>
+                
+ </div>
+</form>  
+                </div>
+</script>
+<script id="tixiantpl" type="text/html">
+  <div class="wi-padding">
+        <div class="alert alert-warning" role="alert">
+            您当前有<?php echo $user['extend']['point'].$conf['pointname']['point']; ?>,可提现<?php echo floor((100-$conf['tixian']['bili'])*$user['extend']['point']/(100*$conf['chongzhi']['bili'])); ?>元,手续费为<?php echo $conf['tixian']['bili']; ?>%
+        </div>
+<form  id="tixian-form" class="layerform" method="post">
+
+                <div class="clearfix radio">
+ <div class="wi-margin-top text-center clearfix">
+    <div class="form-group clearfix">
+            <label class="col-sm-4 form-control-label">提现<?php echo $conf['pointname']['point'];?>：</label>
+            <div class="col-sm-6">
+             <input class="form-control" value="0"  name="score" id="score" />
+            </div>
+          </div>
+        <div class="form-group clearfix">
+            <label class="col-sm-4 form-control-label">账号：</label>
+            <div class="col-sm-6">
+             <input class="form-control" value=""  name="account" id="account" />
+            </div>
+          </div>
+           <div class="form-group clearfix">
+            <label class="col-sm-4 form-control-label">账号类型：</label>
+            <div class="col-sm-6">
+                <select class="form-control" name="type">
+                        <option value="1">
+                            支付宝
+                        </option>
+                       
+                    </select>
+            </div>
+          </div>
+</div>
+</div>
+
+<div class="">
+             
+ <button type="submit" class="btn btn-primary btn-block">申请提现</button>
+                
+ </div>
+</form>  
+                </div>
+</script>
+		 <?php include $conf['view_path'].'footer.inc.html';?>

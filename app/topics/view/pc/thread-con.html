@@ -1,0 +1,698 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+
+
+
+
+
+		<div class="work-details-wrap border-bottom ">
+			
+<div class="container">
+			<div class="row " style="padding:0px 10px;">
+				<div class="left-details-head col-md-9 col-sm-12">
+					<div class="works-tag-wrap">
+
+
+
+
+
+					</div>
+					<div class="details-contitle-box">
+						<!--标题-->
+						<h2><?php echo $thread['title']; ?></h2>
+
+						<!--发布时间-->
+						<p class="title-time">
+							<span><?php echo $thread['create_time_fmt']; ?></span>发布
+								<span class="head-data-show wi-margin-left">
+
+									<a href="javascript:;" title="共<?php echo $thread['view']; ?>人气" class="see " target="_self">
+										<i class="fa fa-fire"></i><?php echo $thread['view']; ?> </a>
+									<a href="javascript:;" title="共<?php echo $thread['reply']; ?>评论" class="news " target="_self">
+										<i class="fa fa-commenting-o"></i><?php echo $thread['reply']; ?> </a>
+									<a href="javascript:;" title="共<?php echo $thread['sc']; ?>收藏" class="recommend-show" target="_self">
+										<i class="fa fa-star-o"></i><?php echo $thread['sc']; ?> </a>
+<?php if($thread['uid']==$uid){ ?>
+										<a href="<?php echo r_url('thread-edit',array('id'=>$thread['id'])); ?>" title="编辑帖子" class="recommend-show" target="_self">
+										[编辑帖子] </a>
+										<?php } ?>
+								</span>
+							<span class="pull-right">
+								
+							<?php $plugin->run('oneshare','share',$thread); ?>
+  
+							
+							</span>
+						</p>
+						<!--分类,浏览数,评论数,推荐数-->
+						<div class="work-head-box">
+							<div class="pull-left">
+								<span class="head-index">
+									                          <?php if(!empty($thread['keywords'])){
+
+foreach($thread['keywords_arr'] as $k=>$v) { ?>
+
+<a class="tag" href="<?php echo r_url('tags-'.$v['id']); ?>" target="_self">
+  <?php echo $v['name']; ?>
+</a>
+
+<?php }} ?>
+
+								</span>
+
+							</div>
+							
+						</div>
+					</div>
+				</div>
+
+
+
+
+
+				<div class="col-md-3 col-sm-12">
+					<div class="details-right-author-wrap media">
+
+						<div class="media-left  text-center">
+							<a href="<?php echo r_url('user-'.$thread['user']['id']); ?>" title="<?php echo $thread['user']['nickname']; ?>" target="_self">
+								
+								<img class="avatar-80" src="<?php echo $thread['user']['avatar_url']; ?>"  alt="">
+							</a>
+
+						</div>
+						<div class="media-body">
+							<h4 class="uk-comment-title">
+								<a href="<?php echo r_url('user-'.$thread['user']['id']); ?>" title="<?php echo $thread['user']['nickname']; ?>" class="title-content" target="_self"><?php echo $thread['user']['nickname']; ?></a>
+	          <?php if($thread['user']['rz']>0) {
+
+            if($thread['user']['rz']==1) { ?>
+          
+          <i class="fa fa-vimeo v_person   "></i>
+          <?php }else { ?>
+          <i class="fa fa-vimeo v_company   "></i>
+          <?php }} ?>
+
+							
+
+							</h4>
+							<div class="uk-comment-meta">
+								<?php echo $thread['user']['sexname']; ?>&nbsp;|&nbsp;<?php if($thread['user']['rz']>0){
+                                    echo $thread['user']['statusdes'];
+							     }else{
+                                     echo $thread['user']['description'];
+							     }
+
+
+
+							     ?></div>
+
+
+<?php if($thread['user']['id']!=$uid){ ?>
+							<div class="wi-margin-top" >
+
+
+<?php if(hasfocus($thread['user']['id'],0)){ ?>
+	<a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-0'); ?>" data-val="<?php echo $thread['user']['id']; ?>" title="已关注" data-classname="btn-default" data-removeclassname="btn-primary" data-title="关注" class="focus-action btn btn-default" target="_self"><i class="fa fa-minus"></i> 已关注</a>
+<?php }else{ ?>
+	<a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-0'); ?>" data-val="<?php echo $thread['user']['id']; ?>" title="关注" data-classname="btn-primary" data-removeclassname="btn-default" data-title="已关注" class="focus-action btn btn-primary" target="_self"><i class="fa fa-plus"></i> 关注</a>
+<?php } ?>
+								
+
+<a data-url="<?php echo r_url('api-sixin',array('type'=>2,'uid'=>$thread['user']['id'])); ?>" data-formid="sixin-form" data-id="sixintpl"  data-width="auto" data-height="auto" data-title="发私信" href="javascript:;" class="openformdialog btn btn-default" target="_self">私信 </a>
+
+							
+
+							</div>
+<?php } ?>
+						</div>
+					</div>
+				</div>
+
+			</div>
+</div>
+			<div class="container ">
+
+				<div class="content-wrap">
+
+					<div class="details-con-other border-top" style="margin-top:0px;">
+						<div class="">
+
+
+							<div class="three-link">
+
+								<span class="report"  id="report-modal">
+<a class="openformdialog" data-url="<?php echo r_url('user-jubao',array('id'=>$thread['id'],'type'=>1)); ?>" data-formid="report-form" data-id="reporttpl"  data-width="auto" data-height="70%" data-title="帖子举报" href="javascript:;"  target="_self"><i class="fa fa-warning"></i>举报 </a></span>
+<?php if(hasfocus($thread['id'],1)){ ?>
+	<a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-1'); ?>" data-val="<?php echo $thread['id']; ?>" title="已收藏" data-classname="btn-default" data-removeclassname="btn-success" data-title="收藏" class="focus-action btn btn-default" target="_self"><i class="fa fa-star"></i> 已收藏</a>
+<?php }else{ ?>
+	<a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-1'); ?>" data-val="<?php echo $thread['id']; ?>" title="收藏" data-classname="btn-success" data-removeclassname="btn-default" data-title="已收藏" class="focus-action btn btn-success" target="_self"><i class="fa fa-star-o"></i> 收藏</a>
+<?php } ?>
+								
+
+
+
+								
+
+
+							</div>
+
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+		
+		<div class="main">
+
+
+<div class=" container">
+			<div class=" row">
+				<div class="col-md-9 col-sm-12">
+
+					<div class="bb">
+
+						<div class="work-details-content">
+
+							<div class=" ">
+								<div class="" style="margin:10px;">
+
+									<div class="work-show-box">
+                                       
+<?php echo $newcontent; if($thread['free']>0){ ?>
+ <div class="help-block wenku-preview-tips">
+ 	<div>
+  温馨提示：
+以下内容被作者定为付费内容，如果您想继续阅读，
+
+<?php if($uid>0){ ?>
+需支付<?php echo '<span class="text-warning wi-bold">'.$thread['score'].'</span>'.$conf['pointname']['point']; ?>
+		<a href="javascript:void(0)" data-title="购买该帖子需要消耗<?php echo floor($userqx['bili']*$thread['score']/100).$conf['pointname']['point']; ?>,确定购买吗？" data-url="<?php echo r_url('user-buy-3',['id'=>$thread['id']]); ?>" class="confirm-dialog pull-right wi-margin-right btn btn-danger btn-xs " style="padding: 6px 12px">立即支付</a>
+<?php }else{echo '<a href="'.r_url('user-login').'" target="_self" style="color:red;">请先登录</a>';} ?>
+</div>
+<?php if($uid>0){ ?>
+ <div>你所在的用户组为：<?php echo $userqx['usergradename']; ?>，可享受<?php if($userqx['bili']>0){echo '折扣'.$userqx['bili'].'%';}else{echo '免费';} ?>特权。</div>
+             <div class="text-primary">折扣后价格：<?php echo floor($userqx['bili']*$thread['score']/100).$conf['pointname']['point']; ?></div>
+	 <a data-url="<?php echo r_url('zhifu-chongzhi',array('type'=>1,'uid'=>$uid)); ?>" data-formid="chongzhi-form" style="" data-async="false"  data-id="chongzhitpl"  data-width="auto" data-height="auto" data-title="充值" href="javascript:;" class="openformdialog btn btn-primary wi-margin-right">财富值充值</a>
+<?php } ?>
+
+                  
+                        
+</div>
+<?php	} ?>								</div>
+
+<?php if($thread['file_num']>0){ ?>
+<div class="filelist">
+	<div class="panel panel-default">
+  <div class="panel-heading">附件列表</div>
+  <div class="panel-body">
+    <ul>
+    	 <?php foreach($thread['filelistarr'] as $key=>$vo){ ?>
+<li>
+	<div><i class="fa <?php echo $vo['icon']; ?>"></i><?php echo $vo['name']; ?>
+		<a href="javascript:void(0)" data-title="下载该附件需要消耗<?php if($uid>0){
+if(has_buy($uid,$thread['id'],$vo['type'])||$uid==$thread['uid']){
+	echo '0'.$conf['pointname']['point'];
+}else{
+	echo floor($userqx['bili']*$vo['score']/100).$conf['pointname']['point'];
+}
+			
+
+		}else{
+
+		echo $vo['score'].$conf['pointname']['point'];
+
+	} ?>,确定购买吗？" data-url="<?php echo r_url('attach-download-'.$vo['tid'].'-'.$vo['id']); ?>" class="confirm-download  text-primary" >下载</a><span class="text-muted wi-margin-left">[下载：<?php echo $vo['downloads']; ?>次]</span></div>
+	<div class="text-muted"><span >上传者：<?php echo $vo['user']['nickname']; ?></span><span>大小：<?php echo $vo['size_fmt']; ?></span>
+
+		<span><?php if($vo['score']>0){echo $conf['pointname']['point'].':'.$vo['score'];}else{echo '免费';} ?></span>
+
+		<span>上传时间：<?php echo $vo['create_time_fmt']; ?></span></div></li>
+	<?php } ?>
+</ul>
+  </div>
+</div>
+
+
+</div>
+<?php } ?>
+									<div class="support-author">
+										
+										<!--<div data-url="<?php echo r_url('zhifu-dashang',array('id'=>$thread['id'],'type'=>1)); ?>" data-formid="thanks-form" data-id="thankstpl" data-async="false" data-width="auto" data-height="50%" data-title="赞赏支持" href="javascript:;" class="openformdialog btn btn-danger" data-toggle="tooltip" data-placement="top" title=""
+										 data-original-title="一共获得了<?php echo $sumscore.$conf['pointname']['point']; ?>" onclick="">赞赏支持</div>-->
+										 <div class="supporter"><ul class="support-list">
+
+<?php foreach ($pointnotelist as $key => $value) { 
+    $point_userinfo = user_read_cache($value['to_uid']); ?>
+
+<li>
+<a href="<?php echo r_url('user-'.$point_userinfo['id']); ?>" target="_self" class="avatar" >
+  <img src="<?php echo $point_userinfo['avatar_url']; ?>" class="media-object avatar-40">
+  </a>
+</li>
+
+
+
+
+
+<?php } ?>
+										 	
+
+
+
+
+										 </ul> 
+<?php if($point_count>10){?>
+	
+<span>等<?php echo $point_count; ?>人</span>
+<?php } ?>
+										 </div>
+									</div>
+									<hr>
+
+
+								</div>
+
+
+							</div>
+
+
+
+
+
+
+
+						</div>
+
+
+					</div>
+
+
+
+				</div>
+				<div class="col-md-3 col-sm-12">
+
+					<div class="r-aside recommend bb">
+						<div class="boxtitle"><span class="title">Ta 的文章</span>
+        	<a target="_self" href="<?php echo r_url('user-'.$thread['user']['id'].'-2'); ?>" class="more">更多<font> &gt;&gt; </font></a></div>
+						<ul class="art_list">
+
+<?php foreach($ta_topiclist_6 as $key=>$vo) { ?>
+
+
+<li><a href="<?php echo r_url('thread-'.$vo['id']); ?>" title="<?php echo $vo['title']; ?>" target="_self"><?php echo $vo['title']; ?></a>
+               <div >
+               <!--<span class="anum" > <?php echo $vo['reply']; ?> 个评论</span>-->
+               </div>
+              </li>
+
+<?php } ?>
+
+
+						</ul>
+					</div>
+
+
+						<div  class="r-aside recommend bb">
+         <div class="boxtitle"><span class="title">热门文章</span> </div>
+         <ul class="art_list">
+      
+<?php foreach($hot_topiclist_6 as $key=>$vo) { ?>
+
+
+<li><a href="<?php echo r_url('thread-'.$vo['id']); ?>" title="<?php echo $vo['title']; ?>" target="_self"><?php echo $vo['title']; ?></a>
+               <div >
+               <!--<span class="anum" > <?php echo $vo['reply']; ?> 个评论</span>-->
+               </div>
+              </li>
+
+<?php } ?>
+                               
+
+              </ul>
+     </div>
+
+				</div>
+</div>
+			</div>
+		</div>
+
+
+
+<script id="reporttpl" type="text/html">
+    <div class="wi-padding">
+        <div class="alert alert-info" role="alert">
+            让我们一起共建文明社区！您的反馈至关重要！
+        </div>
+
+        <div class="">
+            <form id="report-form" class="layerform" method="post">
+               
+                <div class="clearfix radio">
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="1" checked> 色情低俗</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="2"> 政治敏感</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="3"> 违法暴力</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="4"> 恐怖血腥</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="5"> 非法贩卖</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="6"> 仇恨言论</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="7"> 打小广告</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="8"> 其他</label>
+                    </div>
+                </div>
+
+                <div class="wi-margin-top text-center clearfix">
+                    <div class="col-xs-12">
+                        <input type="text" name="content" class="form-control" value="" placeholder="其它信息，可选"/>
+                    </div>
+                </div>
+                <hr>
+               <div class="wi-margin-top">
+                    <div class="col text-center">
+                        <button type="submit" class="btn btn-primary btn-submit-thanks">提交反馈</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+<script id="chongzhitpl" type="text/html">
+	<div class="wi-padding">
+		<div class="alert alert-warning" role="alert">
+			最小充值一元，可以折合<?php echo $conf['chongzhi']['bili'].$conf['pointname']['point']; ?>
+		</div>
+		<form  id="chongzhi-form" class="layerform reward-note-modal" method="post">
+
+			<div class="clearfix radio">
+				<div class="wi-margin-top clearfix">
+					<div class="">
+						<input class="form-control" value="1"  name="chongzhi" id="chongzhi" />
+					</div>
+
+					<div class="col-xs-12 choose-pay">
+						<?php if($conf['paymethod']==3||$conf['paymethod']==2){ ?>
+						<input id="method1" type="radio" name="pay_method" value="weixin">
+						<label for="method1" class="option">
+							<img src="/public/common/images/wechat.png" class="day wechat">
+						</label>
+						<?php } ?>
+						<?php if($conf['paymethod']==3||$conf['paymethod']==1){ ?>
+						<input id="method2" type="radio" name="pay_method" value="alipay">
+						<label for="method2" class="option">
+							<img src="/public/common/images/alipay.png" class="day alipay">
+						</label>
+						<?php } ?>
+
+
+
+
+
+					</div>
+
+
+				</div>
+			</div>
+
+			<div class="">
+
+				<button type="submit" class="btn btn-primary btn-block">立即充值</button>
+
+			</div>
+		</form>
+	</div>
+</script>
+
+<script id="thankstpl" type="text/html">
+    <div class="wi-padding">
+        <div class="alert alert-warning" role="alert">
+            我们应该多多支持小伙伴的分享o！
+        </div>
+
+        <div class="reward-note-modal">
+           
+            <form target="_blank" id="thanks-form" class="layerform new_reward"><div class="reward-intro">
+<a  class="avatar" href="<?php echo r_url('user-'.$thread['user']['id']); ?>" title="<?php echo $thread['user']['nickname']; ?>" target="_self">
+								
+								<img src="<?php echo $thread['user']['avatar_url']; ?>"  alt="">
+							</a>
+            	
+            	<span class="intro">给作者打赏</span>
+            	 </div> 
+            	 <div class="main-inputs">
+            	 	<div class="amount-group">
+            	 	<input id="option1" type="radio" name="score" value="2"> 
+            	 	<label for="option1" class="option">
+            	 	 <span class="amount">￥2</span> </label> 
+            	 	 <input id="option2" type="radio" name="score" value="5"> 
+            	 	 <label for="option2" class="option">
+            	 	 <span class="amount">￥5</span> </label> 
+            	 	 <input id="option3" type="radio" name="score" value="10"> 
+            	 	 <label for="option3" class="option">
+            	 	 <span class="amount">￥10</span> </label> 
+            	 	 </div> 
+            	 	 <div class="amount-group">
+            	 	 <input id="option4" type="radio" name="score" value="20"> 
+            	 	 <label for="option4" class="option">
+            	 	 <span class="amount">￥20</span> </label> 
+            	 	 <input id="option5" type="radio" name="score" value="50"> 
+            	 	 <label for="option5" class="option">
+            	 	 <span class="amount">￥50</span> </label> 
+            	 	 <input id="custom-option" type="radio" name="score" class="custom-amount" value="0"> 
+            	 	 <label for="custom-option" class="option">
+            	 	 <span class="custom-text">自定义</span> <div class="custom-amount-input">
+            	 	 <input type="number" oninput="value = parseInt(Math.min(Math.max(value, 0), 10000), 10)"></div></label>
+
+            	 	</div> 
+            	 	 <div class="message"><textarea placeholder="给Ta留言…" name="content"></textarea></div></div> 
+            	<div class="reward-info text-center"><span class="amount" id="totalnum">￥0</span> </div> 
+            	<div class="choose-pay">
+            		
+<?php if($conf['paymethod']==3||$conf['paymethod']==2){ ?>
+            		<input id="method1" type="radio" name="pay_method" value="weixin"> 
+            		<label for="method1" class="option">
+            			<img src="/public/common/images/wechat.png" class="day wechat">
+            		</label>
+<?php } ?>
+<?php if($conf['paymethod']==3||$conf['paymethod']==1){ ?>
+            		<input id="method2" type="radio" name="pay_method" value="alipay"> 
+            		<label for="method2" class="option">
+            			<img src="/public/common/images/alipay.png" class="day alipay"> 
+            		</label> 
+<?php } ?>
+            		<input id="method3" type="radio" name="pay_method" value="caifu"> 
+                    <label for="method3" class="option">
+            			<span style="display:block;margin-top:-13px;"><?php echo $conf['pointname']['point']; ?></span> 
+            		</label> 
+
+            		</div>
+                <div class="wi-margin">
+                    <div class="col text-center">
+                        <button type="submit" class="btn btn-danger">打赏</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+<script id="sixintpl" type="text/html">
+	<div class="wi-padding">
+        <div class="alert alert-warning" role="alert">
+            私信给用户，有可能会打扰到对方，尽量想好措辞再发出去哦！
+        </div>
+<form  id="sixin-form" class="layerform" method="post">
+
+                <div class="clearfix radio">
+ <div class="wi-margin-top text-center clearfix">
+                    <div class="col-xs-12">
+<textarea class="form-control" name="content" placeholder="请输入私信内容"></textarea>
+</div>
+</div>
+</div>
+
+<div class="wi-margin">
+                    <div class="col text-center">
+                        <button type="submit" class="btn btn-primary">立即发送</button>
+                    </div>
+                </div>
+</form>  
+                </div>
+</script>
+	<?php include $conf['view_path'].'footer.inc.html';?>
+	 <link href="<?php echo $conf['public_dir']; ?>/summernote/summernote.css" rel="stylesheet" />
+	 <script src="<?php echo $conf['public_dir']; ?>/summernote/summernote.js">
+    </script>
+	<script>
+$(function(){
+$(document).on("click",".confirm-download",function(){
+  var url = $(this).data('url');
+  var title = $(this).data('title');
+
+layer.confirm(title, {icon: 3, title:'温馨提示'}, function(index){
+   window.location = url;
+  layer.close(index);
+});
+
+
+});
+
+
+$(document).on('keyup','.custom-amount-input input',function(){
+
+$('#custom-option').val($(this).val());
+$('#totalnum').html('￥'+$(this).val());
+});
+$(document).on('click','.amount-group .option',function(){
+
+var val = $('#'+$(this).attr('for')).val();
+
+$('#totalnum').html('￥'+val);
+});
+
+
+
+    $('a.attachp').each(function(){
+
+    	
+    /*	var id=$(this).data('id');
+    	var _this = this;
+    	  $.xpost(xn.url('attach-getfileinfo'), {id:id}, function(code, ret) {
+               
+               if(code == 0) {
+                   $(_this).append('<span>下载次数：'+ret.downloads+'</span>'); 
+               }
+          });
+         */
+     }).wrapAll('<div class="file-list"></div>');
+   
+
+
+});
+     var $summernote = $('#summernote').summernote(
+    {
+  height: 100,                 // set editor height
+  focus: false,
+  dialogsInBody: true,
+  toolbar : [
+
+                [ 'style', [ 'style'] ],
+                [
+                    'style',
+                    [ 'bold', 'italic', 'underline','fontsize'] ],
+               
+                
+                [ 'color', [ 'color' ] ],
+                [
+                    'insert',
+                   [ 'link', 'hr' ] ],// 自定义按钮展示
+                
+                [ 'codetag', [ 'codetag','pre','blockquote'] ],
+               ['picture',['picture']], //插入图片 
+               
+               ['myphoto'],    ['clear'],            
+               
+               
+        ],
+         //调用图片上传
+            callbacks: {
+                onImageUpload: function (files) {
+                  xn.upload_file(files[0], xn.url('attach-create-image',1), '',function(code,ret){
+                    console.log(code,ret);
+if(code==0){
+   var imgNode = document.createElement("img");
+    $(imgNode).addClass("topic_img").attr('data-id',ret.id+'-'+ret.sha1);  
+
+   imgNode.src = ret.file_url;
+   $summernote.summernote('insertNode',imgNode);
+}else{
+   $.sns5i_notify(ret.message,'danger');
+}
+                        
+
+                  });
+                  
+                },
+
+//onBlur:function(){console.log('Editable area loses focus');},
+//onPaste:function(e){console.log('Called event paste');},
+//onKeyup:function(e){console.log('Key is released:',e.keyCode);},
+//onEnter:function(){console.log('Enter/Return key pressed');}
+            }
+                 // set focus to editable area after initializing summe
+    });
+  var jform = $('.create_comment_topic');
+
+
+  jform.on('submit', function() {
+  	var jsubmit = $(this).find('#comments');
+    var postdata = $(this).serialize();
+   
+    jsubmit.button('sending').button('disabled');
+    
+    $.xpost(jform.attr('action'), postdata, function(code, ret) {
+     
+      if (code == 0) {
+        
+        $.sns5i_notify(ret.message,'success','','',false,function(){
+        	window.location.reload();
+        });
+         
+      // 
+        
+        
+      } else {
+        $.sns5i_notify(ret.message,'danger');
+        jsubmit.button('reset');
+      }
+    });
+    return false;
+  });
+
+
+
+
+  $('.add-comment-btn,.getcommentlist').click(function(){
+
+var id = $(this).attr('dataid');
+
+
+if($('.formcomment'+id).is(':hidden')){
+
+$('.formcomment'+id).slideDown(300,function(){$('.formcomment'+id).find('.comment-area').focus();});
+
+
+}else{
+	$('.formcomment'+id).slideUp();
+}
+
+
+  });
+  $('.huifu').click(function(){
+
+var id = $(this).attr('dataid');
+var author = $(this).attr('author');
+if($('.formcomment'+id).is(':hidden')){
+
+$('.formcomment'+id).slideDown(300,function(){$('.formcomment'+id).find('.comment-area').focus().val('@'+author+':');});
+
+}else{
+	$('.formcomment'+id).find('.comment-area').focus().val('@'+author+':');
+}
+
+  });
+
+	</script>

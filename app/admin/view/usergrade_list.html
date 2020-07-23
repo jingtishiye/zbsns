@@ -1,0 +1,118 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>会员组列表</a></li>
+       
+    </ul>
+      <div class="well wi-margin-top" >
+      
+        <button type="button"  data-url="<?php echo r_url('usergrade-add'); ?>" data-id="usergradeaddform"  data-title="新增" class="openformdialog btn btn-success">新增</button>
+    </div>
+   
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>类型</th>
+               
+               <th>图标</th>
+               <th>积分</th>
+               <th>次数限制</th>
+               <th>天数限制</th>
+                <th>比例</th>
+               <th>权限</th>
+                <th>权限时间</th>
+              
+                <th>操作</th>
+             
+            </tr>
+            </thead>
+            <tbody>
+            	<?php foreach($usergradeslist as $key=>$vo) { ?>
+                            <tr id="usergrade_<?php echo $vo['id']; ?>">
+                            		<td>
+										<?php echo $vo['id']; ?></td>
+									<td>
+										<?php echo $vo['name']; ?>
+									</td>
+									<td>
+									     <?php echo $vo['gmtype']==1?'购买':'升级'; ?>
+									</td>
+							
+									
+                                                <td>
+
+   <img style="height:30px;width:30px;" src="<?php echo find_image_by_id($vo['cover_id']); ?>">   
+
+                                    </td>
+                                    <td>
+
+<?php echo $vo['score']; ?>
+
+                  </td>
+                  <td>
+<?php echo $vo['nums']; ?>
+
+                  </td>
+								  <td>
+<?php echo $vo['days']; ?>
+
+                  </td>
+                    <td>
+<?php echo $vo['bili'].'%'; ?>
+
+                  </td>
+                   <td>
+
+ <?php if(empty($vo['type'])){echo '无权限';}else{
+
+echo str_replace(array('1','2','3','4','5','6',','),array('发帖<br>','发文档<br>','评论<br>','查看付费内容<br>','下载附件<br>','下载文档',''),$vo['type']);
+
+
+} ?>
+
+
+                  </td>
+                   <td>
+<?php 
+$limitarr = explode(',',$vo['limittime']);if(empty($limitarr[3])){$limitarr[3]=0;}
+echo '发帖时间限制:'.humanmiao($limitarr[0]).'<br>发文档时间限制:'.humanmiao($limitarr[1]).'<br>评论时间限制:'.humanmiao($limitarr[2]).'<br>下载时间限制:'.humanmiao($limitarr[3]);
+ ?>
+
+                  </td>
+                 
+									<td>
+
+
+
+
+
+									   <div class="btn-group btn-group-xs" role="group" aria-label="Extra-small button group">
+    
+<?php if($vo['status']==1){?>
+     <button type="button" class="jhcz btn btn-warning" data-removeclassname="btn-warning" data-classname="btn-success" data-title="启用" data-val="<?php echo $vo['status']; ?>" data-url="<?php echo r_url('usergrade-forbidden',['id'=>$vo['id']]); ?>">禁用</button>
+
+<?php }else{ ?>
+     <button type="button" class="jhcz btn btn-success" data-removeclassname="btn-success" data-classname="btn-warning" data-title="禁用" data-val="<?php echo $vo['status']; ?>" data-url="<?php echo r_url('usergrade-forbidden',['status'=>$vo['status'],'id'=>$vo['id']]); ?>">启用</button>
+<?php } ?>
+
+      <button type="button" data-url="<?php echo r_url('usergrade-edit',['id'=>$vo['id']]); ?>" data-id="usergradeeditform" data-title="<?php echo $vo['name'] ?>-编辑会员组" class="openformdialog btn btn-primary">编辑</button>
+      <button type="button" data-title="确认删除该会员组吗？" data-name="usergradelist_<?php echo $vo['id'] ?>" data-url="<?php echo r_url('usergrade-delete',['id'=>$vo['id']]); ?>" class="btn btn-danger deletebtn">删除</button>
+    </div>
+									</td>
+                   
+                </tr>
+                     <?php } ?>      
+                        </tbody>
+        </table>
+       
+
+
+   
+</div>
+<div class="pagediv">
+        <div class="pagination"><?php echo $pagination; ?></div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>

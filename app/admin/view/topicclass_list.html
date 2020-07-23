@@ -1,0 +1,119 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>分类列表</a></li>
+        
+<?php if($where['pid']>0){ ?>
+        <li ><a href="<?php echo r_url('topicclass-list',array('pid'=>$parent_pid)); ?>">返回上一级</a></li>
+
+<?php } ?>
+    </ul>
+    <form class="well form-inline wi-margin-top" method="post" action="<?php echo r_url('topicclass-list'); ?>">
+      
+        <label class="">名称：</label>
+        <input class="form-control" type="text" name="name" value="<?php echo param('name'); ?>" >
+        <input type="hidden" name="pid" value="<?php echo $where['pid']; ?>" >
+        <input type="submit" class="btn btn-primary" value="搜索">
+        <button type="button"  data-url="<?php echo r_url('topicclass-add',['pid'=>$where['pid']]); ?>" data-id="topicclassaddform" data-width="100%" data-height="100%" data-title="新增分类" class="openformdialog btn btn-success">新增</button>
+    </form>
+   
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>排序</th>
+                 <th>限制用户组</th>
+                <th>推荐</th>
+                <th>描述</th>
+                <th>操作</th>
+             
+            </tr>
+            </thead>
+            <tbody>
+            	<?php foreach($topicclasslist as $key=>$vo) { ?>
+                            <tr id="topicclasslist_<?php echo $vo['id']; ?>">
+                            		<td>
+										<?php echo $vo['id']; ?></td>
+									<td>
+										<a href="<?php echo r_url('topicclass-list',array('pid'=>$vo['id'],'parent_pid'=>$vo['pid'])); ?>"><?php echo $vo['name']; ?></a>
+									</td>
+									<td>
+									     <?php echo $vo['sort']; ?>
+									</td>
+                                    <td>
+
+  <?php if($vo['gradeid_fmt']==0){echo '无限制';}else{
+
+foreach($vo['gradeid_info'] as $k=>$v){
+    echo $v['name'].'<br>';
+}
+
+
+} ?>
+
+                                    </td>
+							  <td>
+
+
+
+    <input type="checkbox" data-url="<?php echo r_url('topicclass-cstatus',['id'=>$vo['id']]); ?>" data-field="choice" data-trueval="1" data-falseval="0" data-mess="推荐" data-falsemess="取消推荐" class="switch"  data-size="mini" data-on="primary" data-off="info" data-off-text="普通" data-on-text="推荐"  <?php echo $vo['choice']?'checked':''; ?>  />
+ 
+
+                  </td>
+                                    <td>
+                                   
+                                          <?php echo $vo['description']; ?>
+                                    </td>
+										
+								
+									<td>
+
+
+
+
+
+									   <div class="btn-group btn-group-xs" role="group" aria-label="Extra-small button group">
+    
+<?php if($vo['status']==1){?>
+     <button type="button" class="jhcz btn btn-warning" data-removeclassname="btn-warning" data-classname="btn-success" data-title="启用" data-val="<?php echo $vo['status']; ?>" data-url="<?php echo r_url('topicclass-forbidden',['id'=>$vo['id']]); ?>">禁用</button>
+
+<?php }else{ ?>
+     <button type="button" class="jhcz btn btn-success" data-removeclassname="btn-success" data-classname="btn-warning" data-title="禁用" data-val="<?php echo $vo['status']; ?>" data-url="<?php echo r_url('topicclass-forbidden',['status'=>$vo['status'],'id'=>$vo['id']]); ?>">启用</button>
+<?php } ?>
+
+      <button type="button" data-url="<?php echo r_url('topicclass-edit',['id'=>$vo['id']]); ?>" data-id="topicclasseditform" data-width="100%" data-height="100%" data-title="<?php echo $vo['name'] ?>-编辑分类" class="openformdialog btn btn-primary">编辑</button>
+      <button type="button" data-title="确认删除该分类吗？" data-name="topicclasslist_<?php echo $vo['id'] ?>" data-url="<?php echo r_url('topicclass-delete',['id'=>$vo['id']]); ?>" class="btn btn-danger deletebtn">删除</button>
+    </div>
+									</td>
+                   
+                </tr>
+                     <?php } ?>      
+                        </tbody>
+        </table>
+        <p class="text-small text-muted">注：请谨慎编辑分类，可能涉及分类下的数据混乱。</p>
+
+
+   
+</div>
+<div class="pagediv">
+        <div class="pagination"><?php echo $pagination; ?></div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+
+
+<?php if($conf['cdn_use']){ ?>
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css">
+<script src="https://cdn.bootcss.com/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
+
+<?php }else{?>
+<script src="<?php echo $conf['public_dir']; ?>bootstrap/js/bootstrap-switch.js"></script>
+<link rel="stylesheet" href="<?php echo $conf['public_dir']; ?>bootstrap/css/bootstrap-switch.css">
+<?php }?>
+
+
+<script type="text/javascript">
+$(function(){
+  bootstrap_Switch();
+});</script>

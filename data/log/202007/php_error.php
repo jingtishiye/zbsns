@@ -1,0 +1,9 @@
+<?php exit;?>	2020-07-07 16:39:19	123.113.99.111	/?m=admin&c=message&a=list	1	Error[8]: Undefined index: nickname, File: /app/admin/view/message_list.html, Line: 36
+<?php exit;?>	2020-07-07 16:39:20	123.113.99.111	/?m=admin&c=tixian&a=list	1	Error[8]: Undefined index: userip, File: /app/common/model/user.model.php, Line: 452
+<?php exit;?>	2020-07-07 16:39:20	123.113.99.111	/?m=admin&c=pointnote&a=list	1	Error[8]: Undefined index: nickname, File: /app/admin/view/pointnote_list.html, Line: 27
+<?php exit;?>	2020-07-07 16:39:21	123.113.99.111	/?m=admin&c=chongzhi&a=list	1	Error[8]: Undefined index: nickname, File: /app/admin/view/cz_list.html, Line: 39
+<?php exit;?>	2020-07-07 16:39:40	123.113.99.111	/?m=admin&c=pointnote&a=list	1	Error[8]: Undefined index: nickname, File: /app/admin/view/pointnote_list.html, Line: 27
+<?php exit;?>	2020-07-07 16:39:41	123.113.99.111	/?m=admin&c=pointnote&a=list	1	Error[8]: Undefined index: nickname, File: /app/admin/view/pointnote_list.html, Line: 27
+<?php exit;?>	2020-07-07 16:39:46	123.113.99.111	/?m=admin&c=message&a=list	1	Error[8]: Undefined index: nickname, File: /app/admin/view/message_list.html, Line: 36
+<?php exit;?>	2020-07-07 16:40:53	123.113.99.111	/?m=admin&c=tixian&a=list	1	Error[8]: Undefined index: userip, File: /app/common/model/user.model.php, Line: 452
+<?php exit;?>	2020-07-07 16:41:33	123.113.99.111	/?m=admin&c=tixian&a=list	1	Error[8]: Undefined index: userip, File: /app/common/model/user.model.php, Line: 452

@@ -1,0 +1,89 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>规则列表</a></li>
+
+    </ul>
+        <div class="well form-inline wi-margin-top" >
+      
+   
+        <button type="button"  data-url="<?php echo r_url('pointrule-add'); ?>" data-id="pointruleaddform" data-width="100%" data-height="100%" data-title="新增规则" class="openformdialog btn btn-success">新增</button>
+    </div>
+   
+        <table class="table table-hover table-bordered ">
+            <thead>
+            <tr>
+                 <th>ID</th>
+                 <th>名称</th>
+                <th>24小时次数</th>
+                <th>规则次数</th>
+                <th>积分类型</th>
+                <th>积分数量</th>
+                <th>增减</th>
+                <th>类型</th>
+             
+            </tr>
+            </thead>
+            <tbody>
+                 <?php foreach($pointrulelist as $key=>$vo) { ?>
+                            <tr id="pointrulelist_<?php echo $vo['id']; ?>">
+                                    <td>
+                                        <?php echo $vo['id']; ?></td>
+                                        
+                                    <td>
+                                        <?php echo $conf['pointrule'][$vo['controller']]; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $vo['num']; ?>
+                                    </td>
+                                  <td>
+                                        <?php echo $vo['tasknum']; ?>
+                                    </td>
+                                    <td>
+                                         <?php echo $conf['pointname'][$vo['scoretype']]; ?>
+                                    </td>
+                            
+                                        <td>
+
+  <?php echo $vo['score']; ?>
+
+                                    </td>
+                                       <td>
+                                        <?php if($vo['type']==1){echo '增加';}else{echo '减少';} ?>
+                                    </td>
+                                
+                                    <td>
+
+
+
+
+
+                                       <div class="btn-group btn-group-xs" role="group" aria-label="Extra-small button group">
+    
+
+
+      <button type="button" data-url="<?php echo r_url('pointrule-edit',['id'=>$vo['id']]); ?>" data-id="pointruleeditform" data-title="<?php echo $vo['controller'] ?>-编辑规则" class="openformdialog btn btn-primary">编辑</button>
+      <button type="button" data-title="确认删除该规则吗？" data-name="pointrulelist_<?php echo $vo['id'] ?>" data-url="<?php echo r_url('pointrule-delete',['id'=>$vo['id']]); ?>" class="btn btn-danger deletebtn">删除</button>
+    </div>
+                                    </td>
+                   
+                </tr>
+                     <?php } ?> 
+                        </tbody>
+        </table>
+       
+
+   
+</div>
+<div class="pagediv">
+        <div class="pagination">
+<?php echo $pagination; ?>
+        </div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+
+<script>
+
+
+</script>

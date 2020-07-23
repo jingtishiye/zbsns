@@ -1,0 +1,87 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>审核列表</a></li>
+
+    </ul>
+    
+   
+        <table class="table table-hover table-bordered wi-margin-top">
+            <thead>
+            <tr>
+                <th>用户ID</th>
+                <th>名称</th>
+                <th>证件号</th>
+                 <th>联系电话</th>
+                <th>扫描件(右键查看)</th>
+                <th>认证描述</th>
+                <th>关键词</th>
+                 <th>状态</th>
+                <th>操作</th>
+             
+            </tr>
+            </thead>
+            <tbody>
+            	<?php foreach($rzuserlist as $key=>$vo) { ?>
+                            <tr id="rzuserlist<?php echo $vo['uid']; ?>">
+                            		<td>
+										<?php echo $vo['uid']; ?></td>
+									<td>
+										<?php echo $vo['name']; ?>
+									</td>
+									<td>
+									     <?php echo $vo['idcard']; ?>
+									</td>
+                                    <td>
+                                         <?php echo $vo['mobile']; ?>
+                                    </td>
+								<td>
+							<img style="height:30px;width:30px;" src="<?php echo find_image_by_id($vo['cover_id']); ?>">   
+									</td>
+										<td>
+
+  <?php echo htmlspecialchars_decode($vo['statusdes']); ?>
+
+									</td>
+								<td>
+
+  <?php echo $vo['keywords']; ?>
+
+                                    </td>
+                                        <td>
+
+  <?php if($vo['status']==1){echo '<span class="text-success">已通过</span>';}elseif($vo['status']==2){echo '<span class="text-danger">已拒绝</span>';}else{echo '<span class="text-warning">待审核</span>';} ?>
+
+                                    </td>
+									<td>
+
+
+
+
+
+									   <div class="btn-group btn-group-xs" role="group" aria-label="Extra-small button group">
+    
+ <button type="button" data-url="<?php echo r_url('rzuser-cstatus',['uid'=>$vo['uid']]); ?>" data-id="rzusereditform" data-width="100%" data-height="100%" data-title="审核用户" class="openformdialog btn btn-primary">审核</button>
+
+   
+    </div>
+									</td>
+                   
+                </tr>
+                     <?php } ?>      
+                        </tbody>
+        </table>
+       
+
+   
+</div>
+<div class="pagediv">
+        <div class="pagination"><?php echo $pagination; ?></div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+
+<script>
+
+
+</script>

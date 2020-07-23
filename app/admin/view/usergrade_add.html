@@ -1,0 +1,114 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    
+    <form class="form-horizontal" id="usergradeaddform" method="post" data-url="<?php echo r_url('usergrade-add'); ?>">
+   
+  <div class="form-group">
+    <label class="col-sm-1 control-label">名称</label>
+    <div class="col-sm-4">
+      <?php echo $input['name'];?>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label">积分</label>
+    <div class="col-sm-8">
+      <?php echo $input['score'];?>
+       <p class="text-muted small">升级为expoint1<?php echo $conf['pointname']['expoint1']; ?>，购买需要point<?php echo $conf['pointname']['point']; ?></p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label">类型</label>
+    <div class="col-sm-2">
+      <?php echo $input['gmtype'];?>
+      <p class="text-muted small"></p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label">权限限制</label>
+    <div class="col-sm-7">
+      <?php echo $input['type'];?>
+      <p class="text-muted small">不勾选即表示禁止该项动作</p>
+    </div>
+  </div>
+   <div class="form-group">
+    <label class="col-sm-1 control-label">发帖时间限制</label>
+    <div class="col-sm-8">
+      <?php echo $input['limittime1'];?>
+       <p class="text-muted small">时间单位为秒。规定时间内，会员组仅可发布一个帖子</p>
+    </div>
+  </div>
+   <div class="form-group">
+    <label class="col-sm-1 control-label">文档时间限制</label>
+    <div class="col-sm-8">
+      <?php echo $input['limittime2'];?>
+       <p class="text-muted small">时间单位为秒。规定时间内，会员组仅可发布一个文档</p>
+    </div>
+  </div>
+   <div class="form-group">
+    <label class="col-sm-1 control-label">评论时间限制</label>
+    <div class="col-sm-8">
+      <?php echo $input['limittime3'];?>
+       <p class="text-muted small">时间单位为秒。规定时间内，会员组仅可评论一次</p>
+    </div>
+  </div>
+   <div class="form-group">
+    <label class="col-sm-1 control-label">下载时间限制</label>
+    <div class="col-sm-8">
+      <?php echo $input['limittime4'];?>
+       <p class="text-muted small">时间单位为秒。规定时间内，会员组仅可下载附件、文档等一次</p>
+    </div>
+  </div>
+ <div class="form-group">
+    <label class="col-sm-1 control-label">天数限制</label>
+    <div class="col-sm-8">
+      <?php echo $input['days'];?>
+       <p class="text-muted small">天数与次数一个先达到上限，则会员组到期。0为不限制。此项对升级会员组无效。</p>
+    </div>
+  </div>
+   <div class="form-group">
+    <label class="col-sm-1 control-label">次数限制</label>
+    <div class="col-sm-8">
+      <?php echo $input['nums'];?>
+       <p class="text-muted small">天数与次数一个先达到上限，则会员组到期。0为不限制。此项对升级会员组无效。</p>
+    </div>
+  </div>
+   <div class="form-group">
+    <label class="col-sm-1 control-label">优惠比例(%)</label>
+    <div class="col-sm-8">
+      <?php echo $input['bili'];?>
+       <p class="text-muted small">比例为百分比例。仅需填写小于100的整数。0为免费100为全款</p>
+    </div>
+  </div>
+  
+<div class="form-group">
+   <label class="col-sm-1 control-label">图标文件</label>
+   <div class="col-sm-6">
+       <div class="input-group" >
+        <input type="hidden" name="cover_id" id="cover_id" />
+        <div id="uploadfile"></div>
+      
+       </div>
+   </div>
+  
+</div>
+
+     
+    </form>
+ </div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+<script>
+
+  wi.upload_file(
+    xn.url('attach-create-image',1),
+    {id:'location',inputid:'inputid',fileid:'fileid',divid:'uploadfile'},
+    {width: 100, height: 100, action: 'thumb'},
+    function(code, json) {
+    // 成功
+    if(code == 0) {
+      $('#cover_id').val(json.id);
+      $.sns5i_notify('上传成功','success');
+    } else {
+      console.log(json);
+    }
+  },function(){});</script>

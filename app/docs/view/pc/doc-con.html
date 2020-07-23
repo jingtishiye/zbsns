@@ -1,0 +1,988 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+
+
+
+
+	
+		<div class="main" id="wenku-content">
+<div class="container-fluid navbar-inverse navbar-fixed-bottom hidden-xs" role="navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-10">
+                <ul class="nav navbar-nav">
+                    <li data-toggle="tooltip" data-placement="top" title="放大缩小"><a href="javascript:void(0);" class="wenku-expend"><i class="fa em14 fa-arrows-alt"></i>&nbsp;</a></li>
+
+
+                   <?php if(hasfocus($thread['id'],3)){ ?>
+	<li data-toggle="tooltip" data-placement="top" title="收藏"><a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-3'); ?>" data-val="<?php echo $thread['id']; ?>" title="已收藏" class="focus-action wenku-collect" target="_self"><i class="fa fa-star"></i> </a></li>
+ 
+
+
+<?php }else{ ?>
+ <li data-toggle="tooltip" data-placement="top" title="收藏">
+	<a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-3'); ?>" data-val="<?php echo $thread['id']; ?>" title="收藏"  class="focus-action wenku-collect" target="_self"><i class="fa fa-star-o"></i>&nbsp;</a></li>
+<?php } ?>
+                   
+                    <li data-toggle="tooltip" data-placement="top" title="缩小" class="hidden-xs"><a href="javascript:void(0);" class="wenku-scale-minus disabled" data-current="9"><i class="fa fa-search-minus em14"></i>&nbsp;</a></li>
+                    <li data-toggle="tooltip" data-placement="top" title="放大" class="hidden-xs"><a href="javascript:void(0);" class="wenku-scale-plus" data-current="12"><i class="fa fa-search-plus em14"></i>&nbsp;</a></li>
+
+<?php if($thread['can_view']==1){ ?>
+
+                    <li data-toggle="tooltip" data-placement="top" title="上一页" class=""><a href="javascript:void(0);" class="wenku-page-prev"><i class="fa fa-chevron-up em14"></i></a></li>
+                    <p class="navbar-text" style="margin:15px 0px;"> <span class="wenku-current-page">1</span> /
+                        
+                            <span class="wenku-total-page hide"><?php echo $thread['showpage']; ?></span>
+                            
+                            <span class=""><?php echo $thread['pageid']; ?></span>
+                        
+                    </p>
+                    <li data-toggle="tooltip" data-placement="top" title="下一页" class=""><a href="javascript:void(0);" class="wenku-page-next" data-loading="0"><i class="fa fa-chevron-down em14"></i></a></li>
+
+<?php } ?>
+
+ <li class="pingfen">
+ 	<?php if($raty['has']==1){echo '您的评分:';}else{echo '评分:';} ?>
+            <span class="wenku-score disabled" data-url="<?php echo r_url('doc-pingfen'); ?>">
+            
+
+            <i class="fa fa-star" data-v="1"></i>
+            <i class="fa fa-star" data-v="2"></i>
+            <i class="fa fa-star" data-v="3"></i>
+            <i class="fa fa-star" data-v="4"></i>
+            <i class="fa fa-star" data-v="5"></i>
+            
+
+            </span>
+            <input type="hidden" id="score" val="<?php echo $raty['score']; ?>" />
+            <span class="wenku-score-tips ">5星好评，文档很给力</span>
+        </li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                	
+                    <p class="navbar-text"><i class="fa fa-database"></i>&nbsp;&nbsp;<?php echo $thread['score']; ?>&nbsp;&nbsp;<?php echo $conf['pointname']['point']; ?> </p>
+                    <li data-url="<?php echo r_url('attach-download-'.$thread['id'].'-'.$thread['fileid']); ?>" data-formid="download-form" data-id="downloadtpl"  data-width="400" data-height="320" data-title="文档下载"  class="openformdialog active" ><a href="javascript:void(0);"><i class="fa fa-cloud-download em14"></i> 下载文档(<?php echo humansize($thread['fileinfo']['size']); ?>)</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-2">
+                <ul class="nav navbar-nav navbar-right wenku-up-to-top">
+                    <li class="active go-top"><a href="javascript:void(0);"><i class="fa fa-arrow-up em14"></i> 回顶部</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class=" container wenku-main">
+			<div class=" row">
+				<div class="wenku-left col-md-9 col-sm-12 ">
+
+					<div class="bb">
+
+						<div class="work-details-content">
+
+							<div class=" ">
+								<div class="" >
+     <div class="wenku-noborder">
+                <div class="clearfix" >
+                	<div class="wi-margin">
+                    <h3 style="font-size:22px;">
+                        <span title="doc" class="ic ic-<?php echo $thread['fileinfo']['ext']; ?>"></span>&nbsp;<?php echo $thread['title']; ?>
+                    </h3>
+                    <div class="help-block wenku-doc-info">
+							 <div class="">
+								
+								<?php if(!empty($thread['keywords'])){
+
+foreach($thread['keywords_arr'] as $k=>$v) { ?>
+
+<a class="tag" href="<?php echo r_url('tags-'.$v['id']); ?>" target="_self">
+	
+  <?php echo $v['name']; ?>
+</a>
+
+<?php }} ?>
+							</div>
+                        <div class="text-muted">
+                            <span title="页数"><i class="fa fa-file-text-o"></i> <?php echo $thread['pageid']; ?> 页</span>
+                            <span title="下载"><i class="fa fa-download"></i> <?php echo $thread['down']; ?> 下载</span>
+                            <span title="浏览"><i class="fa fa-eye"></i> <?php echo $thread['view']; ?> 浏览</span>
+                            <span title="评论"><i class="fa fa-comments-o"></i> <?php echo $thread['reply']; ?> 评论</span>
+                            <span title="收藏"><i class="fa fa-heart-o"></i> <?php echo $thread['sc']; ?> 收藏</span>
+                            <span title="评分"><i class="wenku-star <?php echo $thread['ratystar']; ?>"></i> <?php echo $thread['raty']; ?>分</span>
+
+                            <?php if($thread['uid']==$uid){ ?>
+										<a href="<?php echo r_url('doc-edit',array('id'=>$thread['id'])); ?>" title="编辑文档" target="_self">
+										[编辑文档] </a>
+										<?php } ?>
+                        </div>
+
+                       
+                    </div>
+<?php if($thread['can_view']==1){ ?>
+                    <?php if($thread['showpage']>0){ ?>
+                    
+                    <div class="help-block wenku-preview-tips">
+                    	
+温馨提示：当前文档最多只能预览 <span class="strong text-primary"><?php echo $thread['showpage']; ?></span> 页，若文档总页数超出了 <span class="strong text-primary"><?php echo $thread['showpage']; ?></span> 页，请下载原文档以浏览全部内容。
+
+
+                  
+                        
+                    </div>
+                     <?php }} ?>
+ </div>
+
+                    <div class="wenku-viewer" id="wenku-viewer" data-scale="9">
+                        
+                     
+
+<?php if($thread['can_view']==1){ ?>
+
+ <embed class="wenku-lazy wenku-viewer-img wenku-page1" src="<?php echo $conf['web_url'].$conf['upload_url'].'docview/'.$thread['fileinfo']['onlyname'].'/sy-'.$thread['fileinfo']['onlyname'].'1.svg'; ?>" data-page="1" alt="<?php echo $thread['title']; ?> 第 1 页" />
+                      
+   <?php }else{?>
+
+   <div class="wi-margin"><?php echo $thread['description']; ?></div>
+<?php } ?>                        
+                            
+                        
+                      
+                            
+                        
+                        <div class="wenku-viewer-more text-center hide" >
+
+                            <div style="font-size: 16px;">下载文档到电脑，方便使用</div>
+                            <div class="wi-margin"><a href="javascript:void(0);" data-url="<?php echo r_url('attach-download-'.$thread['id'].'-'.$thread['fileid']); ?>" data-formid="download-form" data-id="downloadtpl"  data-width="400" data-height="320" data-title="文档下载"   class="openformdialog btn btn-primary" ><i class="fa fa-cloud-download"></i> 下载文档</a></div>
+
+                        
+                            <a href="javascript:void(0);" class="wenku-viewer-more-btn">
+                                <div class="help-block">
+                                <div>
+                                    当前文档最多只能预览 <span id="maxpage">0</span> 页 </div>
+                                <div>
+                                还有 <span class="text-primary" id="morepage">5</span> 页可预览，<span class="text-warning">继续阅读</span></div>
+                                </div>
+                            </a>
+                        
+                            <div class="help-block"><a href="javascript:void(0);" class="wenku-viewer-more-btn"><i class="fa fa-angle-down"></i></a></div>
+                        </div>
+                        
+
+
+
+                    </div>
+
+
+<div class="wi-margin">
+                    <div class="help-block">
+                        <span>本文档于 <span class="text-muted"><?php echo $thread['create_time_fmt']; ?></span>上传分享</span>
+                    </div>
+                    <div class="help-block wenku-action">
+                        <div class="pull-left">
+                        	 <?php if(hasfocus($thread['id'],3)){ ?>
+	<a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-3'); ?>" data-val="<?php echo $thread['id']; ?>" title="已收藏" data-classname="btn-default" data-removeclassname="btn-success" data-title="收藏" class="focus-action btn btn-default" target="_self"><i class="fa fa-star"></i> 已收藏</a>
+<?php }else{ ?>
+	<a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-3'); ?>" data-val="<?php echo $thread['id']; ?>" title="收藏" data-classname="btn-success" data-removeclassname="btn-default" data-title="已收藏" class="focus-action btn btn-success" target="_self"><i class="fa fa-star-o"></i> 收藏</a>
+<?php } ?>
+                            <a class="openformdialog btn btn-default" data-url="<?php echo r_url('user-jubao',array('id'=>$thread['id'],'type'=>2)); ?>" data-formid="report-form" data-id="reporttpl"  data-width="auto" data-height="70%" data-title="文档举报" href="javascript:;"  target="_self"><i class="fa fa-warning"></i>举报 </a>
+
+                        </div>
+                      
+                        <div class="pull-right">
+                              <a href="javascript:void(0);" data-url="<?php echo r_url('attach-download-'.$thread['id'].'-'.$thread['fileid']); ?>" data-formid="download-form" data-id="downloadtpl"  data-width="400" data-height="320" data-title="文档下载"  class="openformdialog btn btn-primary btn-sm"><i class="fa fa-cloud-download"></i> 下载<span class="hidden-xs">原文档</span>(<?php echo humansize($thread['fileinfo']['size']); ?>)</a>
+                          <span class="pull-right">
+                            <?php $plugin->run('oneshare','share',$thread); ?>
+                           </span>
+                        </div>
+                    </div>
+
+</div>
+                </div>
+            </div>
+									
+									
+									<hr>
+									<div class="comment-list wi-margin">
+<?php if($uid>0){ ?>
+
+										
+											<form class="new-comment create_comment_topic" action="<?php echo r_url('doc-addcomment'); ?>" id="">
+<input type="hidden" value="<?php echo $token; ?>"	name="token" />
+											<input type="hidden" value="<?php echo $thread['id']; ?>"	name="topic_id" />
+											<input type="hidden" value="0" id="comment_pid"	name="pid" />
+												<textarea name="content" id="summernote" placeholder="写下你的评论..." class="comment-area"></textarea>
+												<div class="write-function-block">
+													<button type="submit" class="btn col-md-3 btn-primary pull-right wi-margin-top" name="comments" id="comments"
+													 target="_self">发表评论</button> </div>
+											</form>
+										
+<?php }else{ ?>
+										<div>
+											
+											
+
+												<div class="sign-container">
+													<div class="wi-margin-top">
+														<a href="<?php echo r_url('user-login'); ?>" class="btn btn-primary " target="_self">登录</a>
+														<span class="wi-margin-left">后发表评论</span></div>
+												</div>
+											
+										</div>
+<?php } ?>
+										<div class="row">
+
+											<div class="top">
+												<span><?php echo $thread['reply']; ?>条评论</span>
+
+
+											</div>
+											<ul class="uk-comment-list">
+
+		<?php if($thread['reply']>0){ 
+foreach($comment_list as $key=>$vo){
+		?>
+<li>
+<article class="uk-comment ">
+<header class="media">
+<div class="media-left">															
+<img class="media-object avatar-40" src="<?php echo $vo['userinfo']['avatar_url']; ?>"  alt="<?php echo $vo['userinfo']['nickname']; ?>" />
+</div>
+<div class="media-body">
+	<h4 class="uk-comment-title">
+	<a href="<?php echo r_url('user-'.$vo['userinfo']['id']); ?>">
+			<?php echo $vo['userinfo']['nickname']; ?>
+          <?php if($vo['userinfo']['rz']>0) {
+
+            if($vo['userinfo']['rz']==1) { ?>
+          
+          <i class="fa fa-vimeo v_person   "></i>
+          <?php }else { ?>
+          <i class="fa fa-vimeo v_company   "></i>
+          <?php }} ?>
+
+	</a></h4>
+	<div class="uk-comment-meta"><?php echo $vo['create_time_fmt']; ?></div>
+</div>
+</header>
+														<div class="wi-margin-top comment-body">
+															<p><?php echo htmlspecialchars_decode($vo['content']); ?></p>
+														</div>
+														<div class="tool-group">
+	<?php if(hasfocus($vo['id'],4)){ ?>
+	<a href="javascript:void(0);" class="button_agree" target="_self"><i class="fa fa-thumbs-up"></i> <?php echo $vo['ding']; ?>人赞</a>
+<?php }else{ ?>
+	<a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-4'); ?>" data-val="<?php echo $vo['id']; ?>" title="赞"  data-title="<?php echo $vo['ding']+1; ?>人赞" class="focus-action button_agree" target="_self"><i class="fa fa-thumbs-o-up"></i> <?php echo $vo['ding']; ?>人赞</a>
+<?php } ?>														
+
+															
+
+															
+												
+															<a class="getcommentlist" dataid="<?php echo $vo['id']; ?>" target="_self"><i class="fa fa-reply"></i>
+																<span>回复<?php echo $vo['reply']; ?></span></a>
+												
+															<!---->
+														</div>
+													</article>
+
+
+<div class="sub-comment-list">
+	<div class="commentlist">
+<?php if($vo['reply']>0){ 
+foreach($vo['child'] as $k=>$v){
+		?>	
+													
+
+	<div class="sub-comment">
+		<div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;">
+		<div class="v-tooltip-content">
+			<a href="<?php echo r_url('user-'.$v['userinfo']['id']); ?>" target="_blank"><?php echo $v['userinfo']['nickname']; ?></a>：</div>
+			</div> <span><?php echo $v['content']; ?></span>
+		<div class="sub-tool-group"><span><?php echo $v['create_time_fmt']; ?></span> 
+			<a class="">
+				<span  author="<?php echo $v['userinfo']['nickname']; ?>" dataid="<?php echo $vo['id']; ?>" class="huifu">回复</span>
+			</a>
+			</div>
+		</div>
+															
+<?php }} ?>
+</div>
+<?php if($uid>0){ ?>
+<div class="sub-comment more-comment">
+<a class="add-comment-btn" dataid="<?php echo $vo['id'] ?>" target="_self">
+<i class="fa fa-edit"></i>
+<span>添加新评论</span></a>
+</div>
+<div class=" formcomment<?php echo $vo['id'] ?>" style="display:none">
+<form action="<?php echo r_url('doc-addcomment'); ?>" class="create_comment_topic">
+<input type="hidden" value="<?php echo $thread['id']; ?>"	name="topic_id" />
+<input type="hidden" value="<?php echo $vo['id']; ?>" id="comment_pid"	name="pid" />
+<input type="hidden" value="<?php echo $token; ?>"	name="token" />
+<textarea name="content" placeholder="@<?php echo $vo['userinfo']['nickname']; ?>" class="comment-area"></textarea>
+<div class="write-function-block">
+<button type="submit" class="btn col-md-3 btn-primary pull-right wi-margin-top" name="comments" id="comments" target="_self">发表评论</button> </div>
+</form>
+
+</div>
+<?php } ?>
+</div>
+
+</li>
+		<?php }}else{ ?>
+			<center class="wi-margin-top">      
+           还没有人评论过~
+         </center>
+	<?php } ?>
+	
+											
+				
+											</ul>
+											<div class="pagination wi-margin-left">
+													<ul class="pagination pull-left">
+											                      <?php echo $pagination; ?>           
+											                               </ul>
+											</div>
+										</div>
+									
+
+
+										
+
+
+									</div>
+
+								</div>
+
+
+							</div>
+
+
+
+
+
+
+
+						</div>
+
+
+					</div>
+
+
+
+				</div>
+				<div class="wenku-right col-md-3 col-sm-12">
+
+					<div class="r-aside recommend bb">
+						<div class="boxtitle"><span class="title">Ta 的文档</span> 
+        	<a target="_self" href="<?php echo r_url('user-'.$thread['user']['id'].'-2'); ?>" class="more">更多<font> &gt;&gt; </font></a></div>
+						<ul class="art_list">
+
+<?php foreach($ta_topiclist_6 as $key=>$vo) { ?>
+
+
+<li><a href="<?php echo r_url('doc-'.$vo['id']); ?>" title="<?php echo $vo['title']; ?>" target="_self"><?php echo $vo['title']; ?></a>
+               <div >
+               <span class="anum" > <?php echo $vo['raty']; ?> 评分</span>
+               </div>
+              </li>
+
+<?php } ?>
+
+
+						</ul>
+					</div>
+
+
+						<div  class="r-aside recommend bb">
+         <div class="boxtitle"><span class="title">热门文档</span> </div>
+         <ul class="art_list">
+      
+<?php foreach($hot_doclist_6 as $key=>$vo) { ?>
+
+
+<li><a href="<?php echo r_url('doc-'.$vo['id']); ?>" title="<?php echo $vo['title']; ?>" target="_self"><?php echo $vo['title']; ?></a>
+               <div >
+               <span class="anum" > <?php echo $vo['raty']; ?> 评分</span>
+               </div>
+              </li>
+
+<?php } ?>
+                               
+
+              </ul>
+     </div>
+
+				</div>
+</div>
+			</div>
+		</div>
+
+
+
+<script id="reporttpl" type="text/html">
+    <div class="wi-padding">
+        <div class="alert alert-info" role="alert">
+            让我们一起共建文明社区！您的反馈至关重要！
+        </div>
+
+        <div class="">
+            <form id="report-form" class="layerform" method="post">
+               
+                <div class="clearfix radio">
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="1" checked> 色情低俗</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="2"> 政治敏感</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="3"> 违法暴力</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="4"> 恐怖血腥</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="5"> 非法贩卖</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="6"> 仇恨言论</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="7"> 打小广告</label>
+                    </div>
+                    <div class="col-xs-6 wi-padding-top">
+                        <label><input type="radio" name="reason" value="8"> 其他</label>
+                    </div>
+                </div>
+
+                <div class="wi-margin-top text-center clearfix">
+                    <div class="col-xs-12">
+                        <input type="text" name="content" class="form-control" value="" placeholder="其它信息，可选"/>
+                    </div>
+                </div>
+                <hr>
+               <div class="wi-margin-top">
+                    <div class="col text-center">
+                        <button type="submit" class="btn btn-primary btn-submit-thanks">提交反馈</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
+<script id="downloadtpl" type="text/html">
+    <div class="wi-padding">
+<h5>
+                        <span title="doc" class="ic ic-<?php echo $thread['fileinfo']['ext']; ?>"></span>&nbsp;<?php echo $thread['title']; ?>
+</h5>
+<hr>
+
+<?php if($uid>0){  if($free==0){ ?>
+        <div class="alert alert-danger" role="alert">
+            当前文档下载需消耗<span class="text-warning">&nbsp;<?php echo $thread['score']; ?>&nbsp;</span>&nbsp;<?php echo $conf['pointname']['point']; ?>
+            <div>你所在的用户组为：<?php echo $userqx['usergradename']; ?>，可享受<?php if($userqx['bili']>0){echo '折扣'.$userqx['bili'].'%';}else{echo '免费';} ?>特权。</div>
+             <div class="text-primary">折扣后价格：<?php echo floor($userqx['bili']*$thread['score']/100).$conf['pointname']['point']; ?></div>
+        <div class="wi-margin-top ">
+      <a href="<?php echo r_url('attach-download-'.$thread['id'].'-'.$thread['fileid']); ?>"  target="_blank" class=" btn btn-primary" ><i class="fa fa-cloud-download"></i> 下载文档</a></div></div>
+
+        <?php }else{ ?>
+<div class="alert alert-success">
+            
+       <div>当前文档可免费下载</div> 
+  <div class="wi-margin-top">
+      <a href="<?php echo r_url('attach-download-'.$thread['id'].'-'.$thread['fileid']); ?>"  target="_blank" class=" btn btn-primary" ><i class="fa fa-cloud-download"></i> 下载文档</a></div></div>
+        <?php }}else{ ?>
+
+  <div class="wi-margin text-center">
+                            	<a href="<?php echo r_url('user-login'); ?>"  target="_blank" class=" btn btn-primary" ><i class="fa fa-user"></i> 请先登录</a></div>
+
+  <?php  } ?>
+        <div class="">
+           
+               
+                <div class="clearfix radio">
+                    <div class="wenku-viewer-more text-center " >
+
+                         
+                          
+
+                        </div>
+                </div>
+
+        </div>
+    </div>
+</script>
+<script id="sixintpl" type="text/html">
+	<div class="wi-padding">
+        <div class="alert alert-warning" role="alert">
+            私信给用户，有可能会打扰到对方，尽量想好措辞再发出去哦！
+        </div>
+<form  id="sixin-form" class="layerform" method="post">
+
+                <div class="clearfix radio">
+ <div class="wi-margin-top text-center clearfix">
+                    <div class="col-xs-12">
+<textarea class="form-control" name="content" placeholder="请输入私信内容"></textarea>
+</div>
+</div>
+</div>
+
+<div class="wi-margin">
+                    <div class="col text-center">
+                        <button type="submit" class="btn btn-primary">立即发送</button>
+                    </div>
+                </div>
+</form>  
+                </div>
+</script>
+	<?php include $conf['view_path'].'footer.inc.html';?>
+ <link href="<?php echo $conf['public_dir']; ?>/summernote/summernote.css" rel="stylesheet" />
+	 <script src="<?php echo $conf['public_dir']; ?>/summernote/summernote.js">
+    </script>
+
+<?php if($raty['has']==1){ ?>
+<script type="text/javascript">
+	var star = "<?php echo $raty['score']; ?>";
+	$("#wenku-content .wenku-score i").addClass("fa-star-o").removeClass("fa-star");
+for (var i=1;i<=star;i++){
+	$("#wenku-content .wenku-score i[data-v="+i+"]").addClass("fa-star").removeClass("fa-star-o");
+}
+var tips="5星好评，文档很给力"
+			switch (star){
+				case "1":
+                    tips="1星差评，文档太差劲了";
+					break;
+				case "2":
+                    tips="2星差评，文档有点差劲";
+                    break;
+				case "3":
+                    tips="3星中评，文档一般般";
+                    break;
+				case "4":
+                    tips="4星好评，文档不错";
+                    break;
+				case "5":
+                    tips="5星好评，文档很给力";
+                    break;
+}
+$(".wenku-score-tips").text(tips);
+
+</script>
+<?php }else{ ?>
+<script type="text/javascript">
+ //打分
+     $('.wenku-score').click(function(){
+	
+
+	var id = "<?php echo $thread['id']; ?>";	  
+    var score = $('#score').val();
+    $.xpost($(this).data('url'), {score:score,id:id}, function(code, ret) {
+     
+      if (code == 0) {
+        
+        $.sns5i_notify(ret.message,'success','','',false,);
+   
+        
+      } else {
+        $.sns5i_notify(ret.message,'danger');
+        
+      }
+    });
+       return false;
+    });
+
+
+
+
+		$("#wenku-content .wenku-score i").hover(function(){
+			var _this=$(this),star=_this.attr("data-v");
+			$("#wenku-content .wenku-score i").addClass("fa-star-o").removeClass("fa-star");
+			for (var i=1;i<=star;i++){
+				$("#wenku-content .wenku-score i[data-v="+i+"]").addClass("fa-star").removeClass("fa-star-o");
+			}
+			var tips="5星好评，文档很给力"
+			switch (star){
+				case "1":
+                    tips="1星差评，文档太差劲了";
+					break;
+				case "2":
+                    tips="2星差评，文档有点差劲";
+                    break;
+				case "3":
+                    tips="3星中评，文档一般般";
+                    break;
+				case "4":
+                    tips="4星好评，文档不错";
+                    break;
+				case "5":
+                    tips="5星好评，文档很给力";
+                    break;
+			}
+			$(".wenku-score-tips").text(tips);
+			$("#score").val(star);
+		});
+</script>
+<?php } ?>
+
+	<script>
+		var nowheight=0;
+	var title	="<?php echo $thread['title'];?>";
+	var svgname	="<?php echo $thread['fileinfo']['onlyname'];?>";
+    var svgpath	="<?php echo $conf['web_url'].$conf['upload_url'];?>docview/"; 
+
+    var can_view	="<?php echo $thread['can_view']; ?>";
+
+    var pagenum = 2;
+    var init_page = 5;
+    var showpage	="<?php echo $thread['showpage'];?>";
+    var pageid	="<?php echo $thread['pageid'];?>";
+    if(showpage==0){
+    	showpage = pageid;
+    }
+    if(init_page>showpage){
+    	init_page=showpage;
+    }
+	function WenkuLazyLoad() {
+        var imgs=$("#wenku-viewer .wenku-lazy:last"),hWinow=$(window).height();
+          
+var height = $(imgs).height()+5;
+if($(imgs).offset().top<0){
+	addpage();
+}
+
+
+
+
+
+      
+    }
+     function Scale(number) {
+       
+        if(number==9 || number==10 || number==11 || number==12){
+            $(".wenku-main .wenku-left").attr("class","col-md-"+number+" wenku-left wenku-nopadding")
+            var r=12-number;
+            $(".wenku-main .wenku-right").attr("class","col-md-"+r+" wenku-right");
+        }
+    }
+     function ScrollToPage(page) {
+        $('html,body').animate({scrollTop:$(".wenku-page"+page).offset().top}, 200);
+        $(".wenku-current-page").text(page);
+
+    }
+     function AdjustViewer() {
+        ScrollToPage(GetCurrentPage());
+    }
+
+
+
+    
+    function GetCurrentPage() {
+        return parseInt($(".wenku-current-page").text());
+    }
+    
+    function GetTotalPage() {
+        return parseInt($(".wenku-total-page").text());
+    }
+
+     function CurrentScale(number) {
+        if(number){
+            return parseInt($(".wenku-viewer").attr("data-scale",number));
+        }else{
+            return parseInt($(".wenku-viewer").attr("data-scale"));
+        }
+
+    }
+    function addpage(){
+
+//showpage,pageid
+       if(pagenum>init_page){
+
+       	//已经加载到第一次的上限
+       if(pagenum>showpage){
+         
+       }else{
+
+       	 $('#maxpage').text(showpage);
+         $('#morepage').text(showpage-init_page);
+       	 $('.wenku-viewer-more').removeClass('hide');
+       }
+       
+       	//init_page +=5; 
+       }else{
+       	var html = '<embed  class="wenku-lazy wenku-viewer-img wenku-page'+pagenum+'" src="'+svgpath+svgname+'/sy-'+svgname+pagenum+'.svg" data-page="'+pagenum+'" alt="'+title+' 第 '+pagenum+' 页" />';
+    	var selector = $('.wenku-viewer-img:last');
+    	$(html).insertAfter(selector);
+    	pagenum++;
+       }
+
+    	
+        
+
+
+    }
+$(function(){
+
+    
+
+  
+if(can_view==1){
+var timeout;
+        $('html,body').on("scroll",function () {
+            clearTimeout(timeout);
+            
+            nowheight = $(this).scrollTop();
+            timeout=setTimeout(function () {
+                WenkuLazyLoad();
+
+        $("#wenku-viewer .wenku-lazy").each(function () {
+
+
+        	//console.log($('html,body').scrollTop()-$(this).offset().top+$(window).height());
+            if($(this).offset().top<55){
+                
+                $(".wenku-current-page").text($(this).attr("data-page"));
+            }
+        });
+
+
+            },100);
+        });
+        $(window).on("resize",function () {
+                WenkuLazyLoad();
+                
+        });
+	$(".wenku-page-prev").click(function(){
+         	var  currentpage = GetCurrentPage();
+                
+            var prevPage = currentpage-1;
+            
+            if(prevPage>0){
+            	console.log(nowheight);
+            	console.log($(".wenku-page"+prevPage).height());
+            	console.log($(".wenku-page"+currentpage).offset().top);
+                $('html,body').animate({scrollTop:nowheight-$(".wenku-page"+prevPage).height()+$(".wenku-page"+currentpage).offset().top}, 200);
+                
+            }else{
+            	$.sns5i_notify("当前为第一页",'danger');
+            }
+        });
+
+        $(".wenku-page-next").click(function(){
+            
+           var num = $('.wenku-viewer-img').length;
+
+           var  currentpage = GetCurrentPage(),
+                total=showpage;
+           var  nextPage = currentpage+1;
+                if(nextPage>num){
+	               addpage();
+                }
+
+           if(nextPage>showpage){
+           	  $.sns5i_notify("当前已经是可预览的最后一页",'danger');
+           }else{
+                    var hWindow=$(window).height(),
+                    hPage=$(".wenku-page"+nextPage).height();
+               if(nextPage>init_page){
+                 $(".wenku-viewer-more-btn:first").trigger("click");
+                  $(".wenku-page-next").trigger("click");
+               }else{
+                 
+                 $("html,body").animate({scrollTop:nowheight+$(".wenku-page"+nextPage).offset().top},200);
+               	
+               }
+          
+
+           }
+           
+
+           
+        });
+$(".wenku-viewer-more-btn").click(function () {
+
+   	//点击后隐藏
+            var viewmore=$(this).parents(".wenku-viewer-more");
+            
+
+
+           
+              
+           
+               viewmore.addClass("hide");
+               init_page +=5;
+               if(init_page>showpage){
+               	init_page=showpage;
+               }
+               addpage();
+
+
+            
+        });
+
+ $(document).on("click",".wenku-expend",function () {//全屏预览
+            $(this).addClass("wenku-compress").removeClass("wenku-expend");
+            $(this).find(".fa-arrows-alt").addClass("fa-compress").removeClass("fa-arrows-alt");
+            Scale(12);
+            CurrentScale(12);
+            $(".wenku-scale-plus").addClass("disabled");
+            $(".wenku-scale-minus").removeClass("disabled").attr("data-current",9);
+            AdjustViewer();
+        });
+      
+        $(document).on("click",".wenku-compress",function () {//正常预览
+            $(this).addClass("wenku-expend").removeClass("wenku-compress");
+            $(this).find(".fa-compress").addClass("fa-arrows-alt").removeClass("fa-compress");
+            Scale(9);
+            CurrentScale(9);
+            $(".wenku-scale-plus").removeClass("disabled").attr("data-current",12);
+            $(".wenku-scale-minus").addClass("disabled");
+            AdjustViewer();
+        });
+     
+        $(".wenku-scale-plus").click(function () {//放大预览
+            var cur=CurrentScale()+1;
+            if(cur<=12){
+                Scale(cur);
+                CurrentScale(cur);
+                AdjustViewer();
+            }
+        });
+      
+        $(".wenku-scale-minus").click(function () {//缩小预览
+            var cur=CurrentScale()-1;
+            if(cur>=9){
+                Scale(cur);
+                CurrentScale(cur);
+                AdjustViewer();
+            }
+        });
+
+}
+
+        
+         
+
+   
+
+
+       
+
+});
+     var $summernote = $('#summernote').summernote(
+    {
+  height: 100,                 // set editor height
+  focus: false,
+  dialogsInBody: true,
+  toolbar : [
+
+     [ 'style', [ 'style'] ],
+                [
+                    'style',
+                    [ 'bold', 'italic', 'underline','fontsize'] ],
+               
+                
+                [ 'color', [ 'color' ] ],
+                [
+                    'insert',
+                   [ 'link', 'hr' ] ],// 自定义按钮展示
+                
+                [ 'codetag', [ 'codetag','pre','blockquote'] ],
+               ['picture',['picture']], //插入图片 
+               
+               ['myphoto'],    ['clear'],             
+               
+               
+        ],
+         //调用图片上传
+            callbacks: {
+                onImageUpload: function (files) {
+                  xn.upload_file(files[0], xn.url('attach-create-image',1), '',function(code,ret){
+                    console.log(code,ret);
+if(code==0){
+   var imgNode = document.createElement("img");
+    $(imgNode).addClass("topic_img").attr('data-id',ret.id+'-'+ret.sha1);  
+
+   imgNode.src = ret.file_url;
+   $summernote.summernote('insertNode',imgNode);
+}else{
+   $.sns5i_notify(ret.message,'danger');
+}
+                        
+
+                  });
+                  
+                },
+
+//onBlur:function(){console.log('Editable area loses focus');},
+//onPaste:function(e){console.log('Called event paste');},
+//onKeyup:function(e){console.log('Key is released:',e.keyCode);},
+//onEnter:function(){console.log('Enter/Return key pressed');}
+            }
+                 // set focus to editable area after initializing summe
+    });
+  var jform = $('.create_comment_topic');
+
+
+  jform.on('submit', function() {
+  	var jsubmit = $(this).find('#comments');
+    var postdata = $(this).serialize();
+   var _this = this;
+    jsubmit.button('sending').button('disabled');
+    
+    $.xpost(jform.attr('action'), postdata, function(code, ret) {
+     
+      if (code == 0) {
+        
+        $.sns5i_notify(ret.message,'success','','',false,function(){
+        	//window.location.reload();
+        	$summernote.summernote('code','');
+        	jsubmit.button('发表评论').button('reset');
+        });
+         
+      // 
+        
+        
+      } else {
+        $.sns5i_notify(ret.message,'danger');
+        jsubmit.button('reset');
+      }
+    });
+    return false;
+  });
+
+
+
+
+  $('.add-comment-btn,.getcommentlist').click(function(){
+
+var id = $(this).attr('dataid');
+
+
+if($('.formcomment'+id).is(':hidden')){
+
+$('.formcomment'+id).slideDown(300,function(){$('.formcomment'+id).find('.comment-area').focus();});
+
+
+}else{
+	$('.formcomment'+id).slideUp();
+}
+
+
+  });
+  $('.huifu').click(function(){
+
+var id = $(this).attr('dataid');
+var author = $(this).attr('author');
+if($('.formcomment'+id).is(':hidden')){
+
+$('.formcomment'+id).slideDown(300,function(){$('.formcomment'+id).find('.comment-area').focus().val('@'+author+':');});
+
+}else{
+	$('.formcomment'+id).find('.comment-area').focus().val('@'+author+':');
+}
+
+  });
+
+	</script>

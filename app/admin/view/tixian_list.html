@@ -1,0 +1,91 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>提现列表</a></li>
+       
+    </ul>
+
+   
+        <table class="table table-hover table-bordered wi-margin-top">
+            <thead>
+            <tr>
+                <th>账户</th>
+                <th>账户类型</th>
+                <th>用户</th>
+               
+               <th>提现金额</th>
+               <th>申请时间</th>
+               <th>通过时间</th>
+               <th>状态</th>
+               
+                <th>操作</th>
+             
+            </tr>
+            </thead>
+            <tbody>
+            	<?php foreach($tixian_list as $key=>$vo) { ?>
+                            <tr id="tixian_list_<?php echo $vo['id']; ?>">
+                            		<td>
+										<?php echo $vo['account']; ?></td>
+									<td>
+										<?php if($vo['type']==1){echo '支付宝';} ?>
+									</td>
+                  <td>
+                    <?php $n = user_read_cache($vo['uid']);echo $n['nickname']; ?>
+                  </td>
+                  <td>
+                    <?php echo $vo['rmb']; ?>
+                  </td>
+									
+							
+									   <td>
+
+
+<?php echo date('Y-m-d H:i',$vo['create_time']); ?>
+ 
+
+                  </td>
+                               
+					   
+                     <td>
+
+
+<?php echo date('Y-m-d H:i',$vo['update_time']); ?>
+ 
+
+                  </td>			
+                    <td>
+                    <?php if($vo['status']==1){echo '提现成功';}else{echo '申请中';} ?>
+                  </td>
+									<td>
+
+
+
+
+
+									   <div class="btn-group btn-group-xs" role="group" aria-label="Extra-small button group">
+ 
+<?php if($vo['status']==0){ ?>
+  
+<button type="button" data-title="确认通过该提现申请吗？" data-name="tixian_list_<?php echo $vo['id'] ?>" data-url="<?php echo r_url('tixian-cstatus',['id'=>$vo['id']]); ?>" class="btn btn-success deletebtn">通过申请</button>
+<?php } ?>
+   <button type="button" data-title="确认删除该提现申请吗？" data-name="tixian_list_<?php echo $vo['id'] ?>" data-url="<?php echo r_url('tixian-delete',['id'=>$vo['id']]); ?>" class="btn btn-danger deletebtn">删除</button>
+    </div>
+									</td>
+                   
+                </tr>
+                     <?php } ?>      
+                        </tbody>
+        </table>
+       
+
+
+   
+</div>
+<div class="pagediv">
+        <div class="pagination">
+<?php echo $pagination; ?>
+        </div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>

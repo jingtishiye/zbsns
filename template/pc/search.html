@@ -1,0 +1,258 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+<div class="main-wrapper ">
+	<div class="container wi-padding-top">
+		<div class="wrapper row search" style="background:#fff">
+			<div class="col-md-3 col-sm-12">
+				<ul class="menu">
+				<?php	if(in_array('topics',$conf['module_arr'])){ ?>
+          <li class="<?php if($type==1){echo 'active';} ?>">
+						<a href="<?php echo r_url('search',array('keyword'=>$keyword,'type'=>1)); ?>">
+							<div class="setting-icon">
+								<i class="fa fa-rss-square">
+								</i>
+							</div>
+							<span>
+								文章
+							</span>
+						</a>
+					</li>
+<?php } ?>
+<?php if(in_array('docs',$conf['module_arr'])){ ?>
+					<li class="<?php if($type==2){echo 'active';} ?>">
+						<a href="<?php echo r_url('search',array('keyword'=>$keyword,'type'=>2)); ?>">
+							<div class="setting-icon">
+								<i class="fa fa-clipboard">
+								</i>
+							</div>
+							<span>
+								文档
+							</span>
+						</a>
+					</li>
+<?php } ?>
+
+					<li class="<?php if($type==3){echo 'active';} ?>">
+						<a href="<?php echo r_url('search',array('keyword'=>$keyword,'type'=>3)); ?>">
+							<div class="setting-icon">
+								<i class="fa fa-user">
+								</i>
+							</div>
+							<span>
+								用户
+							</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-9 col-sm-12">
+				<div class="search-content">
+					<div class="result">
+						检索到&nbsp;<span class="text-danger"><?php echo $totalnum; ?></span>&nbsp;个结果
+					</div>
+
+
+
+
+					<div class="tag-artlist clearfix">
+						<ul>
+<?php
+if($totalnum>0){	
+if($type==1){
+
+
+
+
+foreach($search_list_topic as $key=>$vo) { ?>
+
+            <li class="">
+              <section class="question-list-item">
+    <div class="qa-rank">
+      
+         <div class="answers answered ">
+         <?php echo $vo['view']; ?><small> 浏览</small>
+        </div>
+       
+    </div>
+    <div class="summary">
+        <h2 class="title">
+            <a href="<?php echo r_url('thread-'.$vo['id'],'','topics'); ?>">
+             <?php echo $vo['title']; ?></a>
+
+                        <div class="tags">
+                          <?php if(!empty($vo['keywords'])){
+                          
+foreach($vo['keywords_arr'] as $k=>$v) { ?>
+
+<a class="tag" href="<?php echo r_url('tags-'.$v['id']); ?>" target="_self">
+  <?php echo $v['name']; ?>
+</a>
+
+<?php }} ?>
+</div>
+                    </h2>
+                    
+                 <p class="uk-article-meta">
+               
+              <span class="uk-vertical-align-middle">
+              <a href="<?php echo r_url('user-'.$vo['user']['id']); ?>" target="_self">
+              <img class="avatar-24 no-circle" src="<?php echo $vo['user']['avatar_url']; ?>" alt="<?php echo $vo['user']['nickname']; ?>">
+              </a>
+                <a href="<?php echo r_url('user-'.$vo['user']['id']); ?>" target="_self">
+                  <?php echo $vo['user']['nickname']; ?>
+                </a> 发布于 </span>
+               
+                <span>
+                 <?php echo $vo['create_time_fmt']; ?>
+                </span>
+        
+                
+              </span>
+            </p>
+       
+    </div>
+</section>
+            
+          </li>
+
+                    
+<?php }}
+if($type==2){
+foreach($search_list_topic as $key=>$vo) { ?>
+							
+
+                   <li class="">
+              <section class="question-list-item">
+    <div class="qa-rank">
+       <?php if($vo['settop']==1){?>
+        <div class="answers  top">
+         <i class="fa fa-cloud-upload"></i><small>置顶</small>
+        </div>
+        <?php } ?> 
+         <?php if($vo['choice']==1){?>
+        <div class="answers  solved">
+         <i class="fa fa-thumbs-o-up"></i><small>推荐</small>
+        </div>
+        <?php } ?> 
+         <div class="answers answered ">
+         <?php echo $vo['view']; ?><small> 浏览</small>
+        </div>
+       
+    </div>
+    <div class="summary">
+        <h2 class="title">
+            <a href="<?php echo r_url('doc-'.$vo['id'],'','docs'); ?>">
+             <span title="doc" class="ic ic-<?php echo $vo['fileinfo']['ext']; ?>"></span>&nbsp;&nbsp;<?php echo $vo['title']; ?></a>
+
+                        <div class="tags">
+                          <?php if(!empty($vo['keywords'])){
+
+foreach($vo['keywords_arr'] as $k=>$v) { ?>
+
+<a class="tag" href="<?php echo r_url('tags-'.$v['id']); ?>" target="_self">
+  <?php echo $v['name']; ?>
+</a>
+
+<?php }} ?>
+</div>
+                    </h2>
+            <p class="uk-article-meta">
+               <span><a href="<?php echo r_url('user-'.$vo['user']['id']); ?>" target="_self">
+                  <?php echo $vo['user']['nickname']; ?>
+                </a></span>
+                                    <span>大小:<?php echo humansize($vo['fileinfo']['size']); ?></span>
+                                    <span>页数:<?php echo $vo['pageid']; ?></span>
+                                    <span>评分:<i class="wenku-star <?php echo $vo['ratystar']; ?>"></i><?php echo $vo['raty']; ?> 分</span>
+                                    <span>时间:<?php echo $vo['create_time_fmt']; ?></span>
+            
+               
+            
+        
+                
+              </span>
+            </p>
+       
+    </div>
+</section>
+            
+          </li>
+<?php }}
+if($type==3){
+foreach($search_list_user as $key=>$vo) { ?>
+	<li  class="tag-artlist-li">
+           	<div class="media">
+      <div class="media-left">
+        <a href="<?php echo r_url('user-'.$vo['id']); ?>">
+          <img class="avatar-64 media-object" src="<?php echo $vo['avatar_url'] ?>" data-holder-rendered="true" >
+        </a>
+      </div>
+      <div class="media-body">
+      	<h4 class="uk-comment-title media-heading">
+      		<a href="<?php echo r_url('user-'.$vo['id']); ?>"><?php echo $vo['nickname'] ?>
+      			<?php if($vo['rz']>0) {
+
+      			if($vo['rz']==1) { ?>
+          
+          <i class="fa fa-vimeo v_person   "></i>
+          <?php }else { ?>
+          <i class="fa fa-vimeo v_company   "></i>
+          <?php }} ?></a>
+                                                  <?php if(hasfocus($vo['id'],0)){ ?>
+	<a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-0'); ?>" data-val="<?php echo $vo['id']; ?>" title="已关注" data-classname="btn-default" data-removeclassname="btn-success" data-title="关注" class="focus-action btn btn-default pull-right btn-sm" target="_self"><i class="fa fa-minus"></i> 已关注</a>
+<?php }else{ ?>
+	<a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-0'); ?>" data-val="<?php echo $vo['id']; ?>" title="关注" data-classname="btn-success" data-removeclassname="btn-default" data-title="已关注" class="focus-action btn btn-success pull-right btn-sm" target="_self"><i class="fa fa-plus"></i> 关注</a>
+<?php } ?>
+        </h4>
+         <div class="uk-comment-meta">
+                                            <span class="text-warning">
+                                                <?php echo $vo['extend']['topic_num']; ?>
+                                            </span>
+                                            个文章
+                                            <span class="dot">
+                                                ·
+                                            </span>
+                                            <span class="text-warning">
+                                                <?php echo $vo['extend']['doc_num']; ?>
+                                            </span>
+                                            个文档
+                                            <span class="dot">
+                                                ·
+                                            </span>
+                                            <span class="text-warning">
+                                                <?php echo $vo['extend']['fensi_num']; ?>
+                                            </span>
+                                            个粉丝
+                                        </div>
+                                        <div class="uk-comment-meta">
+                                            <?php if($vo['rz']>0) {
+                                            echo $vo['statusdes'];}else{
+                                            echo $vo['description'];
+                                            } ?>
+                                        </div>
+
+                                     
+     
+
+      </div>
+    </div>
+	
+                                                    
+           </li>
+<?php }}}else{ ?>
+                  <div class="no-content">
+
+                  </div>
+              <?php } ?>
+					</ul>
+					<div class="pagination">
+						<ul class="pagination pull-left">
+							<?php echo $pagination; ?>
+						</ul>
+					</div>
+				</div>
+				
+
+</div>
+</div>
+</div>
+</div>
+<?php include $conf['view_path'].'footer.inc.html';?>

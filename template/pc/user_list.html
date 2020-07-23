@@ -1,0 +1,88 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+<div class="main-wrapper">
+			
+			
+            <div class="container wi-padding-top search" >
+            	<div class="row" style="background:#fff">
+                <div class="col-md-3 col-sm-12">
+                    <div style="margin:10px;">
+                        <a class="btn btn-primary btn-block " href="<?php echo r_url('user-rzuser'); ?>">
+                            申请认证
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-12">
+                    <div class="search-userlist clearfix " style="padding:10px;">
+                        <ul class="">
+
+<?php foreach($search_list_user as $key=>$vo) { ?>
+    <li  class="tag-artlist-li">
+            <div class="media">
+      <div class="media-left">
+        <a href="<?php echo r_url('user-'.$vo['id']); ?>">
+          <img class="avatar-64 media-object" src="<?php echo $vo['avatar_url'] ?>" data-holder-rendered="true" >
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="uk-comment-title media-heading">
+            <a href="<?php echo r_url('user-'.$vo['id']); ?>"><?php echo $vo['nickname'] ?>
+              
+
+              <?php   if($vo['rz']==1) { ?>
+          
+          <i class="fa fa-vimeo v_person   "></i>
+          <?php }else { ?>
+          <i class="fa fa-vimeo v_company   "></i>
+          <?php } ?></a>
+ <?php if($uid!=$vo['id']){if(hasfocus($vo['id'],0)){ ?>
+    <a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-0'); ?>" data-val="<?php echo $vo['id']; ?>" title="已关注" data-classname="btn-default" data-removeclassname="btn-success" data-title="关注" class="focus-action btn btn-default pull-right btn-sm" target="_self"><i class="fa fa-minus"></i> 已关注</a>
+<?php }else{ ?>
+    <a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-0'); ?>" data-val="<?php echo $vo['id']; ?>" title="关注" data-classname="btn-success" data-removeclassname="btn-default" data-title="已关注" class="focus-action btn btn-success pull-right btn-sm" target="_self"><i class="fa fa-plus"></i> 关注</a>
+<?php }} ?>
+        </h4>
+         <div class="uk-comment-meta">
+                                            <span class="text-warning">
+                                                <?php echo $vo['extend']['topic_num']; ?>
+                                            </span>
+                                            个文章
+                                            <span class="dot">
+                                                ·
+                                            </span>
+                                            <span class="text-warning">
+                                                <?php echo $vo['extend']['doc_num']; ?>
+                                            </span>
+                                            个文档
+                                            <span class="dot">
+                                                ·
+                                            </span>
+                                            <span class="text-warning">
+                                                <?php echo $vo['extend']['fensi_num']; ?>
+                                            </span>
+                                            个粉丝
+                                        </div>
+                                        <div class="uk-comment-meta">
+                                            <?php   echo $vo['statusdes']; ?>
+                                        </div>
+
+                                     
+     
+
+      </div>
+    </div>
+    
+                                                    
+           </li>
+<?php } ?>
+
+                          
+                        </ul>
+                        <div class="pagination ">
+                            <ul class="pagination pull-left">
+                               <?php echo $pagination; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   <?php include $conf['view_path'].'footer.inc.html';?>

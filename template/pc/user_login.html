@@ -1,0 +1,76 @@
+<?php include $conf['view_path'].'header-nonav.inc.html';?>
+	<body class="no-padding reader-black-font">
+
+<div class="sign">
+<div class="logo"><a href="<?php echo $conf['web_url']; ?>" target="_self">
+<!--<img src="<?php echo $conf['public_dir']; ?>common/images/login_logo.png" alt="Logo" class="lazy" style="display: inline; ">--></a></div>
+    <div class="main">
+
+
+
+<h4 class="title">
+  <div class="normal-title">
+    <a class="active" href="#">登录</a>
+    <b>·</b>
+    <a id="js-sign-up-btn"  href="<?php echo r_url('user-create') ?>">注册</a>
+  </div>
+</h4>
+<div class="js-sign-up-container">
+  <form class="new_user" id="user_login_form" action="<?php echo r_url('user-login') ?>" method="post">
+     <div class="input-prepend restyle js-normal">
+        <input placeholder="邮箱/用户名" type="text" autocomplete="off" id="username" name="username">
+        <i class="fa fa-user"></i>
+      </div>
+	  <div class="input-prepend">
+      <input placeholder="密码" type="password" autocomplete="off" name="password" id="userpassword">
+      <i class="fa fa-lock"></i>
+    </div>
+	<div class="remember-btn">
+      <input type="checkbox" value="1" name="net_auto_login" checked="checked" class="" ><span>记住我</span>
+    </div>
+	<div class="forget-btn">
+      <a class="" href="<?php echo r_url('user-resetpw') ?>">找回密码</a>
+
+    </div>
+               
+                 <input type="submit" id="login_submit" value="登录" class="sign-in-button">
+
+
+</form>
+   <!-- 更多登录方式 -->
+<?php $plugin->run('thirdlogin','login'); ?>
+   </div>
+
+    </div>
+  </div>
+
+
+<?php include $conf['view_path'].'footer-nof.inc.html';?>
+<script>
+
+  var jform = $('#user_login_form');
+  var jsubmit = $('#login_submit');
+  var referer = '<?php echo $referer;?>';
+  jform.on('submit', function() {
+    var postdata = jform.serialize();
+    jsubmit.button('loading');
+    
+    $.xpost(jform.attr('action'), postdata, function(code, ret) {
+     
+      if (code == 0) {
+        
+        $.sns5i_notify(ret.message,'success',referer,1000);
+        
+        
+        
+        
+      } else {
+        $.sns5i_notify(ret.message,'danger');
+        jsubmit.button('reset');
+      }
+    });
+    return false;
+  });
+</script>
+</body>
+</html>

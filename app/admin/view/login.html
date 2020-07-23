@@ -1,0 +1,103 @@
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title><?php echo $header['title']; ?></title>
+<link rel="shortcut icon" href="<?php echo $conf['public_dir']; ?>common/images/favicon.ico" />
+
+
+<?php if($conf['cdn_use']){ ?>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>	
+<?php }else{?>
+<link rel="stylesheet" href="<?php echo $conf['public_dir']; ?>bootstrap/css/bootstrap.min.css" />
+<link href="<?php echo $conf['public_dir']; ?>font-awesome/css/font-awesome.min.css" rel="stylesheet"/>	
+<?php }?>
+
+<link rel="stylesheet" href="<?php echo $conf['view_dir']; ?>res/css/login.css" />
+
+
+
+<style>
+html, body {
+    background: #334054;
+    overflow: inherit;
+}
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+</style>
+</head>
+
+<body data-type="login" >
+
+  <div class="am-g myapp-login">
+	<div class="myapp-login-logo-block  tpl-login-max">
+		<div class="myapp-login-logo-text">
+			<div class="myapp-login-logo-text">
+				<?php echo $header['title']; ?><span> 登录</span> <i class="uk-icon-gg"></i>
+				
+			</div>
+		</div>
+
+		<div class=" login-am-center" style="margin:30px auto;text-align:center;">
+			<form class="form am-form" action="<?php echo r_url('index-login'); ?>" method="post" id="form" >
+
+                                <div class="form-row am-form-group">
+                                    <input type="text" class="col-md-12" name="usermail" placeholder="输入邮箱或者用户名">
+                                </div>
+                                <div class="am-form-group">
+                                    <input type="password" class="col-md-12" name="password" placeholder="输入密码">
+                                </div>
+                    <p class="wi-margin-top"><button type="submit" id="submit" class="btn btn-primary btn-lg btn-block ">登录</button></p>
+
+                            </form>
+		
+		</div>
+	</div>
+</div>
+
+<?php if($conf['cdn_use']){ ?>
+
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<?php }else{?>
+<script src="<?php echo $conf['public_dir']; ?>common/js/jquery.min.js"></script>	
+<script src="<?php echo $conf['public_dir']; ?>bootstrap/js/bootstrap.min.js"></script>
+<?php }?>
+
+<script src="<?php echo $conf['public_dir']; ?>common/js/common.js"></script>
+
+
+
+<script>
+	if (self != top) {parent.location.reload();}
+	var jform = $('#form');
+	var jsubmit = $('#submit');
+	jform.on('submit', function() {
+		var postdata = jform.serialize();
+		jsubmit.button('loading');
+		
+		$.xpost(jform.attr('action'), postdata, function(code, ret) {
+			
+			if (code == 0) {
+				
+				$.sns5i_notify(ret.message,'success',"<?PHP echo r_url('index'); ?>",1000);
+				
+				
+				
+				
+			} else {
+				$.sns5i_notify(ret.message,'danger');
+				jsubmit.button('reset');
+			}
+		});
+		return false;
+	});
+</script>
+</body>
+
+</html>

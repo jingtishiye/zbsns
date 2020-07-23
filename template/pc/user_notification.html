@@ -1,0 +1,147 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+<div class="main-wrapper">
+<div class="container wi-padding-top" >
+<div class="row" >
+<div class="col-md-3 col-sm-12">
+<?php include $conf['view_path'].'user_set_menu.html';?>		
+
+				</div>
+				<div class="col-md-9 col-sm-12">
+					<div class="wi-padding bb">
+					
+	<div class="clearfix">										
+
+          <div class="" style="padding-top:0px">
+            <div class="">
+                <div class="pull-right wi-margin-right">
+                  
+                <a class="btn btn-primary confirm-dialog" href="javascript:void(0);" data-title="清空后所有历史消息均将不可找回！" data-url="<?php echo r_url('api-delmess'); ?>" target="_self">
+                  <i class="fa fa-recycle"></i> <span>清空消息列表</span></a>
+                
+              
+              </div>
+              <div class="dongtai">
+                <ul class="small trigger-menu" data-pjax-container="#list-container">
+
+                  <li class="<?php if($type==1){ echo 'active'; } ?>"><a href="<?php echo r_url('user-notification-1'); ?>" target="_self">系统消息</a></li>
+                  <li class="<?php if($type==2){ echo 'active'; } ?>"><a href="<?php echo r_url('user-notification-2'); ?>" target="_self">私人消息</a></li>
+                  
+                </ul>
+
+                
+
+<div class="wi-padding">
+        <!-- 关注话题列表模块 -->
+            
+  <div class="messagelist">
+    <ul>
+
+      <?php foreach($messslist as $key=>$vo) { ?>
+      <li  class="userlist" id="mess_<?php echo $vo['id']; ?>">
+    <article class="uk-comment">
+      <div class="media">
+        <div class="media-left">
+        <?php if($vo['type']==1) { ?>
+        <img class="media-object avatar-40" src="<?php echo $conf['base_web_url'].'public/common/images/5ilogo.png'; ?>" alt="">
+        <?php }else { ?>  
+<a href="<?php echo r_url('user-'.$vo['uid']); ?>"><img class="media-object avatar-40" src="<?php echo $vo['user']['avatar_url']; ?>" alt="<?php echo $vo['user']['nickname']; ?>"></a>
+        <?php } ?>  
+        </div>
+        <div class="media-body">
+        <h4 class="media-heading">
+
+<?php if($vo['type']==2) { ?>
+<a href="<?php echo r_url('user-'.$vo['uid']); ?>"><?php echo $vo['user']['nickname']; 
+
+          if($vo['user']['rz']>0){
+
+            if($vo['user']['rz']==1) { ?>
+          
+          <i class="fa fa-vimeo v_person   "></i>
+          <?php }else { ?>
+          <i class="fa fa-vimeo v_company   "></i>
+          <?php }} ?>
+
+        </a>  
+<?php }else { ?>
+系统消息
+<?php } ?>  
+
+          </h4>
+        <div class="uk-comment-meta"><?php echo $vo['create_time_fmt']; ?></div>
+        </div>
+      </div>
+      <div class="uk-comment-body uk-ellipsis-2 ">
+        <p><?php echo $vo['content_fmt']; ?></p>
+      </div>
+      <div class="mess-tools">
+      <?php if($vo['type']==2) { ?>
+      <a href="javascript:void(0);"  data-title="<?php echo '与'.$vo['user']['nickname'].'的聊天'; ?>" class="openmess" data-url="<?php echo r_url('user-openmess',array('uid'=>$vo['uid'],'type'=>$vo['type'],'id'=>$vo['id'])); ?>"><i class="fa fa-folder-open" ></i> 查看完整内容</a>
+      <?php } ?>
+      <a href="javascript:void(0);" class="confirm-dialog" data-url="<?php echo r_url('api-readmess',array('uid'=>$vo['uid'],'type'=>$vo['type'],'id'=>$vo['id'])); ?>" data-name="mess_<?php echo $vo['id']; ?>" data-title="确定要标记已读该消息吗？"><i class="fa fa-times deletemsg" ></i> 标记已读</a></div>
+    </article>
+                             </li>
+    
+      <?php } ?>   
+    </ul>
+    
+    
+    
+  </div>
+  <div class="pagination ">
+      <ul class="pagination pull-left">
+               <?php echo $pagination; ?>                     
+         </ul>
+  </div>
+      </div>
+
+
+              </div>
+            </div>
+
+
+          </div>
+
+       
+	</div>						
+							
+					
+					</div>
+					
+					
+					
+
+
+
+
+
+				</div>
+
+			</div>
+		</div>
+</div>
+		 <?php include $conf['view_path'].'footer.inc.html';?>
+     <script type="text/javascript">
+
+$('.openmess').on('click',function(){
+
+var title = $(this).data('title');
+var url = $(this).data('url');
+
+layer.open({
+      type: 2,
+      title: title,
+      maxmin: false,
+      shadeClose: true, //点击遮罩关闭层
+      area : ['350px' , '90%'],
+     
+ 
+     content: url,
+    });
+
+
+
+
+});
+
+</script>

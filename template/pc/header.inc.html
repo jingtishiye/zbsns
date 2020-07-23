@@ -1,0 +1,134 @@
+<html lang="zh-CN">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="renderer" content="webkit">
+<title><?php echo $header['title']; ?></title>
+<meta name="description" content="<?php echo $header['description'] ?>">
+<meta name="keywords" content="<?php echo $header['keywords'] ?>">
+<link rel="shortcut icon" href="<?php echo $conf['public_dir']; ?>common/images/favicon.ico" />
+<?php  if($conf['cdn_use']){ ?>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/> 
+<?php }else{?>
+<link rel="stylesheet" href="<?php echo $conf['public_dir']; ?>bootstrap/css/bootstrap.min.css" />
+<link href="<?php echo $conf['public_dir']; ?>font-awesome/css/font-awesome.min.css" rel="stylesheet"/> 
+<?php }?>
+  
+
+<link rel="stylesheet" href="<?php echo $conf['view_dir']; ?>res/css/common.css" />
+
+</head>
+<body>
+
+	<header class="header">
+    <!-- S 导航 -->
+    
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle " data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/" style="padding: 2px 0px;"><img src="<?php echo $conf['public_dir']; ?>common/images/logo.png" alt="" class="logo"></a>
+            </div>
+
+            <div class="collapse navbar-collapse " id="navbar-collapse">
+                <ul class="nav navbar-nav ">
+                    <li class=""><a href="/">首页</a></li>
+                    <?php 
+
+
+                             foreach($nav_top as $key=>$vo) {
+
+                             if($module==$vo['alias']){
+                              $active = 'active';
+                             }else{
+                              $active = '';
+                             }
+
+                             echo '<li class="'.$active.'"><a href="'.nav_url($vo['link']).'"  target="'.$vo['target'].'">'.$vo['name'].'</a></li>';
+                               } 
+                     ?> 
+                    <?php if($nav_top_count>3){ ?>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" class="dropdown-toggle">更多 <b class="caret"></b></a>
+                        <ul class="dropdown-menu multi-level"  >
+                             <?php 
+                             foreach($nav_top_end as $key=>$vo) {  
+                              echo '<li><a href="'.nav_url($vo['link']).'" target="'.$vo['target'].'">'.$vo['name'].'</a></li>';
+                               } 
+                             ?>             
+                                                       
+                        </ul>
+                    </li>
+                    <?php } ?>
+                </ul>
+
+
+                <ul class="nav navbar-nav navbar-right ">
+                  <li class=""><form class="form-inline navbar-form  search-form" action="<?php echo r_url('search','','index') ?>" method="post">
+                            <input class="form-control" name="keyword" value="<?php echo param('keyword'); ?>" type="text" id="searchinput" placeholder="搜索话题、用户或其他" autocomplete="off">
+                        </form></li>
+                   
+                                      
+<?php if($uid < 1) { ?>
+  <li><a href="<?php echo r_url('user-login') ?>" class="nav-unlogin" target="_self">登录<i></i></a></li> <li><a href="<?php echo r_url('user-create') ?>" target="_self">注册</a></li>
+<?php }else { ?>
+ <li>
+                        <div class="wi-padding">
+
+
+                         
+<!--<div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
+      <a href="<?php echo r_url('thread-create','','topics') ?>" class="ask btn btn-primary">发帖子</a>
+      <a href="<?php echo r_url('doc-create','','docs') ?>" class="ask btn btn-success">传文档</a>
+      
+    </div>
+            -->
+                        
+                        </div>
+                    </li>
+  <li class="dropdown belling">
+<a href="<?php echo r_url('user-notification') ?>" class="dropdown-toggle message-list"><i class="fa fa-bell-o fa-lg"></i>
+  <?php if($user_mess_count>0){ ?> 
+<span class="label label-danger subnav-dot-sup"><?php echo $user_mess_count; ?></span>
+<?php } ?> 
+</a>
+   </li>
+                                        <li class="dropdown">
+                                                <a href="javascript:void(0)" class="dropdown-toggle" style="padding-top: 10px;height: 54px;">
+                            <span class="avatar-img">
+
+										<img src="<?php echo $user['avatar_url'] ?>" title="<?php echo $user['nickname'] ?>" alt="<?php echo $user['nickname'] ?>" class="avatar-30">
+                            	</span>
+                        </a>
+               <ul class="dropdown-menu">
+                            <?php if($uid==1){ ?>
+                   <li><a href="<?php echo r_url('index','','admin') ?>"><i class="fa fa-laptop fa-fw"></i> 后台管理</a></li>
+                   <li><a href="<?php echo r_url('user-topic') ?>"><i class="fa fa-file-text fa-fw"></i> 我的文章</a></li>
+                   <li><a href="<?php echo r_url('user-doc') ?>"><i class="fa fa-file-word-o fa-fw"></i> 我的文档</a></li>
+                   <?php }?>
+                            <li><a href="<?php echo r_url('user-'.$uid) ?>"><i class="fa fa-home fa-fw"></i> 我的主页</a></li>
+                            <li><a href="<?php echo r_url('user-setting') ?>"><i class="fa fa-user fa-fw"></i> 个人设置</a></li>
+
+                            <li><a href="<?php echo r_url('user-myjifen') ?>"><i class="fa fa-bookmark fa-fw"></i> 我的积分</a></li>
+                            <li><a href="javascript:void(0);" data-url="<?php echo r_url('user-logout') ?>" data-title="你确定要退出吗？" id="logout" class="confirm-dialog"><i class="fa fa-sign-out fa-fw"></i> 退出</a></li>
+                            
+                        </ul>
+                    </li>
+                    <?php } ?>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+    <!-- E 导航 -->
+
+</header>

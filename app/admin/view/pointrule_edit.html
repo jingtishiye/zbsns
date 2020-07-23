@@ -1,0 +1,50 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    
+    <form class="form-horizontal" id="pointruleeditform" method="post" data-url="<?php echo r_url('pointrule-edit'); ?>">
+   
+  <div class="form-group">
+    <label class="col-sm-1 control-label">名称</label>
+    <div class="col-sm-4">
+      <?php echo $input['controller']; ?>
+    </div>
+  </div>
+    <div class="form-group">
+    <label class="col-sm-1 control-label">积分类型</label>
+    <div class="col-sm-4">
+      <?php echo $input['scoretype']; ?>
+    </div>
+  </div>
+    <div class="form-group">
+    <label class="col-sm-1 control-label">动作</label>
+    <div class="col-sm-4">
+      <?php echo $input['type']; ?>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label">次数</label>
+    <div class="col-sm-2">
+      <input type="number" class="form-control" value="<?php echo $info['num']; ?>"  id="num" name="num" placeholder="24小时次数">
+      <p class="wi-margin-top text-muted small">0表示无限制</p>
+    </div>
+  </div>
+    <div class="form-group">
+    <label class="col-sm-1 control-label">规则次数</label>
+    <div class="col-sm-2">
+      <input type="number" class="form-control" value="<?php echo $info['tasknum']; ?>" id="tasknum" name="tasknum" placeholder="规则次数">
+      <p class="wi-margin-top text-muted small">0表示无限制，该规则一共可执行几次</p>
+    </div>
+  </div>
+    <div class="form-group">
+    <label class="col-sm-1 control-label">积分数量</label>
+    <div class="col-sm-2">
+      <input type="number" class="form-control" value="<?php echo $info['score']; ?>"  id="score" name="score" placeholder="积分数量">
+      <p class="wi-margin-top text-muted small">大于0的整数</p>
+    </div>
+  </div>
+      <input type="hidden" value="<?php echo $info['id']; ?>" name="id" />
+    </form>
+ </div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+

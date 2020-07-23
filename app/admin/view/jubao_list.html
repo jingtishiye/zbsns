@@ -1,0 +1,115 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>举报列表</a></li>
+
+    </ul>
+    
+   
+        <table class="table table-hover table-bordered wi-margin-top">
+            <thead>
+            <tr>
+                 <th>日期</th>
+                 <th>用户</th>
+                <th>内容</th>
+                <th>原因</th>
+                <th>类型</th>
+                <th>链接</th>
+             <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            	<?php foreach($jubaolist as $key=>$vo) { ?>
+                            <tr id="jubaolist_<?php echo $vo['id']; ?>">
+                                <td>
+                    <?php echo date('Y-m-d H:i:s',$vo['create_time']); ?></td>
+                  <td>
+                       <?php $userinfo = user__read($vo['uid']);echo $userinfo['nickname']; ?>
+                  </td>
+                  <td>
+                       <?php echo htmlspecialchars_decode($vo['content']); ?>
+                  </td>
+                <td>
+                       <?php 
+switch($vo['reason']){
+  
+    case 1:
+      echo '色情低俗';
+      break;
+    case 2:
+      echo '政治敏感';
+      break;
+    case 3:
+      echo '违法暴力';
+       break;
+    case 4:
+      echo '恐怖血腥';
+       break;
+    case 5:
+      echo '非法贩卖';
+      break;
+    case 6:
+      echo '仇恨言论';
+      break;
+    case 7:
+      echo '打小广告';
+       break;
+    default:
+      echo '其他';
+      break;
+}
+
+
+
+
+
+                        ?>
+                  </td>
+                    <td>
+
+                                       <?php if($vo['type']==1){echo '帖子';}elseif($vo['type']==2){echo '文档';}else{echo '用户';} ?>
+                  </td>
+                 <td>
+                <?php if($vo['type']==1){
+                  $url = r_url('thread-'.$vo['fid'],'','topics');
+                }elseif($vo['type']==2){
+                  $url = r_url('doc-'.$vo['fid'],'','docs');
+                }else{
+                  $url = r_url('user-'.$vo['fid'],'','index');
+                }
+
+echo "<a href='$url'>$url</a>";
+
+
+                 ?>
+                  </td>
+                  <td>
+
+
+
+                     <div class="btn-group btn-group-xs" role="group" aria-label="Extra-small button group">
+ 
+      <button type="button" data-title="确认处理该举报吗？" data-name="jubaolist_<?php echo $vo['id'] ?>" data-url="<?php echo r_url('jubao-delete-1',['id'=>$vo['id'],'uid'=>$vo['uid']]); ?>" class="btn btn-danger deletebtn">处理并通知举报人</button>
+<button type="button" data-title="确认处理该举报吗？" data-name="jubaolist_<?php echo $vo['id'] ?>" data-url="<?php echo r_url('jubao-delete-2',['id'=>$vo['id'],'uid'=>$vo['uid']]); ?>" class="btn btn-primary deletebtn">直接处理</button>
+
+   
+    </div>
+                    </td>
+                </tr>
+                     <?php } ?>      
+                        </tbody>
+        </table>
+       
+
+   
+</div>
+<div class="pagediv">
+        <div class="pagination"><?php echo $pagination; ?></div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+
+<script>
+
+
+</script>

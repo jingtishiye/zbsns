@@ -1,0 +1,72 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    
+    <form class="form-horizontal" id="topiccateeditform" method="post" data-url="<?php echo r_url('topiccate-edit'); ?>">
+   
+  <div class="form-group">
+    <label class="col-sm-1 control-label">名称</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" value="<?php echo $info['name']; ?>" id="name" name="name" placeholder="">
+    </div>
+  </div>
+   <div class="form-group">
+    <label class="col-sm-1 control-label">发布权限</label>
+    <div class="col-sm-8">
+    <?php echo $input['gradeid']; ?>
+       <p class="mt-2 text-danger small">可多选，不选则表示所有会员组均可发帖</p>
+    </div>
+  </div>
+      <div class="form-group">
+    <label class="col-sm-1 control-label">所属字母</label>
+    <div class="col-sm-2">
+      <?php echo select_charactor('characters',$info['characters']); ?>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label">排序</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" value="<?php echo $info['sort']; ?>" id="sort" name="sort" placeholder="数字越大越靠前">
+    </div>
+  </div>
+
+
+<div class="form-group">
+   <label class="col-sm-1 control-label">图标文件</label>
+   <div class="col-sm-6">
+       <div class="input-group" >
+          <?php if($info['cover_id']>0){
+                                    echo find_image_by_id($info['cover_id'],39,39);
+                                    } ?>
+        <input type="hidden" name="cover_id" value="<?php echo $info['cover_id']; ?>" id="cover_id" />
+        <div id="uploadfile"></div>
+      <p class="mt-2 text-grey small">支持png,jpg格式。不大于2M</p>
+       </div>
+   </div>
+  
+</div>
+<div class="form-group row">
+            <label class="col-sm-1 form-control-label">介绍：</label>
+            <div class="col-sm-10">
+              <?php echo form_textarea('description', $info['description'], '100%', 100);?>
+              <p class="mt-2 text-grey small">注：支持 HTML 标签，换行请使用 &lt;br&gt;</p>
+            </div>
+          </div>
+      <input type="hidden" value="<?php echo $info['id']; ?>" name="id" />
+    </form>
+ </div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+<script>
+  wi.upload_file(
+    xn.url('attach-create-image',1),
+    {id:'location',inputid:'inputid',fileid:'fileid',divid:'uploadfile'},
+    {width: 100, height: 100, action: 'thumb'},
+    function(code, json) {
+    // 成功
+    if(code == 0) {
+      $('#cover_id').val(json.id);
+      $.sns5i_notify('上传成功','success');
+    } else {
+      alert(json);
+    }
+  },function(){});</script>

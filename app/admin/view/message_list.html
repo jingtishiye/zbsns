@@ -1,0 +1,68 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>消息列表</a></li>
+
+    </ul>
+      <div class="well form-inline wi-margin-top" >
+     
+        <button type="button"  data-url="<?php echo r_url('message-add'); ?>" data-id="messageaddform" data-width="100%" data-height="100%" data-title="发送通知" class="openformdialog btn btn-success">发送通知</button>
+    </div>
+   
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                 <th>日期</th>
+                 <th>用户</th>
+                <th>内容</th>
+                <th>接收用户</th>
+                <th>类型</th>
+                <th>操作</th>
+             
+            </tr>
+            </thead>
+            <tbody>
+            	<?php foreach($messagelist as $key=>$vo) { ?>
+                            <tr id="messagelist_<?php echo $vo['id']; ?>">
+                                <td>
+                    <?php echo date('Y-m-d H:i:s',$vo['create_time']); ?></td>
+                  <td>
+                       <?php if($vo['uid']>0){$userinfo = user__read($vo['uid']);echo $userinfo['nickname'];}else{echo '系统';} ?>
+                  </td>
+                  <td>
+                       <?php echo htmlspecialchars_decode($vo['content']); ?>
+                  </td>
+                <td>
+                       <?php if($vo['touid']>0){$userinfo = user__read($vo['touid']);echo $userinfo['nickname'];}else{echo '所有人';} ?>
+                  </td>
+                    <td>
+
+                                       <?php if($vo['type']==1){echo '系统';}else{echo '私信';} ?>
+                  </td>
+                  <td>
+                    
+                     <div class="btn-group btn-group-xs" role="group" aria-label="Extra-small button group">
+ 
+      <button type="button" data-title="确认删除该信息吗？" data-name="messagelist_<?php echo $vo['id'] ?>" data-url="<?php echo r_url('message-delete',['id'=>$vo['id']]); ?>" class="btn btn-danger deletebtn">删除</button>
+    </div>
+                  </td>
+                  
+                   
+                </tr>
+                     <?php } ?>      
+                        </tbody>
+        </table>
+       
+
+   
+</div>
+<div class="pagediv">
+        <div class="pagination"><?php echo $pagination; ?></div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+
+<script>
+
+
+</script>

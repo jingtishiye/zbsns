@@ -1,0 +1,1 @@
+delete from `5isns_menu` where `keyname` in ('docs','doclist','doc_commentlist','docclasslist','docsliderlist');

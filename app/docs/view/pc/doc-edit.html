@@ -1,0 +1,279 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+		<div class="main-wrapper ">
+			<div class="container wi-padding-top ">
+        <div class="row ">
+				<div class="col-md-12">
+					
+<div class="bb wi-padding">
+        
+         
+    <div class="wrap">
+        <form class="form-horizontal" data-url="<?php echo r_url('doc-edit'); ?>" id="doc_edit_form" method="post">
+          <input type="hidden" name="docid" id="file_docid" value="<?php echo $info['fileid']; ?>">
+<?php if($info['pageid']==0){ ?>
+          <div class="form-group">
+                <label class="col-sm-1 form-control-label">
+                    选择文档
+                    
+                </label>
+                <div class="col-sm-8">
+                    <div class="panel panel-default">
+  <div class="panel-body" >
+    <ul id="filelist">
+<div ><span title="doc" class="pull-left wi-margin-right ic ic-<?php echo $info['fileinfo']['ext']; ?>"></span><div class="pull-left"><?php echo $info['fileinfo']['name']; ?></div></div>
+    </ul>
+  </div>
+  <div class="panel-footer clearfix" style="background: #fff">
+    <div class="col-xs-2">
+     <div id="uploadfile"></div>
+   </div>
+   <div class="col-xs-8">
+     <div class="progress">
+  <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+    <span class="sr-only">0%</span>
+  </div>
+</div>
+  </div>   
+  </div>
+</div>
+                    <p class="wi-margin-top text-warning small">请谨慎选择上传文档，尤其涉及版权纠纷、他人权益的，禁止上传。可上传类型为<?php echo implode(',',$filetypes['doc']); ?>。文件大小不大于<?php echo humansize($filetypes['filesize']); ?></p>
+                </div>
+            </div>
+<?php } ?>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">
+                    标题
+                </label>
+                <div class="col-sm-8">
+                    <input class="form-control" value="<?php echo $info['title']; ?>" id="title" name="title" placeholder="" type="text">
+                    </input>
+                </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-1 control-label">
+                    话题选择
+                </label>
+    
+    <div class="col-sm-5">
+    
+     <input type="hidden" name="keywords" value="<?php echo $info['keywords']; ?>">
+   
+    <div class="clearfix"></div>
+    <div class="biaoqian">
+     <div id="tpt_sel" class="tpt_sels" >
+    <span style="margin-bottom: 5px;float: left;">
+      </span>
+    </div>
+    
+   
+  
+    </div>
+      <div id="tpt_pre" class="keyword-sug-wrap tpt_pres" >
+       
+        <p class="wi-margin-top ">
+         <?php foreach($taglist as $key=>$vo){if($vo['gradeid_fmt']==0||in_array($user['extend']['up_grades'],$vo['gradeid_fmt'])||in_array($user['extend']['grades'],$vo['gradeid_fmt'])){ ?>
+
+        
+
+           <span class="item-tag"><a href="javascript:;"><?php echo $vo['name']; ?></a></span>
+        
+        <?php }} ?>
+        
+        </p></div>
+    
+</div>
+  </div>
+  <input type="hidden" name="id" value="<?php echo $info['id']; ?>">
+  <input type="hidden" name="sha1" value="<?php echo $info['sha1']; ?>" id="sha1">
+<input type="hidden" name="token" value="<?php echo $token; ?>">
+            <div class="form-group">
+                <label class="col-sm-1 control-label">
+                    文档简介
+                </label>
+                <div class="col-sm-7">
+                    <textarea name="description" style="height:100px;width:100%"><?php echo $info['description']; ?></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">
+                    所需<?php echo $conf['pointname']['point']; ?>
+                </label>
+                <div class="col-sm-1">
+                    <input class="form-control" id="score" name="score" placeholder="" type="number" value="<?php echo $info['score']; ?>">
+                    </input>
+                </div>
+            </div>
+             <div class="form-group">
+                <label class="col-sm-1 control-label">
+                    预览显示页数
+                </label>
+                <div class="col-sm-1">
+                    <input class="form-control" id="showpage" name="showpage" placeholder="" type="number" value="<?php echo $info['showpage']; ?>">
+                    </input>
+                </div>
+            </div>
+<div class="form-group">
+  <div class="col-sm-11 col-sm-offset-1">
+          <button type="submit" id="doc_editsubmit" class="btn btn-primary btn-block">发布文档</button>
+ </div> </div>
+        </form>
+    </div>
+    
+ 
+		</div></div></div></div></div>
+<?php include $conf['view_path'].'footer.inc.html';?>
+
+<script type="text/javascript">
+  
+            $(function(){
+
+
+
+              wi.upload_file(
+    xn.url('attach-create-doc-<?php echo $info['id']; ?>',1),
+    {inputid:'inputid',fileid:'fileid',divid:'uploadfile'},
+    '',
+    function(code, ret) {
+
+       if(code == 0) {
+        $('#sha1').val(ret.sha1);
+       $('input#file_docid').val(ret.id);
+       $('#title').val(xn.str_replace('.'+ret.ext,'',ret.name));
+
+
+ var html='<div ><span title="doc" class="pull-left wi-margin-right ic ic-'+ret.ext+'"></span><div class="pull-left">'+ret.name+'</div></div>';
+
+       $('#filelist').html(html);
+        $.sns5i_notify(ret.message,'success');
+       
+      } else {
+       $.sns5i_notify(ret.message,'danger');
+      }
+   
+  },function(cent){
+
+      
+      $('.progress-bar').css('width',cent+'%');
+      $('.sr-only').html(cent+'%');
+  });
+
+  var jform = $('#doc_edit_form');
+  var jsubmit = $('#doc_editsubmit');
+ jform.on('submit', function() {
+    var postdata = jform.serialize();
+    jsubmit.button('耐心等待文档上传').button('disabled');
+    
+    $.xpost(jform.attr('action'), postdata, function(code, ret) {
+     
+      if (code == 0) {
+        
+        $.sns5i_notify(ret.message,'success',ret.url,1000);
+        
+        
+        
+        
+      } else {
+        if(!xn.empty(ret.url)){
+  $.sns5i_notify(ret.message,'danger',ret.url,1000);
+        
+        }else{
+                  $.sns5i_notify(ret.message,'danger');
+        jsubmit.button('reset');
+        }
+
+      }
+    });
+    return false;
+  });
+
+
+
+$('#tpt_input').keydown(function(e) {
+      if (e.which === 13) {
+        $("#tpt_btn").click();
+        e.preventDefault();
+        return false;
+      }
+    });
+    $("#tpt_sel").on('click', 'a>i', function() {
+      var name = "keywords";
+      var tag = $(this).parent().text();
+      $(this).parent().remove();
+      var tags = new Array();
+      $("#tpt_sel").find('a').each(function() {
+        tags.push($(this).text());
+      });
+      $("input[name=" + name + "]").val(tags.join(","));
+
+      $("#tpt_pre a:contains('" + tag + "')").map(function(){ 
+        if ($(this).text() == tag) { $(this).removeClass("selected"); } 
+        }); 
+     // $("#tpt_pre a:contains('" + tag + "')").removeClass("selected");
+    });
+    function showkeyword(){
+            var name = "keywords";
+      var tags = $.trim($("input[name=" + name + "]").val());
+      if (tags !== "") {
+        tags = tags.split(",");
+      } else {
+        tags = new Array();
+      }
+      var tag = $.trim($("#tpt_input").val());
+      if (tag !== '' && $.inArray(tag, tags) === -1) {
+        tags.push(tag);
+$("#tpt_pre a:contains('" + tag + "')").map(function(){ 
+        if ($(this).text() == tag) { $(this).addClass("selected"); } 
+        }); 
+
+       // $("#tpt_pre a:contains('" + tag + "')").addClass("selected");
+      }
+      $("#tpt_sel").children('span').empty();
+      $.each(tags, function(k, v) {
+        $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<i class="fa fa-times"></i></a>');
+        $("#tpt_pre a:contains('" + v + "')").map(function(){ 
+        if ($(this).text() == v) { $(this).addClass("selected"); } 
+        }); 
+       // $("#tpt_pre a:contains('" + v + "')").addClass("selected");
+      });
+      $("input[name=" + name + "]").val(tags.join(","));
+
+      $("#tpt_input").val('');
+    }
+    showkeyword();
+    $("#tpt_btn").click(function() {
+      showkeyword();
+    });
+    $("#tpt_pre").on('click', 'a:not(.selected)', function() {
+            var length = $("#tpt_pre").find('a.selected').length;
+      var limitlength = "<?php echo $conf['choose_cate_num']; ?>"
+      if(length>=limitlength&&limitlength>0){
+
+       $.sns5i_notify('最多选择'+limitlength+'个话题','danger');
+        return false;
+      }
+      var name = "keywords";
+      var tags = $.trim($("input[name=" + name + "]").val());
+      if (tags !== "") {
+        tags = tags.split(",");
+      } else {
+        tags = new Array();
+      }
+      var tag = $.trim($(this).text());
+      if (tag !== '' && $.inArray(tag, tags) === -1) {
+        tags.push(tag);
+      }
+      $("#tpt_sel").children('span').empty();
+      $.each(tags, function(k, v) {
+        $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<i class="fa fa-times"></i></a>');
+      });
+      $("input[name=" + name + "]").val(tags.join(","));
+      $(this).addClass('selected');
+    });
+
+
+  
+
+   
+});
+        </script>

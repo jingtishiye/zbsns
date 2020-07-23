@@ -1,0 +1,105 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>评论列表</a></li>
+
+    </ul>
+    
+   <style>
+
+.imgcontent img{width:50px;height:50px;}
+ </style>
+        <table class="table table-hover table-bordered wi-margin-top">
+            <thead>
+            <tr>
+                 <th>日期</th>
+                 <th>用户</th>
+                <th>内容</th>
+                <th>所属内容链接</th>
+                
+                <th>类型</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            	<?php foreach($commentlist as $key=>$vo) { ?>
+                            <tr id="commentlist_<?php echo $vo['id']; ?>">
+                                <td>
+                    <?php echo date('Y-m-d H:i:s',$vo['create_time']); ?></td>
+                  <td>
+                       <?php $userinfo = user__read($vo['uid']);echo $userinfo['nickname']; ?>
+                  </td>
+                  <td >
+                       <div class="imgcontent"><?php echo htmlspecialchars_decode($vo['content']); ?></div>
+                  </td>
+                <td>
+                    <?php if($vo['type']==1){
+                  $url = r_url('thread-'.$vo['fid'],'','index');
+                  $info = topic__read($vo['fid']);
+                 
+                }elseif($vo['type']==2){
+                  $url = r_url('doc-'.$vo['fid'],'','index');
+                  $info = doc__read($vo['fid']);
+
+                }
+ $title = $info['title'];
+echo "<a href='$url'>$title</a>";
+
+
+                 ?>
+                 
+
+
+                       
+                  </td>
+                 
+                  <td>
+                       <?php switch($vo['type']){
+
+case 1:
+echo '帖子';
+break;
+case 2:
+echo '文档';
+break;
+
+default:
+
+break;
+
+
+
+                       } ?>
+                  </td>
+                  <td>
+
+
+
+
+
+                     <div class="btn-group btn-group-xs" role="group" aria-label="Extra-small button group">
+ 
+      <button type="button" data-title="确认删除该评论吗，子评论全部将删除！" data-name="commentlist_<?php echo $vo['id'] ?>" data-url="<?php echo r_url('doc_comment-delete',['id'=>$vo['id']]); ?>" class="btn btn-danger deletebtn">删除</button>
+
+   
+    </div>
+                  </td>
+                   
+                </tr>
+                     <?php } ?>      
+                        </tbody>
+        </table>
+       
+
+   
+</div>
+<div class="pagediv">
+        <div class="pagination"><?php echo $pagination; ?></div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+
+<script>
+
+
+</script>

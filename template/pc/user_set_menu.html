@@ -1,0 +1,40 @@
+
+                <div class="list-group">
+                    <a class="router-link-active list-group-item" href="<?php echo r_url('user-'.$uid) ?>" target="_self">
+                        主页
+                    </a>
+                </div>
+                <div class="list-group">
+                    <a <?php if($action=='setting'){echo 'class="list-group-item active"';}else{     echo 'class="list-group-item" href="'.r_url('user-setting').'"';} ?> target="_self">
+                        个人资料
+                    </a>
+                    <a <?php if($action=='password'){echo 'class="list-group-item active"';}else{     echo 'class="list-group-item" href="'.r_url('user-password').'"';} ?> target="_self">
+                        修改密码
+                    </a>
+                    <a <?php if($action=='usermail'){echo 'class="list-group-item active"';}else{     echo 'class="list-group-item" href="'.r_url('user-usermail').'"';} ?> target="_self">
+                        修改邮箱
+                    </a>
+                    <a <?php if($action=='avatar'){echo 'class="list-group-item active"';}else{     echo 'class="list-group-item" href="'.r_url('user-avatar').'"';} ?> target="_self">
+                        修改头像
+                    </a>
+                    <a <?php if($action=='setnotify'){echo 'class="list-group-item active"';}else{     echo 'class="list-group-item" href="'.r_url('user-setnotify').'"';} ?>  target="_self">
+                        通知和私信
+                    </a>
+                    <a <?php if($action=='rzuser'){echo 'class="list-group-item active"';}else{     echo 'class="list-group-item" href="'.r_url('user-rzuser').'"';} ?>  target="_self">
+                        申请认证
+                    </a>
+                   
+                  
+                </div>
+            
+               <div class="list-group">
+                    <a <?php if($action=='notification'){echo 'class="list-group-item active"';}else{     echo 'class="list-group-item" href="'.r_url('user-notification').'"';} ?>  target="_self">
+                        <i class="fa fa-bell-o"></i> 消息/通知
+                    </a>
+                    
+
+                     <a <?php if($action=='myjifen'){echo 'class="list-group-item active"';}else{     echo 'class="list-group-item" href="'.r_url('user-myjifen').'"';} ?>  target="_self">
+                        <i class="fa fa-sort-amount-desc"></i> 我的积分
+                    </a>
+
+                </div>

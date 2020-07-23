@@ -1,0 +1,66 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    
+    <form class="form-horizontal" id="naveditform" method="post" data-url="<?php echo r_url('nav-edit'); ?>">
+   
+  <div class="form-group">
+    <label class="col-sm-1 control-label">名称</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" value="<?php echo $info['name']; ?>" id="name" name="name" placeholder="">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label">别名</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" value="<?php echo $info['alias']; ?>" id="alias" name="alias" placeholder="一般为英文或者拼音">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label">排序</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" value="<?php echo $info['sort']; ?>" id="sort" name="sort" placeholder="数字越大越靠前">
+    </div>
+  </div>
+<div class="form-group">
+    <label class="col-sm-1 control-label">链接</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" value="<?php echo $info['link']; ?>" id="link" name="link" placeholder="如有半角逗号，逗号后边表示模块名称">
+    </div>
+  </div>
+              <div class="form-group">
+                <label class="col-sm-1 control-label">
+                    类型
+                </label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="pid">
+                        <option value="1" <?php echo $info['pid']==1?'selected':''; ?>>
+                            顶部链接
+                        </option>
+                        <option value="2" <?php echo $info['pid']==2?'selected':''; ?>>
+                            底部链接
+                        </option>
+                    </select>
+                </div>
+            </div>
+                        <div class="form-group">
+                <label class="col-sm-1 control-label">
+                    target 属性
+                </label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="target">
+                        <option value="_blank" <?php echo $info['target']=='_blank'?'selected':''; ?>>
+                            _blank
+                        </option>
+                        <option value="_self" <?php echo $info['target']=='_self'?'selected':''; ?>>
+                            _self
+                        </option>
+
+                    </select>
+                </div>
+            </div>
+      <input type="hidden" value="<?php echo $info['id']; ?>" name="id" />
+    </form>
+ </div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+

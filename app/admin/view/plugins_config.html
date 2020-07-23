@@ -1,0 +1,89 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    
+    <form class="form-horizontal" id="plugins_config_form" method="post" data-url="<?php echo r_url('plugins-config'); ?>">
+
+       <input type="hidden" name="id" value="<?php echo $id; ?>">
+<?php foreach($addon['config'] as $o_key=>$form){ ?>
+
+ <div class="form-group">
+    <label class="col-sm-2 control-label"><?php echo $form['title']; ?></label>
+    <div class="col-sm-10">
+<?php switch($form['type']){ ?>
+<?php  case 'text': ?>
+
+      <input type="text" class="form-control" name="config[<?php echo $o_key; ?>]" value="<?php echo $form['value']; ?>">
+
+<?php  break; ?>
+
+<?php  case 'password': ?>
+
+      <input type="password" class="form-control" name="config[<?php echo $o_key; ?>]" value="<?php echo $form['value']; ?>">
+
+<?php  break; ?>
+<?php  case 'hidden': ?>
+
+      <input type="hidden" name="config[<?php echo $o_key; ?>]" value="<?php echo $form['value']; ?>">
+
+<?php  break; ?>
+<?php  case 'radio': ?>
+<?php foreach($form['options'] as $opt_k=>$opt){
+ ?>
+
+       <label class="custom-input custom-radio"><input type="radio" name="config[<?php echo $o_key; ?>]" value="<?php echo $opt_k; ?>" 
+        <?php if($form["value"]==$opt_k){ ?>checked="checked" <?php } ?>> <?php echo $opt; ?></label>           
+                  
+                  
+<?php  } ?>
+
+<?php  break; ?>
+<?php  case 'checkbox': ?>
+<?php foreach($form['options'] as $opt_k=>$opt){
+is_null($form["value"]) && $form["value"] = array();
+ ?>
+<label class="custom-input custom-checkbox mr-4"><input type="checkbox" name="config[<?php echo $o_key; ?>][]" value="<?php echo $opt_k; ?>" <?php if(in_array($opt_k,$form["value"])){ ?>checked="checked" <?php } ?>> <?php echo $opt; ?></label>
+
+
+<?php  } ?>
+
+<?php  break; ?>
+<?php  case 'select': ?>
+
+              
+                <select name="config[<?php echo $o_key; ?>]" class="form-control"  >
+<?php foreach($form['options'] as $opt_k=>$opt){ ?>
+                    <option value="<?php echo $opt_k; ?>" 
+                      <?php if($form["value"]==$opt_k){ echo 'selected'; } ?>><?php echo $opt; ?></option>
+<?php  } ?>
+                </select>
+<?php  break; ?>
+<?php  case 'textarea': ?>
+
+<textarea class="form-control" rows="3" cols="3" name="config[<?php echo $o_key; ?>]"><?php echo $form['value']; ?></textarea>
+                
+<?php  break;default:break;} ?>
+
+
+<?php  if(!empty($form['tip'])){ ?>
+ <p class="wi-margin-top text-muted small"><?php  echo $form['tip']; ?></p>
+<?php  } ?>
+
+    </div>
+  </div>
+<?php } ?>
+
+       
+              
+              </div>
+              
+            
+  
+      
+      </div>
+    
+
+     
+    </form>
+ </div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>

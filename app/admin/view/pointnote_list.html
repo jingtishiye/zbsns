@@ -1,0 +1,88 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>积分列表</a></li>
+
+    </ul>
+    
+   
+        <table class="table table-hover table-bordered wi-margin-top">
+            <thead>
+            <tr>
+                 <th>日期</th>
+                 <th>用户</th>
+                <th>描述</th>
+                <th>积分</th>
+                <th>增减</th>
+                <th>类型</th>
+             
+            </tr>
+            </thead>
+            <tbody>
+            	<?php foreach($pointnotelist as $key=>$vo) { ?>
+                            <tr id="pointnotelist_<?php echo $vo['id']; ?>">
+                                <td>
+                    <?php echo date('Y-m-d H:i:s',$vo['create_time']); ?></td>
+                  <td>
+                       <?php $userinfo = user__read($vo['uid']);echo $userinfo['nickname']; ?>
+                  </td>
+                  <td>
+                       <?php echo $vo['description']; ?>
+                  </td>
+                <td>
+                  <?php echo $vo['score'].$conf['pointname'][$vo['scoretype']]; ?>
+                       
+                  </td>
+                    <td>
+
+                                       <?php echo $vo['inctype']; ?>
+                  </td>
+                  <td>
+                       <?php switch($vo['type']){
+
+case 1:
+echo '附件';
+break;
+case 2:
+echo '文档';
+break;
+case 3:
+echo '付费阅读';
+break;
+case 4:
+echo '充值';
+break;
+case 5:
+echo '购买会员';
+break;
+case 6:
+echo '打赏';
+break;
+default:
+
+break;
+
+
+
+                       } ?>
+                  </td>
+                  
+                   
+                </tr>
+                     <?php } ?>      
+                        </tbody>
+        </table>
+       
+
+   
+</div>
+<div class="pagediv">
+        <div class="pagination"><?php echo $pagination; ?></div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+
+<script>
+
+
+</script>

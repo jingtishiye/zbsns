@@ -1,0 +1,170 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+<div class="main-wrapper">
+    <div class="container wi-padding-top">
+        <div class="row">
+            <div class="col-md-3 col-sm-12">
+                <?php include $conf['view_path'].'user_set_menu.html';?>
+            </div>
+            <div class="col-md-9 col-sm-12">
+                <div class="wi-padding bb">
+                    <h4>
+                        通知和私信设置
+                    </h4>
+                    <hr>
+                        <div class="clearfix">
+                            <form action="" class="col-md-9 form-horizontal ajaxform" method="post">
+                                     <div class="form-group">
+    <label class="col-sm-2 control-label" >允许接收私信</label>
+    <div class="col-sm-7">
+      <label class="radio-inline">
+  <input type="radio" name="sxtype" id="sxtype1" value="0" <?php if($notify_set['sxtype']==0){echo 'checked';} ?>/> 拒绝
+</label>
+<label class="radio-inline">
+  <input type="radio" name="sxtype" id="sxtype3" value="1" <?php if($notify_set['sxtype']==1){echo 'checked';} ?>/> 所有人
+</label>
+<label class="radio-inline">
+  <input type="radio" name="sxtype" id="sxtype2" value="2" <?php if($notify_set['sxtype']==2){echo 'checked';} ?>/> 仅自己关注的人
+</label>
+<label class="radio-inline">
+  <input type="radio" name="sxtype" id="sxtype3" value="3" <?php if($notify_set['sxtype']==3){echo 'checked';} ?>/> 仅好友
+</label>
+    </div>
+</div>
+                       
+ <div class="form-group">
+                                    <label class="control-label col-sm-2" for="">
+                                        通知提醒
+                                    </label>
+<div class="col-sm-7">
+<div class="checkbox">
+   <label>
+      <input <?php if($notify_set['new_content']){echo 'checked';} ?> id="new_content" name="new_content" type="checkbox" value="1">
+            关注的话题有新内容时
+       </input>
+   </label>
+</div>
+<div class="checkbox">
+   <label>
+      <input <?php if($notify_set['new_user_content']){echo 'checked';} ?> id="new_user_content" name="new_user_content" type="checkbox" value="1">
+            关注的用户发布了新内容时
+       </input>
+   </label>
+</div>
+<div class="checkbox">
+   <label>
+      <input <?php if($notify_set['new_comment_content']){echo 'checked';} ?> id="new_comment_content" name="new_comment_content" type="checkbox" value="1">
+            有人评论我发布的内容时
+       </input>
+   </label>
+</div> 
+<div class="checkbox">
+   <label>
+      <input <?php if($notify_set['content_operate']){echo 'checked';} ?> id="content_operate" name="content_operate" type="checkbox" value="1">
+            我的内容审核通过/删除时
+       </input>
+   </label>
+</div> 
+<div class="checkbox">
+   <label>
+      <input <?php if($notify_set['someone_focusme']){echo 'checked';} ?> id="someone_focusme" name="someone_focusme" type="checkbox" value="1">
+            有人关注我时
+       </input>
+   </label>
+</div>
+</div>
+</div>
+   <div class="form-group">
+                                    <label class="control-label col-sm-2" for="">
+                                        邮件提醒
+                                    </label>
+<div class="col-sm-7">
+<div class="checkbox">
+   <label>
+      <input <?php if($notify_set['mail_new_content']){echo 'checked';} ?> id="mail_new_content" name="mail_new_content" type="checkbox" value="1">
+            关注的话题有新内容时
+       </input>
+   </label>
+</div>
+<div class="checkbox">
+   <label>
+      <input <?php if($notify_set['mail_new_user_content']){echo 'checked';} ?> id="mail_new_user_content" name="mail_new_user_content" type="checkbox" value="1">
+            关注的用户发布了新内容时
+       </input>
+   </label>
+</div>
+<div class="checkbox">
+   <label>
+      <input <?php if($notify_set['mail_new_comment_content']){echo 'checked';} ?> id="mail_new_comment_content" name="mail_new_comment_content" type="checkbox" value="1">
+            有人评论我发布的内容时
+       </input>
+   </label>
+</div> 
+<div class="checkbox">
+   <label>
+      <input <?php if($notify_set['mail_content_operate']){echo 'checked';} ?> id="mail_content_operate" name="mail_content_operate" type="checkbox" value="1">
+            我的内容审核通过/删除时
+       </input>
+   </label>
+</div> 
+<div class="checkbox">
+   <label>
+      <input <?php if($notify_set['mail_someone_focusme']){echo 'checked';} ?> id="mail_someone_focusme" name="mail_someone_focusme" type="checkbox" value="1">
+            有人关注我时
+       </input>
+   </label>
+</div>
+</div>
+</div>                   
+                                <button class="btn btn-primary btn-block" type="submit">
+                                    保存设置
+                                </button>
+                            </form>
+                        </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div></div>
+    <?php include $conf['view_path'].'footer.inc.html';?>
+    <script>
+        var jsend = $('#sendcode');
+
+jsend.on('click', function() {
+  
+  jsend.button('loading');
+ var usermail = $('#usermail').val();
+  $.xpost(jsend.attr('action'), {'usermail':usermail}, function(code, ret) {
+
+    if(code == 0) {
+      $('#code').focus();
+      var t = 60; // 倒计时
+      jsend.button('发送成功 60 ');
+      
+      // 倒计时，重新发送
+      var handler = setInterval(function() {
+        jsend.button('发送成功 '+(--t)+' ');
+        if(t == 0) {
+          clearInterval(handler);
+          jsend.button('reset');
+        }
+      }, 1000);
+    } else if(code < 0) {
+      
+      $.sns5i_notify(ret.message,'danger');
+      jsend.button('reset');
+    } else {
+      $('#usermail').alert(ret.message).focus();
+      jsend.button('reset');
+    }
+  });
+  return false;
+});
+xn.form_ajax('usermail-form',
+function(ret){
+if(!$('#alertinfo').hasClass('alert-success')){
+  $('#alertinfo').addClass('alert-success').removeClass('alert-danger');
+  $('#alertinfo').html('邮箱绑定成功');
+}
+
+});
+    </script>

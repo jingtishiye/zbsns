@@ -1,0 +1,43 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>回收列表</a></li>
+
+    </ul>
+
+	 <table class="table table-hover table-bordered wi-margin-top">
+
+		    <thead>
+				<tr>
+				 
+				  <th>名称</th>
+          <th>表注释</th>
+          <th>数量</th>
+          <th>操作</th>
+				</tr> 
+		    </thead>
+		     
+       <tbody class="users_content">
+          <?php foreach($conf['trashlist'] as $key=>$vo) { ?>
+                <tr>
+                
+                   <td><?php echo $key; ?></td>
+                  <td><?php echo $vo[0]; ?></td>
+                  <td><?php echo get_trash_number($key); ?></td>
+                  <td class="col-md-2 text-center">
+                    
+                      <a href="<?php echo r_url('trash-datalist', array('name' => $key)); ?>" class="btn btn-primary btn-xs"><i class="fa fa-database"></i> 数 据</a>
+                     
+                     
+                  </td>
+                </tr>
+         <?php } ?>
+        </tbody>
+      
+     
+
+		
+		</table>
+		
+  </div>
+  <?php include ADMIN_PATH.'view/footer.html';?>

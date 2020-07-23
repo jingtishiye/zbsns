@@ -1,0 +1,104 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>模块列表</a></li>
+       
+    </ul>
+
+   
+        <table class="table table-hover table-bordered wi-margin-top">
+            <thead>
+            <tr>
+                <th>模块名称</th>
+                <th>模块</th>
+                <th>描述</th>
+                <th>作者</th>
+               
+               <th>版本</th>
+               <th>设为首页</th>
+               <th>状态</th>
+               
+                <th>操作</th>
+             
+            </tr>
+            </thead>
+           <tbody>
+                <?php foreach($plugins_list as $key=>$vo) { ?>
+                            <tr id="topiclist_<?php echo $vo['info']['name']; ?>">
+                                    <td>
+                                        <?php echo $vo['info']['cnname']; ?></td>
+                                    <td>
+
+                                        <?php echo $vo['info']['name']; ?></td>
+                                    <td>
+                                        <?php echo $vo['info']['description']; ?>
+                                    </td>
+                  <td>
+                    <?php echo $vo['info']['author']; ?>
+                  </td>
+                  <td>
+                    <?php echo $vo['info']['version']; ?>
+                  </td>
+                      <td><input type="checkbox" data-url="<?php echo r_url('modules-setindex',['name'=>$vo['info']['name']]); ?>" data-field="choice" data-trueval="1" data-falseval="0" data-mess="设为首页" data-falsemess="取消首页" class="switch"  data-size="mini" data-on="primary" data-off="info" data-off-text="普通" data-on-text="首页"  <?php echo $vo['index']?'checked':''; ?>  /></td>              
+                            
+                                       <td>
+
+
+<?php if($vo['is_install']){echo '已安装'; }else{echo '未安装';} ?>
+
+                  </td>
+                               
+                                
+                                    <td>
+
+
+
+
+
+                                       <div class="btn-group btn-group-xs" role="group" aria-label="Extra-small button group">
+    
+<?php if($vo['is_install']){ ?>
+
+<button type="button" data-title="确认卸载该模块吗？"  data-url="<?php echo r_url('modules-uninstall',['name'=>$vo['info']['name']]); ?>" class="btn btn-danger confirm_btn">卸载</button>
+<?php if(!empty($vo['config'])){?>
+      <button type="button" data-url="<?php echo r_url('modules-config',['name'=>$vo['info']['name']]); ?>" data-id="plugins_config_form" data-title="<?php echo $vo['info']['cnname'] ?>-配置" class="openformdialog btn btn-primary">配置</button>
+   <?php } ?> 
+
+<?php }else{ ?>
+  <button type="button" data-title="确认安装该模块吗？"  data-url="<?php echo r_url('modules-install',['name'=>$vo['info']['name']]); ?>" class="btn btn-info confirm_btn">安装</button>
+
+
+<?php } ?>
+
+ 
+    </div>
+                                    </td>
+                   
+                </tr>
+                     <?php } ?>      
+                        </tbody>
+        </table>
+       
+
+
+   
+</div>
+<div class="pagediv">
+       
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+<?php if($conf['cdn_use']){ ?>
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css">
+<script src="https://cdn.bootcss.com/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
+
+<?php }else{?>
+<script src="<?php echo $conf['public_dir']; ?>bootstrap/js/bootstrap-switch.js"></script>
+<link rel="stylesheet" href="<?php echo $conf['public_dir']; ?>bootstrap/css/bootstrap-switch.css">
+<?php }?>
+
+
+<script type="text/javascript">
+$(function(){
+  bootstrap_Switch();
+});</script>

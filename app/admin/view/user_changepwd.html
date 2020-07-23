@@ -1,0 +1,29 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+
+
+<div class=" " >
+	<form class="form-horizontal" id="changepwdform" data-url="<?php echo r_url('user-changepwd'); ?>">
+  
+  <div class="wi-margin-top wi-margin-bottom">
+   
+    <div class="col-sm-3">
+      <input type="password" class="form-control" name="password_old" id="password_old" placeholder="请输入旧密码">
+    </div>
+  </div>
+ <div class="wi-margin-bottom">
+   
+    <div class="col-sm-3">
+      <input type="password" class="form-control" name="password_new" id="password_new" placeholder="请输入新密码">
+    </div>
+  </div>
+   <div class="wi-margin-bottom">
+  
+    <div class="col-sm-3">
+      <input type="password" class="form-control" name="password_new_repeat" id="password_new_repeat" placeholder="请再次输入新密码">
+    </div>
+  </div>
+
+</form>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>

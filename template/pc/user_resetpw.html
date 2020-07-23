@@ -1,0 +1,97 @@
+<?php include $conf['view_path'].'header-nonav.inc.html';?>
+	<body class="no-padding reader-black-font">
+
+<div class="sign">
+<div class="logo"><a href="<?php echo $conf['web_url']; ?>" target="_self">
+<img src="<?php echo $conf['public_dir']; ?>common/images/logowhite.png" alt="Logo" class="lazy" style="display: inline;"></a></div>
+    <div class="main">
+
+
+
+<h4 class="title">
+  <div class="normal-title">
+    <a class="active" href="#">找回密码</a>   
+  </div>
+</h4>
+
+<div class="js-sign-up-container">
+  <form class="new_user" id="form" action="<?php echo r_url('user-resetpw');?>" method="post">
+     <div class="input-prepend restyle js-normal form-group">
+        <input type="text" class="form-control" placeholder="邮箱" name="email" id="email">
+        <i class="fa fa-envelope fa-fw"></i>
+      </div>
+	<div class="input-prepend  no-radius security-up-code js-security-number form-group">
+        <input type="text" id="code" name="code" placeholder="验证码" >
+      <i class="fa fa-get-pocket"></i>
+     <a id="send" action="<?php echo r_url('user-send_code-user_resetpw');?>" class="btn-up-resend js-send-code-button" href="javascript:;">发送验证码</a>
+      
+    </div>
+	
+	<button type="submit" class="btn btn-primary btn-block" id="submit" data-loading-text="确认中..." <?php if($conf['user_create_email_on']) { ?>disabled<?php } ?>>下一步</button>
+
+
+</form>
+
+   </div>
+    </div>
+  </div>
+<?php include $conf['view_path'].'footer-nof.inc.html';?>
+
+<script>
+var jform = $('#form');
+var jsubmit = $('#submit');
+var jsend = $('#send');
+jsend.on('click', function() {
+
+	jsend.button('loading');
+	var postdata = jform.serialize();
+
+	$.xpost(jsend.attr('action'), postdata, function(code, ret) {
+
+		if(code == 0) {
+			 $.sns5i_notify(ret.message,'success');
+			$('#code').focus();
+			var t = 60; // 倒计时
+			jsend.button('发送成功 60 ');
+			jsubmit.button('reset');
+			// 倒计时，重新发送
+			var handler = setInterval(function() {
+				jsend.button('发送成功 '+(--t)+' ');
+				if(t == 0) {
+					clearInterval(handler);
+					jsend.button('reset');
+				}
+			}, 1000);
+		} else if(code < 0) {
+			$.sns5i_notify(ret.message,'danger');
+			jsend.button('reset');
+		} else {
+			
+			jform.find('[name="'+code+'"]').alert(ret.message).focus();
+			jsend.button('reset');
+		}
+	});
+	return false;
+});
+
+jform.on('submit', function() {
+	
+	jsubmit.button('loading');
+	var postdata = jform.serialize();
+	$.xpost(jform.attr('action'), postdata, function(code, ret) {
+		if(code == 0) {
+
+			 $.sns5i_notify(ret.message,'success',xn.url('user-resetpw_complete',1),1000);
+			
+		} else if(xn.is_number(code)) {
+			$.sns5i_notify(ret.message,'danger');
+			jsubmit.button('reset');
+		} else {
+			jform.find('[name="'+code+'"]').alert(ret.message).focus();
+			jsubmit.button('reset');
+		}
+	});
+	return false;
+});
+
+</script>

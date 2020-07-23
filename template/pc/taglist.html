@@ -1,0 +1,44 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+    <div class="main-wrapper ">
+      <div class="container wi-padding-top " >
+        <div class="row">
+			<div class="wrapper bb wi-padding" >
+<div class="wi-margin">
+	<h2>话题列表
+<?php if($show==1){ ?>
+		<a href="<?php echo r_url('tags-taglist-2'); ?>" class="btn btn-success wi-margin-left">换一批</a>
+<?php } ?>
+	</h2>
+	<p>话题不仅能组织和归类你的内容，还能关联相似的内容。</p>
+</div>
+				<div class="row tag-list wi-margin">
+					
+<?php foreach($tagarr as $key=>$vo) { ?>
+					<div class="">
+						<div class="">
+
+							<h3 class="h5 "><?php echo $key; ?></h3>
+							<ul class=" taglist--inline multi">
+ <?php foreach($vo  as $k=>$v) { ?>  
+                         <li class="tagPopup">
+                                    <a  class="tag" href="<?php echo r_url('tags-'.$v['id']); ?>" target="_self">
+                                      <?php if($v['cover_id']>0){ ?>
+                                      <img src="<?php echo find_image_by_id($v['cover_id']); ?>">
+                                      <?php } ?>
+                                      <?php echo $v['name']; ?></a>
+                                </li>                                             
+                         <?php } ?>   
+
+							</ul>
+
+
+						</div>
+					</div>
+<?php } ?>
+
+				</div>
+				
+			</div>
+		</div>
+	</div></div>
+<?php include $conf['view_path'].'footer.inc.html';?>

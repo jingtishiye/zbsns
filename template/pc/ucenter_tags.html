@@ -1,0 +1,100 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+		<div class="main-wrapper">
+			<div class="container wi-padding-top">
+			<div class="row">
+				<div class="col-md-9 col-sm-12 bb">
+					<?php include $conf['view_path'].'ucenter_left_top.html';?>	
+
+					<div class="" style="padding-top:0px">
+						<div class="">
+							<div class="dongtai">
+								<ul class="trigger-menu" data-pjax-container="#list-container">
+
+									
+									<li class="<?php if($type==1){ echo 'active'; } ?>"><a href="<?php echo r_url('user-tags-1'); ?>" target="_self"><i class="fa fa-star-o"></i>关注话题</a></li>
+									<li class="<?php if($type==2){ echo 'active'; } ?>"><a target="_self"><i class="fa fa-plus"></i>创建的话题</a></li>
+									
+								</ul>
+
+								
+
+<div class="wi-padding">
+        <!-- 关注话题列表模块 -->
+            <ul class="note-list">
+  <?php foreach($tagslist as $key=>$vo) { ?>
+       <li >
+<div class="follow-detail">
+      <div class="info media">
+         <div class="media-left">
+        <a href="<?php echo r_url('tags-'.$vo['id']); ?>" target="_self">
+          <img class="media-object img-f-48 img-rounded"  src="<?php echo find_image_by_id($vo['cover_id']); ?>" alt="<?php echo $vo['name']; ?>">
+        </a> 
+</div>
+
+<div class="media-body">
+        <a class="title" href="<?php echo r_url('tags-'.$vo['id']); ?>" target="_self"><?php echo $vo['name']; ?>
+          <?php if(hasfocus($vo['id'],2)){ ?>
+          <a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-2'); ?>" data-val="<?php echo $vo['id']; ?>" title="已关注" data-classname="btn-default" data-removeclassname="btn-primary" data-title="关注" class="focus-action btn btn-default pull-right" target="_self"><i class="fa fa-minus"></i> 已关注</a>
+        <?php }else{ ?>
+          <a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-2'); ?>" data-val="<?php echo $vo['id']; ?>" title="关注" data-classname="btn-primary" data-removeclassname="btn-default" data-title="已关注" class="focus-action btn btn-primary pull-right" target="_self"><i class="fa fa-plus"></i> 关注</a>
+        <?php } ?></a>
+        <p>
+
+          <?php echo $vo['topic_num']; ?> 个文章，<?php echo $vo['doc_num']; ?>个文档， <?php echo $vo['user_num']; ?> 人关注
+        </p>
+        
+      </div>
+        <div class="signature">
+         <?php echo $vo['description_fmt']; ?></div>
+    </div>
+
+
+
+
+
+        </div>
+    </li>
+
+
+    <?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+  <div class="pagination pull-left"> <?php echo $pagination; ?></div>
+      </div>
+
+
+							</div>
+						</div>
+
+
+					</div>
+
+				</div>
+				
+
+				<div class="col-md-3 col-sm-12">
+					
+					
+					
+					
+					<?php include $conf['view_path'].'ucenter_right.html';?>	
+
+
+
+				</div>
+
+			</div>
+
+			</div>
+		</div>
+		<?php include $conf['view_path'].'footer.inc.html';?>

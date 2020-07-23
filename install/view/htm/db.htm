@@ -1,0 +1,149 @@
+<?php include INSTALL_PATH.'view/htm/header.inc.htm';?>
+
+
+<form action="index.php?action=db" method="post" id="form" class="form-horizontal">
+
+	<div class="uk-margin-top">
+		<div class="">
+			<div class="card">
+				<div class="card-body">
+					<h3 class="card-title">
+						二、数据库设置
+					</h3>
+
+
+
+
+
+					<div class="form-group  ">
+						<label class="control-label col-md-2" for="form-h-s">
+							数据库类型：</label>
+						<div class="form-controls col-md-3">
+							<select id="form-h-s" name="type" class="form-control">
+								<option selected="selected" value="pdo_mysql">pdo_mysql</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<span class="control-label col-md-2">
+							数据库引擎：</span>
+						<div class="form-controls col-md-3">
+							<label><input type="radio" name="engine" value="myisam" checked /> MyISAM</label>
+							<label><input type="radio" name="engine" value="innodb" /> InnoDB</label>
+						</div>
+					</div>
+					<div class="form-group  ">
+						<label class="control-label col-md-2" for="form-h-it">
+							数据库服务器：</label>
+						<div class="form-controls col-md-3">
+							<input type="text" name="host" class="form-control" value="127.0.0.1">
+						</div>
+					</div>
+
+
+
+
+
+
+
+					<div class="form-group  ">
+						<label class="control-label col-md-2">
+							数据库名：</label>
+						<div class="form-controls col-md-3">
+							<input type="text" name="name" class="form-control" value="5isns">
+						</div>
+					</div>
+					<div class="form-group  ">
+						<label class="control-label col-md-2">
+							数据库前缀：</label>
+						<div class="form-controls col-md-3">
+							<input type="text" name="tablepre" class="form-control" value="5isns_">
+						</div>
+					</div>
+					
+					<div class="form-group  ">
+						<label class="control-label col-md-2">
+							数据库用户名：</label>
+						<div class="form-controls col-md-3">
+							<input type="text" name="user" class="form-control" value="root">
+						</div>
+					</div>
+					<div class="form-group  ">
+						<label class="control-label col-md-2">
+							数据库密码：</label>
+						<div class="form-controls col-md-3">
+							<input type="text" name="password" class="form-control" value="root">
+						</div>
+					</div>
+					<h4>
+						三、管理员信息
+					</h4>
+					<div class="form-group  ">
+						<label class="control-label col-md-2">
+							管理员邮箱：</label>
+						<div class="form-controls col-md-3">
+							<input type="text" name="adminemail" class="form-control" value="admin@admin.com">
+						</div>
+					</div>
+					<div class="form-group  ">
+						<label class="control-label col-md-2">
+							管理员用户名：</label>
+						<div class="form-controls col-md-3">
+							<input type="text" name="adminuser" class="form-control" value="admin">
+						</div>
+					</div>
+					<div class="form-group  ">
+						<label class="control-label col-md-2">
+							管理员密码：</label>
+						<div class="form-controls col-md-3">
+							<input type="password" name="adminpass" class="form-control" value="">
+						</div>
+					</div>
+
+				</div>
+
+				<div class="text-center uk-margin-top">
+					<button type="button" class="btn btn-secondary" onclick="history.back();">
+						上一步</button>
+					<button type="submit" class="btn btn-primary" id="submit" <?php echo !$succeed ? 'disabled' : '' ;?>
+						data-loading-text="
+						正在安装，大概需要一分钟左右...">
+						下一步</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</form>
+<?php include INSTALL_PATH.'view/htm/footer.inc.htm';?>
+
+
+<script>
+	var jform = $('#form');
+	var jsubmit = $('#submit');
+	jform.on('submit', function() {
+		var postdata = jform.serialize();
+		jsubmit.button('loading');
+		
+		$.xpost(jform.attr('action'), postdata, function(code, ret) {
+			
+			if (code == 0) {
+				jsubmit.button(ret.message);
+				$.sns5i_notify(ret.message,'success','../',1000);
+				
+				
+				
+				
+				
+			} else if (code < 0) {
+				$.sns5i_notify(ret.message,'danger');
+				jsubmit.button('reset');
+			} else {
+				
+				jform.find('[name="' + code + '"]').alert(ret.message).focus();
+				jsubmit.button('reset');
+			}
+		});
+		return false;
+	});
+</script>

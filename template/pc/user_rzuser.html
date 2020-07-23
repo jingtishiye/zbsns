@@ -1,0 +1,266 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+<div class="main-wrapper">
+<div class="container wi-padding-top" >
+<div class="row" >
+<div class="col-md-3 col-sm-12">
+					
+<?php include $conf['view_path'].'user_set_menu.html';?>		
+
+				</div>
+				<div class="col-md-9 col-sm-12">
+					<div class="wi-padding bb">
+						<h4>用户认证</h4>
+						<hr>
+<?php if($rzuser){ if($rzuser['status']==1){ ?>
+
+						
+ <div class="alert-success alert" id="alertinfo">
+                                已认证【如资料有误，仍可继续修改资料，重新提交审核】
+                 </div>
+         
+                  <?php }elseif($rzuser['status']==2){ ?>
+                 <div class="alert-danger alert" id="alertinfo">
+                                已拒绝，请重新提交资料
+                 </div>
+ <?php }elseif($rzuser['status']==0){ ?>
+           <div class="alert-info alert" id="alertinfo">
+                                正在等待认证审核
+                 </div>
+
+                 <?php }}else{ ?>
+                  <div class="alert-danger alert" id="alertinfo">
+                                未认证
+                 </div>
+       <?php } ?>
+
+
+
+
+	<div class="clearfix">										
+<form class="form-horizontal" method="POST" id="vertify_form">
+
+
+
+       <div class="form-group">
+        <label class="col-sm-2 control-label ">认证类型:</label>
+          
+          <div class="col-sm-7">
+      <label class="radio-inline">
+  <input type="radio" name="type" id="type1" value="1" <?php if($rzuser['type']==1){echo 'checked';} ?>/> 个人
+</label>
+<label class="radio-inline">
+  <input type="radio" name="type" id="type2" value="2" <?php if($rzuser['type']==2){echo 'checked';} ?>/> 机构
+</label>
+
+    </div>
+        </div>
+                 <div class="form-group">
+              <label class="col-sm-2 control-label">
+                    擅长领域(最多3个):
+                </label>
+    
+    <div class="col-sm-10">
+    
+    <input type="hidden" name="keywords" value="<?php echo $rzuser['keywords']; ?>">
+   
+    <div class="clearfix"></div>
+    <div class="biaoqian">
+     <div id="tpt_sel" class="tpt_sels" >
+    <span style="margin-bottom: 5px;float: left;">
+      </span>
+    </div>
+    
+   
+  
+    </div>
+      <div id="tpt_pre" class="keyword-sug-wrap tpt_pres" >
+       
+        <p class="wi-margin-top ">
+        <?php foreach($taglist as $key=>$vo){ ?>
+        <span class="item-tag"><a href="javascript:;"><?php echo $vo['name']; ?></a></span>
+        <?php } ?>
+        
+        </p></div>
+     <p class="mt-2 text-danger small">点击标签进行擅长领域选择，非填写。</p>
+</div>
+  </div>
+
+
+           <div class="form-group">
+            <label class="col-sm-2 control-label ">姓名/机构名:</label>
+        
+          <div class="col-sm-7">
+             <input type="text" name="name" id="name" value="<?php echo $rzuser['name']; ?>" placeholder="请填写真实姓名或者机构名称，与证件保持一致" class="form-control">
+          </div>
+        </div>
+           <div class="form-group">
+            <label class="col-sm-2 control-label ">手机号:</label>
+        
+          <div class="col-sm-7">
+             <input type="text" name="mobile" id="mobile" value="<?php echo $rzuser['mobile']; ?>" placeholder="请填写可以联系到你的手机号码" class="form-control">
+          </div>
+        </div>
+
+
+
+         <div class="form-group">
+          <label class="col-sm-2 control-label">身份证号码/机构代码证号：</label>
+          <div class="col-sm-7">
+             <input type="text" name="idcard" id="idcard" value="<?php echo $rzuser['idcard']; ?>" placeholder="" class="form-control">
+          </div>
+        </div>
+
+         <div class="form-group">
+          <label class="col-sm-2 control-label ">认证介绍:</label>
+          <div class="col-sm-7">
+            <textarea name="statusdes" id="statusdes" style="width:458px;height:89px;" class="form-control"><?php echo htmlspecialchars_decode($rzuser['statusdes']); ?></textarea>
+
+
+          </div>
+        </div>
+         <div class="form-group">
+          <label class="col-sm-2 control-label">证件扫描件:</label>
+             <div class="col-sm-6">
+       <div class="input-group" >
+        <input type="hidden" name="cover_id" id="cover_id"  value="<?php echo $rzuser['cover_id']; ?>" />
+
+
+<?php if($rzuser['cover_id']>0){ ?>
+<img style="" src="<?php echo find_image_by_id($rzuser['cover_id']); ?>"> 
+<?php } ?>
+        <div id="uploadfile"></div>
+      
+       </div>
+       <p class="text-muted">请提交对应的身份证或者组织机构代码证件扫描</p>
+   </div>
+   
+          
+        </div>
+              
+
+ <button type="submit" class="btn btn-primary btn-block">提交申请</button>
+         </form>
+	</div>						
+							
+					
+					</div>
+					
+					
+					
+
+
+
+
+
+				</div>
+
+			</div>
+		</div>
+</div>
+		 <?php include $conf['view_path'].'footer.inc.html';?>
+     <script>
+
+ $('#tpt_input').keydown(function(e) {
+      if (e.which === 13) {
+        $("#tpt_btn").click();
+        e.preventDefault();
+        return false;
+      }
+    });
+    $("#tpt_sel").on('click', 'a>i', function() {
+      var name = "keywords";
+      var tag = $(this).parent().text();
+      $(this).parent().remove();
+      var tags = new Array();
+      $("#tpt_sel").find('a').each(function() {
+        tags.push($(this).text());
+      });
+      $("input[name=" + name + "]").val(tags.join(","));
+         $("#tpt_pre a:contains('" + tag + "')").map(function(){ 
+        if ($(this).text() == tag) { $(this).removeClass("selected"); } 
+        });
+     // $("#tpt_pre a:contains('" + tag + "')").removeClass("selected");
+    });
+      function showkeyword(){
+            var name = "keywords";
+      var tags = $.trim($("input[name=" + name + "]").val());
+      if (tags !== "") {
+        tags = tags.split(",");
+      } else {
+        tags = new Array();
+      }
+      var tag = $.trim($("#tpt_input").val());
+      if (tag !== '' && $.inArray(tag, tags) === -1) {
+        tags.push(tag);
+         $("#tpt_pre a:contains('" + tag + "')").map(function(){ 
+        if ($(this).text() == tag) { $(this).addClass("selected"); } 
+        }); 
+       // $("#tpt_pre a:contains('" + tag + "')").addClass("selected");
+      }
+      $("#tpt_sel").children('span').empty();
+      $.each(tags, function(k, v) {
+        $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<i class="fa fa-times"></i></a>');
+         $("#tpt_pre a:contains('" + v + "')").map(function(){ 
+        if ($(this).text() == v) { $(this).addClass("selected"); } 
+        }); 
+        //$("#tpt_pre a:contains('" + v + "')").addClass("selected");
+      });
+      $("input[name=" + name + "]").val(tags.join(","));
+
+      $("#tpt_input").val('');
+    }
+    showkeyword();
+    $("#tpt_btn").click(function() {
+      showkeyword();
+    });
+    $("#tpt_pre").on('click', 'a:not(.selected)', function() {
+
+      var length = $("#tpt_pre").find('a.selected').length;
+      if(length>=3){
+
+       $.sns5i_notify('最多选择三个','danger');
+        return false;
+      }
+
+      var name = "keywords";
+      var tags = $.trim($("input[name=" + name + "]").val());
+      if (tags !== "") {
+        tags = tags.split(",");
+      } else {
+        tags = new Array();
+      }
+      var tag = $.trim($(this).text());
+      if (tag !== '' && $.inArray(tag, tags) === -1) {
+        tags.push(tag);
+      }
+      $("#tpt_sel").children('span').empty();
+      $.each(tags, function(k, v) {
+        $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<i class="fa fa-times"></i></a>');
+      });
+      $("input[name=" + name + "]").val(tags.join(","));
+      $(this).addClass('selected');
+    });
+xn.form_ajax('vertify_form',
+function(ret){
+if(!$('#alertinfo').hasClass('alert-info')){
+  $('#alertinfo').addClass('alert-info').removeClass('alert-danger').removeClass('alert-success');
+  $('#alertinfo').html('请耐心等待认证审核');
+}
+
+},true,'你确定要提交该信息进行审核吗？');
+
+  wi.upload_file(
+    xn.url('attach-create-image',1),
+    {id:'location',inputid:'inputid',fileid:'fileid',divid:'uploadfile'},
+    '',
+    function(code, json) {
+    // 成功
+    if(code == 0) {
+$.sns5i_notify('上传成功','success');
+      $('#cover_id').val(json.id);
+      
+    } else {
+      //console.log(json);
+       $.sns5i_notify('上传失败','danger');
+    }
+  },function(){});</script>

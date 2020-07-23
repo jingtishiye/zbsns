@@ -1,0 +1,116 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+		<div class="main-wrapper">
+			<div class="container wi-padding-top">
+			<div class="row">
+				<div class="col-md-9 col-sm-12 bb">
+					<?php include $conf['view_path'].'ucenter_left_top.html';?>	
+
+					<div class="" style="padding-top:0px">
+						<div class="">
+							<div class="dongtai">
+								<ul class="trigger-menu" data-pjax-container="#list-container">
+
+									
+									<li class="<?php if($type==1){ echo 'active'; } ?>"><a href="<?php echo r_url('user-topic-1'); ?>" target="_self"><i class="fa fa-rss"></i>文章</a></li>
+									<li class="<?php if($type==2){ echo 'active'; } ?>"><a href="<?php echo r_url('user-topic-2'); ?>" target="_self"><i class="fa fa-newspaper-o"></i>收藏文章</a></li>
+									
+								</ul>
+
+			
+
+
+	  <div class="tag-artlist">
+					 <ul >
+
+
+
+
+            <?php foreach($topicslist as $key=>$vo) { ?>
+            <li class="">
+              <section class="question-list-item">
+    <div class="qa-rank">
+      
+         <div class="answers answered ">
+         <?php echo $vo['view']; ?><small> 浏览</small>
+        </div>
+       
+    </div>
+    <div class="summary">
+        <h2 class="title">
+            <a href="<?php echo r_url('thread-'.$vo['id'],'','topics'); ?>">
+             <?php echo $vo['title']; ?></a>
+
+                        <div class="tags">
+                          <?php if(!empty($vo['keywords'])){
+
+foreach($vo['keywords_arr'] as $k=>$v) { ?>
+
+<a class="tag" href="<?php echo r_url('tags-'.$v['id']); ?>" target="_self">
+  <?php echo $v['name']; ?>
+</a>
+
+<?php }} ?>
+</div>
+                    </h2>
+            <p class="uk-article-meta">
+               
+             <span class="uk-vertical-align-middle">
+              
+<?php if($type==2){ ?>
+              <a href="<?php echo r_url('user-'.$vo['user']['id']); ?>" target="_self">
+              <img class="avatar-24 no-circle" src="<?php echo $vo['user']['avatar_url']; ?>" alt="<?php echo $vo['user']['nickname']; ?>">
+              </a>
+               <a href="<?php echo r_url('user-'.$vo['user']['id']); ?>" target="_self">
+                  <?php echo $vo['user']['nickname']; ?>
+                </a><?php } ?> 发布于 </span>
+               
+                <span>
+                 <?php echo $vo['create_time_fmt']; ?>
+                </span>
+        
+                
+              </span>
+            </p>
+       
+    </div>
+</section>
+            
+          </li>
+						 
+              <?php } ?>
+					 </ul>
+					
+					 		<ul class="wi-margin-left pagination pull-left">
+					     <?php echo $pagination; ?>
+					     </ul>
+					
+
+      
+      </div>
+
+
+							</div>
+						</div>
+
+
+					</div>
+
+				</div>
+				
+
+				<div class="col-md-3 col-sm-12">
+					
+					
+					
+					
+					<?php include $conf['view_path'].'ucenter_right.html';?>	
+
+
+
+				</div>
+
+			</div>
+
+			</div>
+		</div>
+		<?php include $conf['view_path'].'footer.inc.html';?>

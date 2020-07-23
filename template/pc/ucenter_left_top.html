@@ -1,0 +1,171 @@
+<div class="main-top  wi-padding">
+						<a class="avatar pull-left" target="_self">
+							<img src="<?php echo $_user['avatar_url']; ?>" alt="240" class="avatar-80">
+							
+						</a>
+						<?php if($uid==$_user['id']){ ?>
+						<a class="btn btn-primary pull-right" href="<?php echo r_url('user-setting'); ?>" target="_self">
+							<i class="fa fa-gear"></i> <span>个人设置</span></a>
+							<a data-url="<?php echo r_url('zhifu-chongzhi',array('type'=>1,'uid'=>$_user['id'])); ?>" data-formid="chongzhi-form" data-async="false"  data-id="chongzhitpl"  data-width="auto" data-height="auto" data-title="充值" href="javascript:;" class="openformdialog btn btn-info pull-right wi-margin-right"><?php echo $conf['pointname']['point']; ?>充值</a>
+                         <?php }else{ ?>
+<div class="pull-right">
+							
+						<?php if(hasfocus($_user['id'],0)){ ?>
+	<a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-0'); ?>" data-val="<?php echo $_user['id']; ?>" title="已关注" data-classname="btn-default" data-removeclassname="btn-primary" data-title="关注" class="focus-action btn btn-default" target="_self"><i class="fa fa-minus"></i> 已关注</a>
+<?php }else{ ?>
+	<a href="javascript:void(0);" data-url="<?php echo r_url('api-focus-0'); ?>" data-val="<?php echo $_user['id']; ?>" title="关注" data-classname="btn-primary" data-removeclassname="btn-default" data-title="已关注" class="focus-action btn btn-primary" target="_self"><i class="fa fa-plus"></i> 关注</a>
+<?php } ?>
+								
+
+<a data-url="<?php echo r_url('api-sixin',array('type'=>2,'uid'=>$_user['id'])); ?>" data-formid="sixin-form" data-id="sixintpl"  data-width="auto" data-height="auto" data-title="发私信" href="javascript:;" class="openformdialog btn btn-default" target="_self">私信 </a>
+						</div>
+						<?php } ?>
+						<div class="title">
+							<a class="name" target="_self"><?php echo $_user['nickname']; ?> 
+								<?php if($_user['rz']>0) {
+
+            if($_user['rz']==1) { ?>
+          
+          <i class="fa fa-vimeo v_person   "></i>
+          <?php }else { ?>
+          <i class="fa fa-vimeo v_company   "></i>
+          <?php }} ?></a>
+							
+						</div>
+						<div class="mysignnature">
+ <?php if($_user['rz']>0) {
+echo $_user['statusdes'];
+ }else{ 
+  echo $_user['description'];      
+  } ?>
+							<?php if($uid==$_user['id']){ ?><a href="<?php echo r_url('user-setting'); ?>"><i title="修改个人签名" class="fa fa-edit hand" style="margin-left:5px;"></i></a><?php } ?></div>
+						<div class="info">
+							<ul>
+<?php if(in_array('docs',$conf['module_arr'])){ ?>
+								<li>
+									<div class="meta-block">
+										
+											<p><?php echo $_user['extend']['doc_num']; ?></p>
+											文档
+										 </div>
+								</li>
+<?php } ?>
+<?php if(in_array('topics',$conf['module_arr'])){ ?>
+								<li>
+									<div class="meta-block">
+										
+											<p><?php echo $_user['extend']['topic_num']; ?></p>
+											文章
+										</div>
+								</li>
+
+<?php } ?>
+
+								<li>
+									<div class="meta-block">
+
+										<p><?php echo $_user['extend']['fensi_num']; ?></p>
+										粉丝
+									</div>
+								</li>
+								<li>
+									<div class="meta-block">
+
+										<p><?php echo $_user['extend']['focus_user_num']; ?></p>
+										关注
+									</div>
+								</li>
+								
+								<li>
+									<div class="meta-block">
+										<p><?php echo $_user['extend']['expoint1']; ?></p>
+										<div><?php echo $conf['pointname']['expoint1']; ?></div>
+									</div>
+								</li>
+								<li>
+									<div class="meta-block">
+										<p><?php echo $_user['extend']['point']; ?></p>
+										<div><?php echo $conf['pointname']['point']; ?></div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<?php if($uid==$_user['id']){ ?>
+						<div class="alert  alert-info clearfix">
+							<p>复制邀请注册地址分享给好友:<span><?php echo r_url('user-create',array('yq_uid'=>$uid)); ?></span></p>
+							<p><?php $yqgz = db_find_one('point_rule',array('controller'=>'yaoqing'));
+								if($yqgz){ echo '邀请注册可增加'.$yqgz['score'].$conf['pointname'][$yqgz['scoretype']];} ?></p>
+						</div>
+						<?php } ?>
+					</div>
+
+
+				<script id="chongzhitpl" type="text/html">
+	<div class="wi-padding">
+        <div class="alert alert-warning" role="alert">
+            最小充值一元，可以折合<?php echo $conf['chongzhi']['bili'].$conf['pointname']['point']; ?>
+        </div>
+<form  id="chongzhi-form" class="layerform reward-note-modal" method="post">
+
+                <div class="clearfix radio">
+ <div class="wi-margin-top clearfix">
+                    <div class="">
+<input class="form-control" value="1"  name="chongzhi" id="chongzhi" />
+</div>
+
+ <div class="col-xs-12 choose-pay">
+ 	<?php if($conf['paymethod']==3||$conf['paymethod']==2){ ?>
+            		<input id="method1" type="radio" name="pay_method" value="weixin"> 
+            		<label for="method1" class="option">
+            			<img src="/public/common/images/wechat.png" class="day wechat">
+            		</label>
+<?php } ?>
+<?php if($conf['paymethod']==3||$conf['paymethod']==1){ ?>
+            		<input id="method2" type="radio" name="pay_method" value="alipay"> 
+            		<label for="method2" class="option">
+            			<img src="/public/common/images/alipay.png" class="day alipay"> 
+            		</label> 
+<?php } ?>
+ 		
+
+            	
+
+
+</div>
+
+
+</div>
+</div>
+
+<div class="">
+             
+                        <button type="submit" class="btn btn-primary btn-block">立即充值</button>
+                
+ </div>
+</form>  
+                </div>
+</script>
+					<script id="sixintpl" type="text/html">
+	<div class="wi-padding">
+        <div class="alert alert-warning" role="alert">
+            私信给用户，有可能会打扰到对方，尽量想好措辞再发出去哦！
+        </div>
+<form  id="sixin-form" class="layerform" method="post">
+
+                <div class="clearfix radio">
+ <div class="wi-margin-top text-center clearfix">
+                    <div class="col-xs-12">
+<textarea class="form-control" name="content" placeholder="请输入私信内容"></textarea>
+</div>
+</div>
+</div>
+
+<div class="wi-margin">
+                    <div class="col text-center">
+                        <button type="submit" class="btn btn-primary">立即发送</button>
+                    </div>
+                </div>
+</form>  
+                </div>
+</script>
+

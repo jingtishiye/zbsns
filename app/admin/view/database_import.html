@@ -1,0 +1,126 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>数据库备份</a></li>
+
+    </ul>
+	<div class="users_list wi-margin-top">
+	   <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                       
+                        <th>备份名称</th>
+                        <th>卷数</th>
+                        <th>压缩</th>
+                        <th>数据大小</th>
+                        <th>备份时间</th>
+                        <th>状态</th>     
+                        <th>操作</th>     
+                        </tr>
+                    </thead>
+                    <tbody>
+                 
+                    <tbody class="users_content">
+                       <?php foreach($list as $key=>$vo) { ?>
+                        <tr id="baklist_<?php echo $vo['time'] ?>"> 
+                        <td><?php echo date('Ymd-His',$vo['time']); ?></td>
+                        <td><?php echo $vo['part']; ?></td>
+                        <td><?php echo $vo['compress']; ?></td>
+                        <td><?php echo humansize($vo['size']); ?></td>
+                        <td><?php echo $key; ?></td>
+                        <td id="<?php echo $vo['time']; ?>">未恢复</td>
+                        <td>
+                          <a class="db-import btn btn-default btn-xs"  data-id="<?php echo $vo['time']; ?>" data-url="<?php echo r_url('database-import',array('time'=>$vo['time'])); ?>">
+                          <i class="fa fa-undo"></i>还原
+                          </a>&nbsp;
+                          <a data-title="你确定要删除该备份文件吗？" class="deletebtn btn btn-danger btn-xs" data-name="baklist_<?php echo $vo['time'] ?>" data-url="<?php echo r_url('database-deletebak',array('time'=>$vo['time'])); ?>">
+                           <i class="fa fa-trash"></i> 删除
+                            </a>
+                       <a class="download btn btn-success btn-xs"  href="<?php echo r_url('attach-downloadbak',array('time'=>$vo['time'])); ?>">
+                         <i class="fa fa-download"></i>下载
+                         </a>
+                            
+                        </td>
+                    </tr>
+                     <?php } ?>
+                    </tbody>
+
+                    </table>
+                   
+                </div>
+<?php include ADMIN_PATH.'view/footer.html';?>
+ <script>
+
+	  $('.download').click(function(){
+		  var url=$(this).data('url');
+		  var self = this;
+	 
+	
+			 
+				  
+				   $.getJSON(url,function(ret){
+					   
+					   
+					   
+				      if(ret.code == 0){
+				    	
+               $.sns5i_notify(ret.message,'success');
+               
+				      }else{
+				      $.sns5i_notify(ret.message,'danger');
+
+				      }
+				    });
+			 
+			
+	  });
+	  
+	  
+	  
+	 
+
+      $(".db-import").click(function(){
+          var self = this, code = ".";
+          var url=$(this).data('url');
+          var id=$(this).data('id');
+          $.get(url, success, "json");
+          window.onbeforeunload = function(){ return "正在还原数据库，请不要关闭！" }
+          return false;
+      
+          function success(data){
+        	
+              if(data.code==0){
+            	 
+                  if($.isPlainObject(data.data)){
+                      data.message += code;
+                      if(code.length === 5){
+                          code = ".";
+                      } else {
+                          code += ".";
+                      } 
+                      
+                      $('#'+id).text(data.message);
+                      if(data.data.part){
+                          $.get(url, 
+                              {"part" : data.data.part, "start" : data.data.start}, 
+                              success, 
+                              "json"
+                          );
+                      }
+                  }else{
+                	  $('#'+id).text(data.message);
+                
+                  }
+                 
+                 
+          
+              } else {
+                $.sns5i_notify(data.message,'danger');
+            	  
+                 
+              }
+          }
+      });
+
+ 
+ </script>

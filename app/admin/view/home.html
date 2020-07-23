@@ -1,0 +1,94 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class=" container-fluid" style="background:#fafafa;padding:0px">
+  <style>
+.main{background:#fafafa}
+</style>
+	<div class="">
+				
+		<div class="admin-index">
+			<div class="col-md-3">
+ <dl data-am-scrollspy="{animation: 'slide-right', delay: 100}" class="am-scrollspy-init am-scrollspy-inview am-animation-slide-right ">
+        <dt class="qs"><i class="fa fa-users"></i></dt>
+        <dd><?php echo $stat['users']; ?></dd>
+        <dd class="f12">用户数量</dd>
+      </dl>
+			</div>
+     <div class="col-md-3">
+      <dl data-am-scrollspy="{animation: 'slide-right', delay: 300}" class="am-scrollspy-init am-scrollspy-inview am-animation-slide-right ">
+        <dt class="cs"><i class="fa fa-file-pdf-o"></i></dt>
+        <dd><?php echo $stat['docs']; ?></dd>
+        <dd class="f12">文档数量</dd>
+      </dl>
+      </div>
+      <div class="col-md-3">
+      <dl data-am-scrollspy="{animation: 'slide-right', delay: 600}" class="am-scrollspy-init am-scrollspy-inview am-animation-slide-right ">
+        <dt class="hs"><i class="fa fa-file-text-o"></i></dt>
+        <dd><?php echo $stat['topics']; ?></dd>
+        <dd class="f12">帖子数量</dd>
+      </dl>
+       </div>
+       <div class="col-md-3" >
+      <dl data-am-scrollspy="{animation: 'slide-right', delay: 900}" class="am-scrollspy-init am-scrollspy-inview am-animation-slide-right ">
+        <dt class="ls"><i class="fa fa-file-archive-o"></i></dt>
+        <dd><?php echo $stat['attachs']; ?></dd>
+        <dd class="f12">附件数量</dd>
+      </dl>
+       </div>
+    </div>
+
+
+<div class="panel panel-default admin-info">
+ 
+  <div class="panel-body bodyli">
+<h4>站点状态信息【<?php echo $info['domain']; ?>】</h4>
+
+<div class="row">
+  <div class="col-md-6"><span class="text-muted">当前版本：</span><?php echo $conf['version']; ?>
+    
+<?php if($info['now_ver']!=$conf['version']&&$result['domain']['status']==1){ ?>
+    [<a href="javascript:;" data-url="<?php echo r_url('index-update'); ?>"  class="deletebtn" data-title="确认已经做好备份了吗，此过程不可逆！">在线升级</a>]
+<?php } ?>
+
+  </div>
+					<div class="col-md-6"><span class="text-muted">磁盘剩余容量：</span><?php echo $stat['disk_free_space']; ?></div>
+           <div class="col-md-6"><span class="text-muted">最新版本：</span><?php echo $info['now_ver']; ?>
+    </div>
+					<div class="col-md-6"><span class="text-muted">站点地图：</span><a href="<?php echo r_url('sitemap','','index'); ?>">生成站点文章地图</a></div>
+         
+</div>
+<h4>服务器信息 </h4>
+				<div class="row">
+					<div class="col-md-6"><span class="text-muted">系统：</span><?php echo PHP_OS; ?></div>
+					<div class="col-md-6"><span class="text-muted">Web Server：</span><?php echo $info['SERVER_SOFTWARE']; ?></div>
+					<div class="col-md-6"><span class="text-muted">PHP：</span><?php echo PHP_VERSION; ?></div>
+					
+					<div class="col-md-6"><span class="text-muted">数据库：</span><?php echo $conf['db']['type']; ?><small> (<?php echo $info['dbversion']; ?>)</small></div>
+					<div class="col-md-6"><span class="text-muted">最大 POST 数据大小：</span><?php echo $info['post_max_size']; ?></div>
+					<div class="col-md-6"><span class="text-muted">最大文件上传大小：</span><?php echo $info['upload_max_filesize']; ?></div>
+					
+					<div class="col-md-6"><span class="text-muted">允许开启远程 URL：</span><?php echo $info['allow_url_fopen']; ?></div>
+					<div class="col-md-6"><span class="text-muted">安全模式（safe_mode）：</span><?php echo $info['safe_mode']; ?></div>
+					<div class="col-md-6"><span class="text-muted">最长执行时间：</span><?php echo $info['max_execution_time']; ?></div>
+					
+					<div class="col-md-6"><span class="text-muted">内存上限：</span><?php echo $info['memory_limit']; ?></div>
+					<div class="col-md-6"><span class="text-muted">客户端 IP：</span><?php echo $ip; ?></div>
+					<div class="col-md-6"><span class="text-muted">服务端 IP：</span><?php echo _SERVER('SERVER_ADDR'); ?></div>
+  </div>
+  <h4>开发团队信息</h4>
+<div class="row">
+
+<div class="col-md-6"><span class="text-muted">官网地址:</span>
+ <a href="http://www.5isns.com" target="_blank">http://www.5isns.com/</a></div>
+				<div class="col-md-6"><span class="text-muted">Dev Team:</span>  
+					<a href="http://bbs.5isns.com/" target="_blank">5iSNS实验室团队</a>
+				</div>
+   </div> 
+</div>
+
+		
+
+		
+	</div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>

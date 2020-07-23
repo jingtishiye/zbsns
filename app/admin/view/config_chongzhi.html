@@ -1,0 +1,118 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="row" >
+  <div class="col-lg-12">
+    <div class="wrap">
+ <ul class="nav nav-tabs">
+        
+        <?php echo admin_tab_active($menu['setting']['tab'], 'chongzhi');?>
+
+    </ul>
+
+    </div>
+   
+    <div class="card">
+      <div class="card-body">
+       
+        <form class="form-horizontal" action="<?php echo r_url('config-chongzhi');?>" method="post" id="form">
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">开启支付：</label>
+            <div class="col-sm-5">
+              <?php echo $input['paymethod'];?>
+              
+            </div>
+          </div>
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">充值基数：</label>
+            <div class="col-sm-5">
+              <?php echo $input['chongzhi']['bili'];?>
+              <p class="wi-margin-top text-danger small">请填写大于0的整数，填写出错容易造成不必要的损失。例如填写2，则表示1人民币可以得到2倍的<?php echo $conf['pointname']['point']; ?></p>
+            </div>
+          </div>
+         <div class="form-group ">
+            <label class="col-sm-2 form-control-label">提现手续费：</label>
+            <div class="col-sm-5">
+              <?php echo $input['tixian']['bili'];?>
+              <p class="wi-margin-top text-danger small">请填写大于0的整数，填写出错容易造成不必要的损失。例如填写2，则表示收取2%的手续费</p>
+            </div>
+          </div>
+
+        <h3>支付宝配置：</h3>
+          
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">appID：</label>
+            <div class="col-sm-5">
+              <?php echo $input['alipay']['app_id'];?>
+            </div>
+          </div>
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">支付宝公钥：</label>
+            <div class="col-sm-5">
+              <?php echo $input['alipay']['public_key'];?>
+              <p class="wi-margin-top text-danger small">RSA2加密方式</p>
+            </div>
+          </div>
+           <div class="form-group ">
+            <label class="col-sm-2 form-control-label">支付宝私钥：</label>
+            <div class="col-sm-5">
+              <?php echo $input['alipay']['private_key'];?>
+              <p class="wi-margin-top text-danger small">RSA2加密方式</p>
+            </div>
+          </div>
+        <!--  <h3>微信配置：</h3>
+         
+         <div class="form-group ">
+           <label class="col-sm-2 form-control-label">app_id：</label>
+           <div class="col-sm-5">
+             <?php echo $input['wechat']['app_id'];?>
+           </div>
+         </div>
+         <div class="form-group ">
+           <label class="col-sm-2 form-control-label">mch_id：</label>
+           <div class="col-sm-5">
+             <?php echo $input['wechat']['mch_id'];?>
+              <p class="wi-margin-top text-danger small">微信支付商户号</p>
+           </div>
+         </div>       
+        <div class="form-group ">
+           <label class="col-sm-2 form-control-label">mch_key：</label>
+           <div class="col-sm-5">
+             <?php echo $input['wechat']['mch_key'];?>
+             <p class="wi-margin-top text-danger small">微信支付密钥</p>
+             
+           </div>
+         </div>  -->
+          
+          <div class="form-group ">
+            <label for="inputPassword3" class="col-sm-2 form-control-label"></label>
+            <div class="col-sm-5">
+              <button type="submit" class="btn btn-primary btn-block" id="submit" data-loading-text="确定中...">确定</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+
+<script>
+var jform = $('#form');
+var jsubmit = $('#submit');
+jform.on('submit', function() {
+  jsubmit.button('loading');
+  var postdata = jform.serialize();
+  $.xpost(jform.attr('action'), postdata, function(code, ret) {
+    if(code == 0) {
+      $.sns5i_notify(ret.message,'success');
+      jsubmit.text(ret.message).delay(1000).button('reset');
+    } else{
+      alert(ret.message);
+      jsubmit.button('reset');
+    }
+  });
+  return false;
+});
+
+</script>
+  

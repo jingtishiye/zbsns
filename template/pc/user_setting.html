@@ -1,0 +1,65 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+<div class="main-wrapper">
+<div class="container wi-padding-top" >
+<div class="row" >
+<div class="col-md-3 col-sm-12">
+<?php include $conf['view_path'].'user_set_menu.html';?>		
+
+				</div>
+				<div class="col-md-9 col-sm-12">
+					<div class="wi-padding bb">
+						<h4>个人资料/修改</h4>
+						<hr>
+							
+	<div class="clearfix">										
+<form class="col-md-9 form-horizontal ajaxform" action="" method="post">
+   <div class="form-group">
+    <label for="nickname" class="col-sm-1 control-label">昵称</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="nickname" id="nickname" placeholder="昵称" value="<?php echo $user['nickname']; ?>">
+    </div>
+  </div>
+
+    <div class="form-group">
+    <label for="description" class="col-sm-1 control-label">签名</label>
+    <div class="col-sm-7">
+      <textarea rows="3" class="form-control" placeholder="说点什么刷一下存在感"  id="description" name="description" ><?php echo $user['description']; ?></textarea>
+    </div>
+  </div>
+       <div class="form-group">
+    <label class="col-sm-1 control-label" >性别</label>
+    <div class="col-sm-7">
+      <label class="radio-inline">
+  <input type="radio" name="sex" id="sex1" value="0" <?php if($user['sex']==0){echo 'checked';} ?>/> 保密
+</label>
+<label class="radio-inline">
+  <input type="radio" name="sex" id="sex2" value="1" <?php if($user['sex']==1){echo 'checked';} ?>/> 男
+</label>
+<label class="radio-inline">
+  <input type="radio" name="sex" id="sex3" value="2" <?php if($user['sex']==2){echo 'checked';} ?>/> 女
+</label>
+    </div>
+  </div>
+
+  
+  <button type="submit" class="btn btn-primary btn-block">保存</button>
+</form>
+	</div>						
+							
+					
+					</div>
+					
+					
+					
+
+
+
+
+
+				</div>
+
+			</div>
+		</div>
+</div>
+		 <?php include $conf['view_path'].'footer.inc.html';?>
+     

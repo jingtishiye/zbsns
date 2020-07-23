@@ -1,0 +1,44 @@
+<?php include $conf['view_path'].'header-nonav.inc.html';?>
+<section class="container ">
+
+
+<div class="wi-margin panel panel-<?php echo $code == 0 ? 'success' : 'warning'; ?>">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+            温馨提示<span class="text-danger wi-margin-left">倒计时<span id="wait">3</span>
+        </h3>
+      </div>
+      <div class="panel-body">
+        <h5 class="text-<?php echo $code == 0 ? 'success' : 'warning'; ?>"> <i class="glyphicon glyphicon-<?php echo $code == 0 ? 'ok' : 'remove'; ?> wi-margin-right" >
+            </i><?php echo $message;?></h5>
+
+      </div>
+      <div class="panel-footer"> 返回上一页</span>您可以：
+            <a class="c-primary" href="javascript:;" onclick="history.go(-1)">
+                返回上一页
+            </a>
+            <span class="ml-20">
+                |
+            </span>
+            <a class="c-primary" href="/">
+                去首页
+            </a></div>
+    </div>
+
+    
+</section>
+<?php include $conf['view_path'].'footer-nof.inc.html';?>
+<script type="text/javascript">
+(function(){
+    var wait = document.getElementById('wait');
+        //href = document.getElementById('href').href;
+    var interval = setInterval(function(){
+        var time =--wait.innerHTML;
+        if(time <= 0) {
+              history.go(-1);
+           // location.href = href;
+            clearInterval(interval);
+        };
+    }, 1000);
+})();
+</script>

@@ -1,0 +1,166 @@
+<?php include $conf['view_path'].'header-nonav.inc.html';?>
+  <body class="no-padding reader-black-font">
+
+<div class="sign">
+<div class="logo"><a href="<?php echo $conf['web_url']; ?>" target="_self">
+<!--<img src="<?php echo $conf['public_dir']; ?>common/images/logowhite.png" alt="Logo" class="lazy" style="display: inline;">--></a></div>
+    <div class="main">
+
+
+
+<h4 class="title">
+  <div class="normal-title">
+    <a class="" href="<?php echo r_url('user-login') ?>">登录</a>
+    <b>·</b>
+    <a id="js-sign-up-btn" class="active" href="#">注册</a>
+  </div>
+</h4>
+<div class="js-sign-up-container">
+  <form class="new_user" method="post" action="<?php echo r_url('user-create'); ?>" id="user_create_form">
+     
+           <div class="input-prepend form-group">
+        <input placeholder="用户名" autocomplete="off" type="text" value="" id="username" name="username">
+      <i class="fa fa-user"></i>
+    </div>
+    <div class="input-prepend form-group">
+        <input placeholder="你的邮箱" autocomplete="off" type="text" value="" id="usermail" name="usermail">
+      <i class="fa fa-envelope"></i>
+    </div>
+         <div class="input-prepend  no-radius js-normal hide">
+
+          <input placeholder="手机号" type="tel" autocomplete="off" oninput="listerphone()" onpropertychange="listerphone()" id="userphone" name="userphone">
+        <i class="fa fa-phone"></i>
+      </div>
+
+           <div class="input-prepend form-group">
+      <input placeholder="设置密码" type="password" id="password" name="password" autocomplete="off" maxlength="20">
+      <i class="fa fa-lock"></i>
+    </div>
+           <div class="input-prepend form-group">
+   
+  
+    <input placeholder="确认密码" type="password" id="repassword" name="repassword" autocomplete="off" maxlength="20" >
+  <i class="fa fa-lock"></i>
+   
+    </div>
+        <?php if($conf['user_create_email_on']) { ?>
+
+<div class="input-prepend  no-radius security-up-code js-security-number form-group">
+        <input type="text" id="code" name="code" placeholder="验证码" >
+      <i class="fa fa-get-pocket"></i>
+     <a id="sendcode" action="<?php echo r_url('user-send_code-user_create');?>" class="btn-up-resend js-send-code-button" href="javascript:;">发送验证码</a>
+      
+    </div>
+
+     
+          <?php } ?>
+          
+          
+        
+            <button type="submit" class="sign-up-button" <?php if($conf['user_create_email_on']) { ?>disabled<?php } ?> id="regsubmit">注册</button>
+        
+
+         <p class="sign-up-msg">点击<a data-toggle="modal" data-target="#myModal" href="#myModal" data-modal>“注册” </a> 即表示您同意并愿意遵守协议 。</p>
+   
+
+</form>
+   <!-- 更多登录方式 -->
+  <div class="more-sign hide">
+
+    <h6>社交帐号登录</h6>
+    <ul>
+          <li><a class="weibo" href="#"><i class="fa fa-weibo"></i></a></li>
+            <li><a class="weixin" href="#"><i class="fa fa-wechat"></i></a></li>
+       <li><a class="qq" href="#"><i class="fa fa-qq"></i></a></li>
+             </ul>
+
+  </div>
+   </div>
+
+    </div>
+  </div>
+
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">系统官网注册协议</h4>
+      </div>
+
+        <div class="modal-body">
+                    <div class="uk-overflow-container">
+                        <p>&nbsp; &nbsp; &nbsp; &nbsp;当您申请用户时，表示您已经同意遵守本规章。&nbsp;</p><p>欢迎您加入本站点参加交流和讨论，本站点为公共论坛，为维护网上公共秩序和社会稳定，请您自觉遵守以下条款：&nbsp;</p><p><br></p><p>一、不得利用本站危害国家安全、泄露国家秘密，不得侵犯国家社会集体的和公民的合法权益，不得利用本站制作、复制和传播下列信息：</p><p>　 （一）煽动抗拒、破坏宪法和法律、行政法规实施的；</p><p>　（二）煽动颠覆国家政权，推翻社会主义制度的；</p><p>　（三）煽动分裂国家、破坏国家统一的；</p><p>　（四）煽动民族仇恨、民族歧视，破坏民族团结的；</p><p>　（五）捏造或者歪曲事实，散布谣言，扰乱社会秩序的；</p><p>　（六）宣扬封建迷信、淫秽、色情、赌博、暴力、凶杀、恐怖、教唆犯罪的；</p><p>　（七）公然侮辱他人或者捏造事实诽谤他人的，或者进行其他恶意攻击的；</p><p>　（八）损害国家机关信誉的；</p><p>　（九）其他违反宪法和法律行政法规的；</p><p>　（十）进行商业广告行为的。</p><p><br></p><p>二、互相尊重，对自己的言论和行为负责。</p><p>三、禁止在申请用户时使用相关本站的词汇，或是带有侮辱、毁谤、造谣类的或是有其含义的各种语言进行注册用户，否则我们会将其删除。</p><p>四、禁止以任何方式对本站进行各种破坏行为。</p><p>五、如果您有违反国家相关法律法规的行为，本站概不负责，您的登录论坛信息均被记录无疑，必要时，我们会向相关的国家管理部门提供此类信息。</p>
+                    </div>
+                </div>
+
+
+    </div>
+  </div>
+</div>
+<?php include $conf['view_path'].'footer-nof.inc.html';?>
+ <script>
+var jsend = $('#sendcode');
+
+  var jform = $('#user_create_form');
+  var jsubmit = $('#regsubmit');
+  var referer = '<?php echo $referer;?>';
+
+jsend.on('click', function() {
+  
+  jsend.button('loading');
+  var postdata = jform.serialize();
+  $.xpost(jsend.attr('action'), postdata, function(code, ret) {
+
+    if(code == 0) {
+      $('#code').focus();
+      var t = 60; // 倒计时
+      jsend.button('发送成功 60 ');
+      jsubmit.button('reset');
+      // 倒计时，重新发送
+      var handler = setInterval(function() {
+        jsend.button('发送成功 '+(--t)+' ');
+        if(t == 0) {
+          clearInterval(handler);
+          jsend.button('reset');
+        }
+      }, 1000);
+    } else if(code < 0) {
+      
+      $.sns5i_notify(ret.message,'danger');
+      jsend.button('reset');
+    } else {
+      jform.find('[name="'+code+'"]').alert(ret.message).focus();
+      jsend.button('reset');
+    }
+  });
+  return false;
+});
+
+
+
+  jform.on('submit', function() {
+    var postdata = jform.serialize();
+    jsubmit.button('loading');
+    
+    $.xpost(jform.attr('action'), postdata, function(code, ret) {
+     
+      if (code == 0) {
+        
+        $.sns5i_notify(ret.message,'success',referer,1000);
+        
+        
+        
+        
+      } else {
+        $.sns5i_notify(ret.message,'danger');
+        jsubmit.button('reset');
+      }
+    });
+    return false;
+  });
+</script>
+
+</body>
+</html>

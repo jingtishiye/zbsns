@@ -1,0 +1,130 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    
+    <form class="form-horizontal" id="doceditform" method="post" data-url="<?php echo r_url('doc-edit'); ?>">
+   
+    <div class="form-group">
+    <label class="col-sm-1 control-label">标题</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" value="<?php echo $info['title']; ?>" id="title" name="title" placeholder="">
+    </div>
+  </div>
+ 
+<div class="form-group">
+              <label class="col-sm-1 control-label">
+                    话题选择
+                </label>
+    
+    <div class="col-sm-5">
+    
+    <input type="hidden" name="keywords" value="<?php echo $info['keywords']; ?>">
+    
+   
+    <div class="clearfix"></div>
+    <div class="biaoqian">
+     <div id="tpt_sel" class="tpt_sels" >
+    <span style="margin-bottom: 5px;float: left;">
+
+      
+      </span>
+    </div>
+    
+   
+  
+    </div>
+      <div id="tpt_pre" class="keyword-sug-wrap tpt_pres" >
+       
+        <p class="wi-margin-top ">
+        <?php foreach($taglist as $key=>$vo){ ?>
+        <span class="item-tag"><a href="javascript:;"><?php echo $vo['name']; ?></a></span>
+        <?php } ?>
+        
+        </p></div>
+    
+</div>
+  </div>
+ <div class="form-group">
+                <label class="col-sm-1 control-label">
+                    内容
+                </label>
+                <div class="col-sm-11">
+                    <textarea id="summernote" name="description" style="height:300px;"><?php echo $info['description']; ?></textarea>
+                </div>
+  </div>
+
+      <input type="hidden" value="<?php echo $info['id']; ?>" name="id" />
+    </form>
+ </div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+
+        </script>
+        <script type="text/javascript">
+            $(function(){
+$('#tpt_input').keydown(function(e) {
+      if (e.which === 13) {
+        $("#tpt_btn").click();
+        e.preventDefault();
+        return false;
+      }
+    });
+    $("#tpt_sel").on('click', 'a>i', function() {
+      var name = "keywords";
+      var tag = $(this).parent().text();
+      $(this).parent().remove();
+      var tags = new Array();
+      $("#tpt_sel").find('a').each(function() {
+        tags.push($(this).text());
+      });
+      $("input[name=" + name + "]").val(tags.join(","));
+      $("#tpt_pre a:contains('" + tag + "')").removeClass("selected");
+    });
+    function showkeyword(){
+            var name = "keywords";
+      var tags = $.trim($("input[name=" + name + "]").val());
+      if (tags !== "") {
+        tags = tags.split(",");
+      } else {
+        tags = new Array();
+      }
+      var tag = $.trim($("#tpt_input").val());
+      if (tag !== '' && $.inArray(tag, tags) === -1) {
+        tags.push(tag);
+        $("#tpt_pre a:contains('" + tag + "')").addClass("selected");
+      }
+      $("#tpt_sel").children('span').empty();
+      $.each(tags, function(k, v) {
+        $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<i class="fa fa-times"></i></a>');
+        $("#tpt_pre a:contains('" + v + "')").addClass("selected");
+      });
+      $("input[name=" + name + "]").val(tags.join(","));
+
+      $("#tpt_input").val('');
+    }
+    showkeyword();
+    $("#tpt_btn").click(function() {
+      showkeyword();
+    });
+    $("#tpt_pre").on('click', 'a:not(.selected)', function() {
+      var name = "keywords";
+      var tags = $.trim($("input[name=" + name + "]").val());
+      if (tags !== "") {
+        tags = tags.split(",");
+      } else {
+        tags = new Array();
+      }
+      var tag = $.trim($(this).text());
+      if (tag !== '' && $.inArray(tag, tags) === -1) {
+        tags.push(tag);
+      }
+      $("#tpt_sel").children('span').empty();
+      $.each(tags, function(k, v) {
+        $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<i class="fa fa-times"></i></a>');
+      });
+      $("input[name=" + name + "]").val(tags.join(","));
+      $(this).addClass('selected');
+    });
+  
+});
+        </script>
+

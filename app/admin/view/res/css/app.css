@@ -1,0 +1,125 @@
+@charset "UTF-8";
+/**
+ * 
+ * @authors 5iSNS实验室 (admin@5isns.com)
+ * @date    2019-03-28 15:18:38
+ */
+body,
+html {
+	padding-top: 0px;
+	height: 100%;
+   
+
+}
+ul li {
+	list-style-type: none;
+}
+
+a {
+	color: inherit;
+	outline: 0;
+}
+
+ol,
+ul,
+p {
+	padding: 0px;
+	margin: 0px;
+}
+.wrap{
+    margin-bottom:50px;
+}
+.pagediv{
+    position:fixed;
+    bottom:0px;
+    background: #fff;
+    padding:8px 20px;
+    height:50px;
+    line-height:50px;
+    left:0px;
+    right:0px;
+}
+.pagediv .pagination{
+margin:0;
+float:right;
+}
+.main{
+    width:100%;
+    padding:20px;
+}
+.table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+    border-bottom-width: 1px;
+}
+.btn {
+
+    border-radius: 0;
+}
+.uk-padding{
+	padding:10px;
+}
+.container{
+
+}
+.bodyli li{
+  border-bottom:1px solid #e1e1e8;
+}
+.margin-right{
+	margin-right:15px;
+}
+.admin-info .col-md-6{
+    height:35px;
+    line-height:35px;
+}
+.admin-info h4{
+    border-left:5px solid #1b809e;
+    padding-left:10px;
+}
+.admin-info .row{
+    padding:10px;
+}
+.admin-index {
+    width: 100%;
+  
+   overflow:hidden;
+}
+.admin-index .col-md-3:first-child{
+        padding-left: 0px;
+}
+.admin-index .col-md-3:last-child{
+        padding-right: 0px;
+}
+.admin-index dl {
+  
+    margin: 10px 0;
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.admin-index dt {
+    width: 40%;
+    float: left;
+    line-height: 100px;
+    font-size: 45px;
+    text-align: center;
+    color: #FFF;
+}
+.admin-index .f12 {
+    font-size: 14px;
+    line-height: 16px;
+    margin-top: 5px;
+}
+.admin-index dd {
+    width: 60%;
+    text-align: center;
+    font-size: 45px;
+    line-height: 45px;
+    float: right;
+    margin-top: 15px;
+    color: #c6cad6;
+}
+.admin-index .qs{background-color: #6ccac9}
+.admin-index .cs{background-color: #ff6c60}
+.admin-index .hs{background-color: #f8d347}
+.admin-index .ls{background-color: #57c8f2}
+
+

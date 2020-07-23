@@ -1,0 +1,81 @@
+<?php include $conf['view_path'].'header-nonav.inc.html';?>
+	<body class="no-padding reader-black-font">
+
+<div class="sign">
+<div class="logo"><a href="<?php echo $conf['web_url']; ?>" target="_self">
+<img src="<?php echo $conf['public_dir']; ?>common/images/logowhite.png" alt="Logo" class="lazy" style="display: inline;"></a></div>
+    <div class="main">
+
+
+
+<h4 class="title">
+  <div class="normal-title">
+    <a class="active" href="#">重新设置密码</a>   
+  </div>
+</h4>
+<div class="js-sign-up-container">
+  <form class="new_user" id="form" action="<?php echo r_url('user-resetpw_complete');?>" method="post">
+
+	<div class="input-prepend form-group restyle">
+      <input placeholder="设置密码" type="password" id="password" name="password" autocomplete="off" maxlength="20">
+      <i class="fa fa-lock"></i>
+    </div>
+           <div class="input-prepend form-group restyle">
+   
+  
+    <input placeholder="确认密码" type="password" id="password2" name="repassword" autocomplete="off" maxlength="20" >
+  <i class="fa fa-lock"></i>
+   
+    </div>
+
+<button type="submit" class="btn btn-primary btn-block" id="submit" data-loading-text="确认中..." <?php if(!$conf['user_resetpw_on']) { ?>disabled<?php } ?>>下一步</button>
+
+</form>
+
+   </div>
+    </div>
+  </div>
+<?php include $conf['view_path'].'footer-nof.inc.html';?>
+
+
+<script>
+var jform = $('#form');
+var jsubmit = $('#submit');
+var jpassword = $('#password');
+var jpassword2 = $('#password2');
+jform.on('submit', function() {
+	
+	jsubmit.button('loading');
+	
+	if(!jpassword.val()) {
+		jpassword.focus();
+		$.sns5i_notify('请输入密码','danger');
+		jsubmit.button('reset');
+		return false;
+	}
+	
+	if(jpassword.val() != jpassword2.val()) {
+		jpassword2.focus();
+		$.sns5i_notify('两次密码不一致','danger');
+		jsubmit.button('reset');
+		return false;
+	}
+	
+	var postdata = jform.serializeObject();
+	//postdata.password = $.md5(postdata.password);
+	$.xpost(jform.attr('action'), postdata, function(code, ret) {
+		if(code == 0) {
+			$.sns5i_notify(ret.message,'success',xn.url('user-login',1),1000);
+			
+		} else if(xn.is_number(code)) {
+			$.sns5i_notify('请再次输入密码','danger');
+			jsubmit.button('reset');
+		} else {
+			jform.find('[name="'+code+'"]').alert(ret.message).focus();
+			jsubmit.button('reset');
+		}
+	});
+	return false;
+});
+
+</script>

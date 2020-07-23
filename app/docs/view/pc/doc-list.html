@@ -1,0 +1,156 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+		<div class="main-wrapper ">
+			<div class="container wi-padding-top ">
+        <div class="row">
+				<div class="col-md-9 col-sm-12">
+					
+<div class="bb">
+        
+            <div class="subnav-content-wrap" id="tab_anchor" >
+            <div class="subnav-wrap" style="left: 0px;">
+                <div class="top-hull">
+                    <div class="subnav-contentbox">
+                        <div class="tab-nav-container">
+                            <ul class="subnav-content ">
+                              <li <?php if( $type == 1 ){ echo 'class="current"';} ?>><a href="<?php echo r_url('doc-list'); ?>">最新文档</a></li>
+              <li <?php if( $type == 2 ){ echo 'class="current"';} ?>><a href="<?php echo r_url('doc-list-2'); ?>">推荐文档</a></li>
+              <li <?php if( $type == 3 ){ echo 'class="current"';} ?>><a href="<?php echo r_url('doc-list-3'); ?>">热门文档</a></li>
+                   
+      
+                                      
+                            </ul>
+                            <div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+                 <div class="tag-artlist">
+					 <ul class="wi-margin">
+
+
+            <?php foreach($docslist as $key=>$vo) { ?>
+            <li class="">
+              <section class="question-list-item">
+    <div class="qa-rank">
+       <?php if($vo['settop']==1){?>
+        <div class="answers  top">
+         <i class="fa fa-cloud-upload"></i><small>置顶</small>
+        </div>
+        <?php } ?> 
+         <?php if($vo['choice']==1){?>
+        <div class="answers  solved">
+         <i class="fa fa-thumbs-o-up"></i><small>推荐</small>
+        </div>
+        <?php } ?> 
+         <div class="answers answered ">
+         <?php echo $vo['view']; ?><small> 浏览</small>
+        </div>
+       
+    </div>
+    <div class="summary">
+        <h2 class="title">
+            <a href="<?php echo r_url('doc-'.$vo['id']); ?>">
+             <span title="doc" class="ic ic-<?php echo $vo['fileinfo']['ext']; ?>"></span>&nbsp;&nbsp;<?php echo $vo['title']; ?></a>
+
+                        <div class="tags">
+                          <?php if(!empty($vo['keywords'])){
+
+foreach($vo['keywords_arr'] as $k=>$v) { ?>
+
+<a class="tag" href="<?php echo r_url('tags-'.$v['id']); ?>" target="_self">
+  
+  <?php echo $v['name']; ?>
+</a>
+
+<?php }} ?>
+</div>
+                    </h2>
+            <p class="uk-article-meta">
+               <span><a href="<?php echo r_url('user-'.$vo['user']['id']); ?>" target="_self">
+                  <?php echo $vo['user']['nickname']; ?>
+                </a></span>
+                                    <span>大小:<?php echo humansize($vo['fileinfo']['size']); ?></span>
+                                    <span>页数:<?php echo $vo['pageid']; ?></span>
+                                    <span>评分:<i class="wenku-star <?php echo $vo['ratystar']; ?>"></i><?php echo $vo['raty']; ?> 分</span>
+                                    <span>上传时间:<?php echo $vo['create_time_fmt']; ?></span>
+            
+               
+            
+        
+                
+              </span>
+            </p>
+       
+    </div>
+</section>
+            
+          </li>
+						 
+              <?php } ?>
+					 </ul>
+					
+					 		<ul class="wi-margin-left pagination pull-left">
+					     <?php echo $pagination; ?>
+					     </ul>
+					 </div>
+				      
+                  
+        </div>
+
+
+
+				</div>
+				<div class="col-md-3 col-sm-12">
+					
+	
+					
+					
+					<div  class="r-aside recommend bb">
+         <div class="boxtitle"><span class="title">热门文档</span> </div>
+         <ul class="art_list">
+      
+<?php foreach($hot_doclist_6 as $key=>$vo) { ?>
+
+
+<li><a href="<?php echo r_url('doc-'.$vo['id']); ?>" title="<?php echo $vo['title']; ?>" target="_self"><?php echo $vo['title']; ?></a>
+               <div >
+               <span class="anum" > <?php echo $vo['raty']; ?> 评分</span>
+               </div>
+              </li>
+
+<?php } ?>
+                               
+
+              </ul>
+     </div>
+				<div  class="r-aside recommend bb ">
+				    
+            <div class="boxtitle"><span class="title">热门话题</span> </div>
+					<ul class="taglist--inline multi">
+                                                                 
+                         <?php foreach($hot_tags  as $key=>$vo) { ?>  
+                         <li class="tagPopup">
+                                    <a  class="tag" href="<?php echo r_url('tags-'.$vo['id']); ?>" target="_self">
+                                      <?php if($vo['cover_id']>0){ ?>
+                                      <img src="<?php echo find_image_by_id($vo['cover_id']); ?>">
+                                      <?php } ?>
+                                      <?php echo $vo['name']; ?></a>
+                                </li>                                             
+                         <?php } ?>                                   
+                                                       
+                                                             
+                                                    </ul>
+				    
+				</div>	
+				</div>
+</div>
+			</div>
+		</div>
+<?php include $conf['view_path'].'footer.inc.html';?>

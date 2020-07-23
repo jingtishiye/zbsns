@@ -1,0 +1,92 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>导航列表</a></li>
+
+    </ul>
+    <form class="well form-inline wi-margin-top" method="post" action="<?php echo r_url('nav-list'); ?>">
+      
+        <label class="">导航名称：</label>
+        <input class="form-control" type="text" name="name" value="<?php echo param('name'); ?>" >
+       
+        <input type="submit" class="btn btn-primary" value="搜索">
+        <button type="button"  data-url="<?php echo r_url('nav-add'); ?>" data-id="navaddform"  data-title="新增导航" class="openformdialog btn btn-success">新增</button>
+    </form>
+   
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                 <th>别名</th>
+                <th>排序</th>
+                <th>导航分类</th>
+               <th>链接</th>
+                <th>操作</th>
+             
+            </tr>
+            </thead>
+            <tbody>
+            	<?php foreach($navlist as $key=>$vo) { ?>
+                            <tr id="navlist_<?php echo $vo['id']; ?>">
+                            		<td>
+										<?php echo $vo['id']; ?></td>
+									<td>
+										<?php echo $vo['name']; ?>
+									</td>
+                                    <td>
+                                        <?php echo $vo['alias']; ?>
+                                    </td>
+                                 
+									<td>
+									     <?php echo $vo['sort']; ?>
+									</td>
+							
+										<td>
+
+  <?php echo $vo['pid']; ?>
+
+									</td>
+                                       <td>
+                                        <?php echo $vo['link']; ?>
+                                    </td>
+								
+									<td>
+
+
+
+
+
+									   <div class="btn-group btn-group-xs" role="group" aria-label="Extra-small button group">
+    
+<?php if($vo['status']==1){?>
+     <button type="button" class="jhcz btn btn-warning" data-removeclassname="btn-warning" data-classname="btn-success" data-title="启用" data-val="<?php echo $vo['status']; ?>" data-url="<?php echo r_url('nav-forbidden',['id'=>$vo['id']]); ?>">禁用</button>
+
+<?php }else{ ?>
+     <button type="button" class="jhcz btn btn-success" data-removeclassname="btn-success" data-classname="btn-warning" data-title="禁用" data-val="<?php echo $vo['status']; ?>" data-url="<?php echo r_url('nav-forbidden',['status'=>$vo['status'],'id'=>$vo['id']]); ?>">启用</button>
+<?php } ?>
+
+      <button type="button" data-url="<?php echo r_url('nav-edit',['id'=>$vo['id']]); ?>" data-id="naveditform" data-title="<?php echo $vo['name'] ?>-编辑导航" class="openformdialog btn btn-primary">编辑</button>
+      <button type="button" data-title="确认删除该导航吗？" data-name="navlist_<?php echo $vo['id'] ?>" data-url="<?php echo r_url('nav-delete',['id'=>$vo['id']]); ?>" class="btn btn-danger deletebtn">删除</button>
+    </div>
+									</td>
+                   
+                </tr>
+                     <?php } ?>      
+                        </tbody>
+        </table>
+       
+
+
+   
+</div>
+<div class="pagediv">
+        <div class="pagination"><?php echo $pagination; ?></div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+
+<script>
+
+
+</script>

@@ -1,0 +1,91 @@
+<?php include $conf['view_path'].'header-nonav.inc.html';?>
+	<div class="wi-padding">
+
+
+<div id="chatbox">
+<?php foreach($messlist as $key=>$vo){ 
+
+if($vo['uid']==$uid){ ?>
+<!-- Right -->
+  <div class="receiver">
+      <div>
+          <img class="myimg" src="<?php echo $user['avatar_url']; ?>" />
+      </div>
+   <div>
+        <div class="right_triangle"></div>
+        <span> <?php echo htmlspecialchars_decode($vo['content']); ?> </span>
+   </div>
+  </div>
+<?php }else{ ?>
+<div class="sender">
+      <div>
+          <img src="<?php echo $mess_user['avatar_url']; ?>">
+      </div>
+  <div>
+      <div class="left_triangle"></div>
+      <span> <?php echo htmlspecialchars_decode($vo['content']); ?> </span>
+   </div>
+  </div>
+<?php }} ?>
+</div>
+
+
+
+
+<div class="chat_footer">
+<form class="form-horizontal messform" action="<?php echo r_url('api-sixin'); ?>" method="post">
+   <div class="form-group ">
+    <input type="hidden" name="uid" value="<?php echo $mess_user['id']; ?>" />
+    <input type="hidden" name="type" value="2" />
+    <div class="pull-left">
+     <input type="text" style="width:200px" class="form-control"  name="content" id="content" value="" placeholder="" >
+    </div>
+    <div class="pull-left wi-margin-left">
+    <button type="submit" class="btn btn-primary">发送消息</button>
+    </div>
+  </div>
+  
+</form> 
+      </div>
+
+ </div>
+
+<input type="hidden" id="myimg" value="<?php echo $user['avatar_url']; ?>" />
+      
+
+<?php include $conf['view_path'].'footer-nof.inc.html';?>
+<script type="text/javascript">
+	$('body').scrollTop($('body')[0].scrollHeight);
+$('.messform').on('submit', function() {
+    var postdata = $(this).serialize();
+    
+    
+    var jsubmit = $(this).find('button[type="submit"]');
+    jsubmit.button('loading').button('disabled');
+    var _this = $(this);
+    $.xpost($(this).attr('action'), postdata, function(code, ret) {
+     
+      if (code == 0) {
+      
+
+var img = $('#myimg').val();
+var content = $('#content').val();
+var html='';
+  html +='<div class="receiver"><div><img src="'+img+'" />';
+      html +='</div><div><div class="right_triangle"></div><span>'+content+'</span></div></div>';
+
+   console.log(html);
+         $(_this)[0].reset();
+         jsubmit.button('reset');
+        
+        $('#chatbox').append(html);
+        $('body').scrollTop($('body')[0].scrollHeight);
+      } else{
+        $.sns5i_notify(ret.message,'danger');
+        jsubmit.button('reset');
+      }
+    });
+    return false;
+  });
+
+</script>

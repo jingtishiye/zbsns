@@ -1,0 +1,89 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>现金消费列表</a></li>
+
+    </ul>
+     <div class="well form-inline wi-margin-top" >
+      
+   
+         <button type="button" data-title="确认清空失败记录吗？" data-url="<?php echo r_url('chongzhi-qkjl'); ?>" class="btn btn-danger confirm_btn">清空失败记录</button>
+
+
+    </div>
+   
+        <table class="table table-hover table-bordered wi-margin-top">
+            <thead>
+            <tr>
+                 <th>日期</th>
+                 <th>用户</th>
+                <th>消费类型</th>
+                <th>支付方式</th>
+                <th>金额</th>
+                <th>积分</th>
+                <th>订单号</th>
+              
+              
+                <th>关联id(打赏有效)</th>
+                <th>状态</th>
+                <th>备注</th>
+             <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            	<?php foreach($jubaolist as $key=>$vo) { ?>
+                            <tr id="czlist_<?php echo $vo['id']; ?>">
+                                <td>
+                    <?php echo date('Y-m-d H:i:s',$vo['create_time']); ?></td>
+                  <td>
+                       <?php $userinfo = user__read($vo['uid']);echo $userinfo['nickname']; ?>
+                  </td>
+                  <td>
+                       <?php if($vo['actiontype']==1){echo '充值';}else{echo '打赏';} ?>
+                  </td>
+                  <td>
+                       <?php if($vo['type']==1){echo '支付宝';}else{echo '微信';} ?>
+                  </td>
+                  <td>
+                       <?php echo $vo['rmb']; ?>
+                  </td>
+                  <td>
+                       <?php echo $vo['score']; ?>
+                  </td>
+                   <td>
+                       <?php echo $vo['out_trade_no']; ?>
+                  </td>
+                   <td>
+                       <?php echo $vo['itemid']; ?>
+                  </td>
+                <td>
+                       <?php if($vo['status']==1){echo '成功';}else{echo '未成功';} ?>
+                  </td>
+                    <td>
+                       <?php echo $vo['errorcode']; ?>
+                  </td>
+                  <td>
+   <div class="btn-group btn-group-xs" role="group" aria-label="Extra-small button group">
+ 
+      <button type="button" data-title="确认删除该记录吗？" data-name="czlist_<?php echo $vo['id'] ?>" data-url="<?php echo r_url('chongzhi-delete',['id'=>$vo['id']]); ?>" class="btn btn-danger deletebtn">删除</button>
+    </div>
+
+                    </td>
+                </tr>
+                     <?php } ?>      
+                        </tbody>
+        </table>
+       
+
+   
+</div>
+<div class="pagediv">
+        <div class="pagination"><?php echo $pagination; ?></div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+
+<script>
+
+
+</script>

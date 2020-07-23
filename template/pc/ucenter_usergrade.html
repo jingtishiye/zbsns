@@ -1,0 +1,146 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+		<div class="main-wrapper">
+			<div class="container wi-padding-top">
+			<div class="row">
+				<div class="col-md-12 col-sm-12 bb">
+					
+
+					<div class="" style="padding-top:0px">
+						<div class="">
+							<div class="dongtai">
+								<ul class="trigger-menu" >
+
+<?php if($uid>0){  ?>									
+<li class="<?php if($type==1){ echo 'active'; } ?>"><a href="<?php echo r_url('user-usergrade-1'); ?>" target="_self"><i class="fa fa-user"></i>我的会员组</a></li>
+				<?php }  ?>						
+									<li class="<?php if($type==2){ echo 'active'; } ?>"><a href="<?php echo r_url('user-usergrade-2'); ?>" target="_self"><i class="fa fa-user-circle"></i>购买会员组</a></li>
+									<li class="<?php if($type==3){ echo 'active'; } ?>"><a href="<?php echo r_url('user-usergrade-3'); ?>" target="_self"><i class="fa fa-ravelry"></i>升级会员组</a></li>
+								
+								</ul>
+
+								
+
+<div class="wi-padding">
+
+<?php if($type==1){ ?>
+ <table class="table table-hover table-condensed">
+<tr class="active">
+	<th class="text-left" width="200"><b>会员组</b></th>
+	<th width="100">权限</th>
+	<th width="100">时间限制</th>
+	<th width="100">天数限制</th>
+	<th width="100">次数限制</th>
+	<th width="100">折扣</th>
+	
+</tr>
+
+
+<tr class="text-left">
+	<td><?php echo $userqx['extend']['up_grades_name'];?></td>
+	<td><?php echo str_replace(array('1','2','3','4','5','6',','),array('发帖<br>','发文档<br>','评论<br>','查看付费内容<br>','下载附件<br>','下载文档',''),$userqx['extend']['up_grades_type']); ?></td>
+	<td><?php 
+$limitarr = explode(',',$userqx['extend']['up_grades_limittime']);
+echo '发帖时间限制:'.humanmiao($limitarr[0]).'<br>发文档时间限制:'.humanmiao($limitarr[1]).'<br>评论时间限制:'.humanmiao($limitarr[2]).'<br>下载时间限制:'.humanmiao($limitarr[3]);
+ ?></td>
+							<td>无限制</td>
+							<td>无限制</td>
+							<td><?php echo $user['extend']['up_grades_bili'].'%';?></td>
+							
+</tr>
+
+<?php if($userqx['extend']['grades']>0){ ?>
+	
+<tr class="text-left">
+	<td><?php echo $userqx['extend']['grades_name'];?></td>
+	<td><?php echo str_replace(array('1','2','3','4','5','6',','),array('发帖<br>','发文档<br>','评论<br>','查看付费内容<br>','下载附件<br>','下载文档',''),$userqx['extend']['grades_type']); ?></td>
+	<td><?php 
+$limitarr = explode(',',$userqx['extend']['grades_limittime']);
+
+echo '发帖时间限制:'.humanmiao($limitarr[0]).'<br>发文档时间限制:'.humanmiao($limitarr[1]).'<br>评论时间限制:'.humanmiao($limitarr[2]).'<br>下载时间限制:'.humanmiao($limitarr[3]);
+ ?></td>
+ <td><?php if($userqx['extend']['grades_days']>0){echo $userqx['extend']['grades_days'];}else{echo '无限制';}?></td>
+							<td><?php if($userqx['extend']['grades_nums']>0){echo $userqx['extend']['grades_nums'];}else{echo '无限制';}?></td>
+							
+							<td><?php echo $userqx['extend']['grades_bili'].'%';?></td>
+							
+</tr>
+
+
+
+<?php } ?>
+<tr class="text-left">
+	<td>综合权限展示</td>
+	<td><?php echo str_replace(array('1','2','3','4','5','6',','),array('发帖<br>','发文档<br>','评论<br>','查看付费内容<br>','下载附件<br>','下载文档',''),implode(',',$userqx['quanxian'])); ?></td>
+	<td><?php 
+
+echo '发帖时间限制:'.humanmiao($userqx['quanxian_limit_topic']).'<br>发文档时间限制:'.humanmiao($userqx['quanxian_limit_doc']).'<br>评论时间限制:'.humanmiao($userqx['quanxian_limit_pinglun']).'<br>下载时间限制:'.humanmiao($userqx['quanxian_limit_download']);
+ ?></td>
+							<td><?php if($userqx['days']>0){echo $userqx['days'];}else{echo '无限制';}?></td>
+							<td><?php if($userqx['nums']>0){echo $userqx['nums'];}else{echo '无限制';}?></td>
+							<td><?php echo $userqx['bili'].'%';?></td>
+							
+</tr>
+
+</table>
+<?php }else{ ?>
+      <table class="table table-hover table-condensed">
+						<tr class="active">
+							<th class="text-left" width="200"><b>名称</b></th>
+							<th width="100">所需
+								<?php if($type==2){echo $conf['pointname']['point'];}else{echo $conf['pointname']['expoint1'];} ?></th>
+							<th width="100">权限</th>
+							<th width="100">时间限制</th>
+							<th width="100">天数限制</th>
+							<th width="100">次数限制</th>
+							<th width="100">折扣</th>
+							<th width="100">图标</th>
+							<th width="100">操作</th>
+						</tr>
+						<?php foreach($usergradelist as $v) { ?>
+						<tr class="text-left">
+							<td><?php echo $v['name'];?></td>
+							<td><?php echo $v['score'];?></td>
+							<td><?php echo str_replace(array('1','2','3','4','5','6',','),array('发帖<br>','发文档<br>','评论<br>','查看付费内容<br>','下载附件<br>','下载文档',''),$v['type']); ?></td>
+							<td><?php 
+$limitarr = explode(',',$v['limittime']);
+
+echo '发帖时间限制:'.humanmiao($limitarr[0]).'<br>发文档时间限制:'.humanmiao($limitarr[1]).'<br>评论时间限制:'.humanmiao($limitarr[2]).'<br>下载时间限制:'.humanmiao($limitarr[3]);
+ ?></td>
+							<td><?php echo $v['days'];?></td>
+							<td><?php echo $v['nums'];?></td>
+							<td><?php echo $v['bili'].'%';?></td>
+							<td>
+							<img style="height:30px;width:30px;" src="<?php echo find_image_by_id($v['cover_id']); ?>">
+							</td>
+							<td>  
+<?php if($type==2){  if($userqx['extend']['grades']!=$v['id']){ ?>
+<button data-title="购买该会员组需要消耗<?php echo $v['score'].$conf['pointname']['point'];?>,确定购买吗？" type="button" data-url="<?php echo r_url('user-buy-5',['id'=>$v['id']]); ?>" class="confirm-dialog btn btn-danger btn-xs ">购买</button>
+<?php }else{ echo '<div class="text-success">已购买该会员组</div>'; }} ?>
+								
+								</td>
+						</tr>
+						<?php } ?>
+						
+						
+					
+				
+					</table>
+					<?php } ?>
+      </div>
+
+
+							</div>
+						</div>
+
+
+					</div>
+
+				</div>
+				
+
+
+			</div>
+
+			</div>
+		</div>
+		<?php include $conf['view_path'].'footer.inc.html';?>

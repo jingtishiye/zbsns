@@ -1,0 +1,70 @@
+	<?php if($uid==$_user['id']){ ?>
+					<div class="standing">
+						<div  class="r-aside recommend bb">
+						   
+							<div class="boxtitle"><span class="title">我的主页</span></div>				
+							<ul class="list user-dynamic " >
+								<li class="col-md-6">
+									<a href="<?php echo r_url('user'); ?>" target="_self">
+										<i class="fa fa-home"></i> <span>我的首页</span>
+									</a> 
+								</li>
+
+<?php if(in_array('topics',$conf['module_arr'])){ ?>
+
+							<li class="col-md-6">
+										<a href="<?php echo r_url('user-topic'); ?>" target="_self">
+											<i class="fa fa-rss-square"></i> <span>文章相关</span>
+										</a> </li>
+
+<?php } 
+ if(in_array('docs',$conf['module_arr'])){ ?>
+
+								<li class="col-md-6">
+									<a href="<?php echo r_url('user-doc'); ?>" target="_self">
+										<i class="fa fa-newspaper-o"></i> <span>文档相关</span>
+									</a> </li>
+<?php } ?>
+								<li class="col-md-6">
+									<a href="<?php echo r_url('user-tags'); ?>" target="_self">
+										<i class="fa fa-star-o"></i> <span>话题相关</span>
+									</a> </li>
+
+							
+
+							</ul>
+
+						</div>
+					</div>
+					
+
+<?php }else{ ?>
+<div class="standing">
+						<div  class="r-aside recommend bb">
+						   <div class="boxtitle"><span class="title">Ta 的关键词</span></div>	
+											
+							<ul class="list user-dynamic " >
+								
+								 <?php if(!empty($_user['extned']['keywords'])){
+  echo '<div class="recommend-collection">';
+foreach($_user['keywords_arr'] as $k=>$v) { ?>
+ <a class="collection" href="<?php echo r_url('tags-'.$v['id']); ?>" target="_self">
+            <?php if($v['cover_id']>0){ ?>
+                 <img src="<?php echo find_image_by_id($v['cover_id']); ?>" style="height:32px;width:32px;">
+            <?php } ?> 
+            <div class="name"><?php echo $v['name']; ?></div>
+        </a>
+
+<?php }
+echo '</div>';
+} ?>
+
+
+								
+
+
+							</ul>
+
+						</div>
+					</div>
+<?php } ?>

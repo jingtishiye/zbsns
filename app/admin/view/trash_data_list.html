@@ -1,0 +1,45 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a><?php  echo $name; ?>-数据列表</a></li>
+        <li ><a href="<?php  echo r_url('trash-list'); ?>">返回上级</a></li>
+    </ul>
+
+	  	<table class="table table-hover table-bordered wi-margin-top">
+
+		    <thead>
+				<tr>
+				  <th>主键值</th>
+          <th>名称</th>
+          <th>创建时间</th>
+          <th>删除时间</th>
+          <th>操作</th>
+				</tr> 
+		    </thead>
+		     
+       <tbody class="users_content">
+            <?php foreach($trash_datalist as $key=>$vo) { ?>
+                <tr id="trash_<?php echo $vo[$table_key]; ?>">
+                 <td><?php echo $vo[$table_key]; ?></td>
+                  <td><?php echo $vo[$show_key]; ?></td>
+                  <td><?php echo humandate($vo['create_time']); ?></td>
+                  <td><?php echo humandate($vo['update_time']); ?></td>
+                  <td class="col-md-2 text-center">
+                    <div class="btn-group btn-group-xs" role="group" aria-label="Extra-small button group">
+                      <button data-name="trash_<?php echo $vo[$table_key]; ?>" data-title="确认要彻底删除该数据吗？" data-url="<?php echo r_url('trash-trashdatadel', array('name' => $name,$table_key => $vo[$table_key])); ?>"  type="button" class="deletebtn btn btn-warning"><i class="fa fa-close"></i> 彻底删除</button>
+                      &nbsp;
+                     <button data-name="trash_<?php echo $vo[$table_key]; ?>" data-title="确认要恢复该数据吗？" data-url="<?php echo r_url('trash-restoredata', array('name' => $name,$table_key => $vo[$table_key])); ?>"  type="button" class="deletebtn btn btn-danger "><i class="fa fa-reply"></i> 恢复正常</button>
+                      </div>
+                  </td>
+                  
+                </tr>
+            <?php } ?>
+        </tbody>
+      
+		
+		</table>
+	</div>
+<div class="pagediv">
+        <div class="pagination"><?php echo $pagination; ?></div>
+</div>
+<?php include ADMIN_PATH.'view/footer.html';?>

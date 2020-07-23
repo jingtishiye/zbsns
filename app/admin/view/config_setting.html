@@ -1,0 +1,170 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<div class="row" >
+  <div class="col-lg-12">
+    <div class="wrap">
+ <ul class="nav nav-tabs">
+        
+        <?php echo admin_tab_active($menu['setting']['tab'], 'base');?>
+
+    </ul>
+
+    </div>
+   
+    <div class="card">
+      <div class="card-body">
+       
+        <form class="form-horizontal" action="<?php echo r_url('config-setting');?>" method="post" id="form">
+        
+          
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">站点名称：</label>
+            <div class="col-sm-5">
+              <?php echo $input['sitename'];?>
+            </div>
+          </div>
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">站点地址：</label>
+            <div class="col-sm-5">
+              <?php echo $input['web_url'];?>
+              <p class="wi-margin-top text-muted small">地址包含子目录</p>
+            </div>
+          </div>
+          
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">站点介绍：</label>
+            <div class="col-sm-10">
+              <?php echo $input['sitebrief'];?>
+              <p class="mt-2 text-grey small"></p>
+            </div>
+          </div>
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">备案：</label>
+            <div class="col-sm-10">
+              <?php echo $input['beinum'];?>
+              <p class="mt-2 text-grey small"></p>
+            </div>
+          </div>
+             <div class="form-group ">
+            <label class="col-sm-2 form-control-label">话题显示数量：</label>
+            <div class="col-sm-10">
+              <?php echo $input['allow_cate_show'];?>
+              <p class="wi-margin-top text-danger small">文档、帖子发布，用户认证时显示的话题数量，0为不限制。</p>
+            </div>
+          </div>
+           <div class="form-group ">
+            <label class="col-sm-2 form-control-label">话题数量限制：</label>
+            <div class="col-sm-10">
+              <?php echo $input['choose_cate_num'];?>
+              <p class="wi-margin-top text-danger small">文档、帖子发布时最多选择的话题数量，0为不限制。不包含用户认证选择的领域标签</p>
+            </div>
+          </div>
+           <div class="form-group ">
+            <label class="col-sm-2 form-control-label">开启水印：</label>
+            <div class="col-sm-10">
+              <?php echo $input['sy_type'];?>
+              <p class="wi-margin-top text-danger small">开启后站点图片和文档预览都将含有水印内容</p>
+            </div>
+          </div>
+
+           <div class="form-group ">
+            <label class="col-sm-2 form-control-label">水印文字：</label>
+            <div class="col-sm-10">
+              <?php echo $input['shuiyin'];?>
+              <p class="mt-2 text-grey small"></p>
+            </div>
+          </div> 
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">开启用户注册：</label>
+            <div class="col-sm-10">
+              <?php echo $input['user_create_on'];?>
+            </div>
+          </div>
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">开启伪静态：</label>
+            <div class="col-sm-10">
+              <?php echo $input['url_rewrite_on'];?>
+            </div>
+          </div>
+           <div class="form-group ">
+            <label class="col-sm-2 form-control-label">首页：</label>
+            <div class="col-sm-10">
+              <?php echo $input['no_img_index'];?>
+            </div>
+          </div>
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">开启CDN：</label>
+            <div class="col-sm-10">
+              <?php echo $input['cdn_use'];?>
+            </div>
+          </div>
+          
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">开启注册邮箱验证：</label>
+            <div class="col-sm-10">
+              <?php echo $input['user_create_email_on'];?>
+            </div>
+          </div>
+          
+          
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">开启找回密码：</label>
+            <div class="col-sm-10">
+              <?php echo $input['user_resetpw_on'];?>
+            </div>
+          </div>
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">在线转换文档：</label>
+            <div class="col-sm-10">
+              <?php echo $input['online_trans'];?>
+              <p class="wi-margin-top text-danger small">在线转换次数还剩<?php echo $conf['online_trans_num'];?></p>
+            </div>
+          </div>
+ 
+         <div class="form-group ">
+            <label class="col-sm-2 form-control-label">auth_key：</label>
+            <div class="col-sm-10">
+              <?php echo $conf['auth_key'];?>
+            </div>
+          </div>
+          <div class="form-group ">
+            <label class="col-sm-2 form-control-label">appid：</label>
+            <div class="col-sm-10">
+              <?php echo $input['appid'];?>
+              <p class="mt-2 text-grey small"></p>
+            </div>
+          </div>
+          
+          <div class="form-group ">
+            <label for="inputPassword3" class="col-sm-2 form-control-label"></label>
+            <div class="col-sm-5">
+              <button type="submit" class="btn btn-primary btn-block" id="submit" data-loading-text="确定中...">确定</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+
+<script>
+var jform = $('#form');
+var jsubmit = $('#submit');
+jform.on('submit', function() {
+  jsubmit.button('loading');
+  var postdata = jform.serialize();
+  $.xpost(jform.attr('action'), postdata, function(code, ret) {
+    if(code == 0) {
+      $.sns5i_notify(ret.message,'success');
+      jsubmit.text(ret.message).delay(1000).button('reset');
+    } else{
+      alert(ret.message);
+      jsubmit.button('reset');
+    }
+  });
+  return false;
+});
+
+</script>
+  

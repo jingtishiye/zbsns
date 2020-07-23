@@ -1,0 +1,107 @@
+<?php include $conf['view_path'].'header.inc.html';?>
+<div class="main-wrapper">
+<div class="container wi-padding-top" >
+<div class="row" >
+<div class="col-md-3 col-sm-12">
+	<?php include $conf['view_path'].'user_set_menu.html';?>
+</div>
+				<div class="col-md-9 col-sm-12">
+					<div class="wi-padding bb">
+						<h4>邮箱绑定</h4>
+						<hr>
+            <?php if($user['extend']['mailstatus']==1){ ?>
+ <div class="alert-success alert" id="alertinfo">
+                                邮箱已绑定
+                 </div>
+          <?php }else{ ?>
+           <div class="alert-danger alert" id="alertinfo">
+                                邮箱尚未绑定
+                 </div>
+       <?php } ?>
+							
+	<div class="clearfix">										
+<form class="col-md-9 form-horizontal bindmailform" data-callback="" id="usermail-form" action="" method="post">
+   <div class="form-group">
+    <label for="usermail" class="col-sm-1 control-label">邮箱</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="usermail" name="usermail" value="<?php echo $user['usermail']; ?>" placeholder="请输入邮箱地址" >
+    </div>
+    
+
+  </div>
+<div class="form-group">
+    <label for="code" class="col-sm-1 control-label">验证码</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" id="code" name="code" value="" placeholder="验证码" >
+      </div>
+       <div class="col-sm-2">
+       <a id="sendcode" action="<?php echo r_url('user-send_code-user_bindmail');?>" class="btn btn-primary pull-left" href="javascript:;">发送验证码</a>
+    </div>
+    
+
+  </div>
+
+
+  
+  <button type="submit" class="btn btn-primary btn-block">绑定邮箱</button>
+</form>
+	</div>						
+							
+					
+					</div>
+					
+					
+					
+
+
+
+
+
+				</div>
+
+			</div>
+		</div>
+</div>
+		 <?php include $conf['view_path'].'footer.inc.html';?>
+     <script>
+var jsend = $('#sendcode');
+
+jsend.on('click', function() {
+  
+  jsend.button('loading');
+ var usermail = $('#usermail').val();
+  $.xpost(jsend.attr('action'), {'usermail':usermail}, function(code, ret) {
+
+    if(code == 0) {
+      $('#code').focus();
+      var t = 60; // 倒计时
+      jsend.button('发送成功 60 ');
+      
+      // 倒计时，重新发送
+      var handler = setInterval(function() {
+        jsend.button('发送成功 '+(--t)+' ');
+        if(t == 0) {
+          clearInterval(handler);
+          jsend.button('reset');
+        }
+      }, 1000);
+    } else if(code < 0) {
+      
+      $.sns5i_notify(ret.message,'danger');
+      jsend.button('reset');
+    } else {
+      $('#usermail').alert(ret.message).focus();
+      jsend.button('reset');
+    }
+  });
+  return false;
+});
+xn.form_ajax('usermail-form',
+function(ret){
+if(!$('#alertinfo').hasClass('alert-success')){
+  $('#alertinfo').addClass('alert-success').removeClass('alert-danger');
+  $('#alertinfo').html('邮箱绑定成功');
+}
+
+});
+</script>

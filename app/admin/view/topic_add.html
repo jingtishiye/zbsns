@@ -1,0 +1,318 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+<link href="<?php echo $conf['public_dir']; ?>/summernote/summernote.css" rel="stylesheet" />
+    <div class="wrap">
+        <form class="form-horizontal" data-url="<?php echo r_url('topic-add'); ?>" id="topicaddform" method="post">
+            <div class="form-group">
+                <label class="col-sm-1 control-label">
+                    标题
+                </label>
+                <div class="col-sm-8">
+                    <input class="form-control" id="title" name="title" placeholder="" type="text">
+                    </input>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">
+                    类型
+                </label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="type">
+                        <option value="1">
+                            单页
+                        </option>
+                        <option value="2">
+                            帖子
+                        </option>
+                    </select>
+                </div>
+            </div>
+      <div class="form-group">
+              <label class="col-sm-1 control-label">
+                    话题选择
+                </label>
+    
+    <div class="col-sm-5">
+    
+    <input type="hidden" name="keywords" value="">
+   
+    <div class="clearfix"></div>
+    <div class="biaoqian">
+     <div id="tpt_sel" class="tpt_sels" >
+    <span style="margin-bottom: 5px;float: left;">
+      </span>
+    </div>
+    
+   
+  
+    </div>
+      <div id="tpt_pre" class="keyword-sug-wrap tpt_pres" >
+       
+        <p class="wi-margin-top ">
+        <?php foreach($taglist as $key=>$vo){ ?>
+        <span class="item-tag"><a href="javascript:;"><?php echo $vo['name']; ?></a></span>
+        <?php } ?>
+        
+        </p></div>
+    
+</div>
+  </div>
+
+
+   <div class="form-group ">
+            <label class="col-sm-1 form-control-label">付费内容</label>
+            <div class="col-sm-10">
+              <?php echo $input['free'];?>
+              <p class="wi-margin-top text-muted small">部分付费则显示免费内容部分，全部付费则不显示内容</p>
+            </div>
+          </div>
+            <div class="form-group">
+                <label class="col-sm-1 form-control-label">
+                    付费积分
+                </label>
+                <div class="col-sm-1">
+                    <input class="form-control" id="score" name="score" placeholder="" type="number" value="0">
+                    </input>
+                </div>
+            </div>
+
+             <div class="form-group">
+                <label class="col-sm-1 form-control-label">
+                    内容
+                </label>
+                <div class="col-sm-11">
+                    <textarea id="summernote" name="content" style="height:300px;"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 form-control-label">
+                    附件列表
+                </label>
+                <div class="col-sm-8">
+                    <div class="panel panel-default">
+  <div class="panel-body" >
+    <ul id="filelist">
+
+    </ul>
+  </div>
+  <div class="panel-footer clearfix" style="background: #fff">
+    <div class="col-xs-3">
+     
+     
+        <div id="uploadfile"></div>
+   </div>
+   <div class="col-xs-8">
+     <div class="progress">
+  <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+    <span class="sr-only">0%</span>
+  </div>
+</div>
+  </div>   
+  </div>
+</div>
+                    <p class="wi-margin-top text-muted small">附件会显示在帖子的最底部,可上传类型为<?php echo implode(',',$filetypes['attach']); ?>。文件大小不大于<?php echo humansize($filetypes['filesize']); ?></p>
+                </div>
+            </div>
+        </form>
+    </div>
+ 
+    <?php include ADMIN_PATH.'view/footer.html';?>
+    <script src="<?php echo $conf['public_dir']; ?>/summernote/summernote.js">
+    </script>
+  
+        <script type="text/javascript">
+$(document).on('click','.file_attach .close',function(){
+
+$(this).closest('li').remove();
+
+
+});
+
+
+
+
+            $(function(){
+wi.upload_file(
+    xn.url('attach-create-attach',1),
+    {inputid:'inputid',fileid:'fileid',divid:'uploadfile'},
+    '',
+    function(code, ret) {
+
+        var pointname = "<?php echo $conf['pointname']['point']; ?>";
+         if(code==0){
+           var html='<li id="attch'+ret.id+'" class="file_attach"><div class="title"><button data-id="'+ret.id+'" class="close" type="button">×</button><input type="hidden" name="filelist[]" value="'+ret.id+'" />';
+          html +=ret.name+'</div><div class="uk-comment-body"><p>所需'+pointname+'&nbsp;&nbsp;<input id="score'+ret.id+'" name="filescore[]" placeholder="" type="number" value="0" /></p></div></li> ';
+
+          $.sns5i_notify(ret.message,'success');
+          $('#filelist').append(html);
+          
+         }else{
+          $.sns5i_notify(ret.message,'danger');
+         }
+   
+  },function(cent){
+
+      if(cent==100){
+       
+      }
+      $('.progress-bar').css('width',cent+'%');
+      $('.sr-only').html(cent+'%');
+  });
+
+
+ $('#tpt_input').keydown(function(e) {
+      if (e.which === 13) {
+        $("#tpt_btn").click();
+        e.preventDefault();
+        return false;
+      }
+    });
+    $("#tpt_sel").on('click', 'a>i', function() {
+      var name = "keywords";
+      var tag = $(this).parent().text();
+      $(this).parent().remove();
+      var tags = new Array();
+      $("#tpt_sel").find('a').each(function() {
+        tags.push($(this).text());
+      });
+      $("input[name=" + name + "]").val(tags.join(","));
+      $("#tpt_pre a:contains('" + tag + "')").removeClass("selected");
+    });
+    $("#tpt_btn").click(function() {
+      var name = "keywords";
+      var tags = $.trim($("input[name=" + name + "]").val());
+      if (tags !== "") {
+        tags = tags.split(",");
+      } else {
+        tags = new Array();
+      }
+      var tag = $.trim($("#tpt_input").val());
+      if (tag !== '' && $.inArray(tag, tags) === -1) {
+        tags.push(tag);
+        $("#tpt_pre a:contains('" + tag + "')").addClass("selected");
+      }
+      $("#tpt_sel").children('span').empty();
+      $.each(tags, function(k, v) {
+        $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<i class="fa fa-times"></i></a>');
+      });
+      $("input[name=" + name + "]").val(tags.join(","));
+      $("#tpt_input").val('');
+    });
+    $("#tpt_pre").on('click', 'a:not(.selected)', function() {
+      var name = "keywords";
+      var tags = $.trim($("input[name=" + name + "]").val());
+      if (tags !== "") {
+        tags = tags.split(",");
+      } else {
+        tags = new Array();
+      }
+      var tag = $.trim($(this).text());
+      if (tag !== '' && $.inArray(tag, tags) === -1) {
+        tags.push(tag);
+      }
+      $("#tpt_sel").children('span').empty();
+      $.each(tags, function(k, v) {
+        $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<i class="fa fa-times"></i></a>');
+      });
+      $("input[name=" + name + "]").val(tags.join(","));
+      $(this).addClass('selected');
+    });
+var MyphotoButton = function (context) {
+        var ui = $.summernote.ui;
+
+        
+        var button = ui.buttonGroup([
+        ui.button({
+            contents: '付费内容分割线',
+            tooltip: '分割线以下为付费可见内容',
+            click: function () {
+               
+
+              if($('.hidecontent').length>0){
+                 $.sns5i_notify("你已经添加了付费内容分割线",'danger');
+                 $('.hidecontent:gt(0)').remove();
+              }else{
+               
+                $('#summernote').summernote('pasteHTML', '<hr class="hidecontent"></hr><br><p></p>');
+              }
+            
+
+
+            },
+            callback:function(){
+               
+            }
+        })
+    ]
+);
+
+        return button.render();    //按钮渲染
+    }
+ 
+  var $summernote = $('#summernote').summernote(
+    {
+        height: 300,                 // set editor height
+  focus: true,
+  dialogsInBody: true,
+  toolbar : [
+
+                [ 'style', [ 'style'] ],
+                [
+                    'style',
+                    [ 'bold', 'italic', 'underline',
+                        'clear'] ],
+                [
+                    'para',
+                    [ 'fontsize', 'ul', 'ol',
+                        'paragraph' ] ],
+                
+                [ 'color', [ 'color' ] ],
+                [
+                    'insert',
+                   [ 'link', 'hr' ] ],// 自定义按钮展示
+                
+                [ 'codetag', [ 'codetag','pre','blockquote'] ],
+               ['picture',['picture']], //插入图片 
+                ['video',['video']], //插入视频
+               ['myphoto'],            
+               
+               
+        ],
+        buttons: {
+            myphoto: MyphotoButton      //自已定义的按钮函数
+        },
+         //调用图片上传
+            callbacks: {
+                onImageUpload: function (files) {
+                  xn.upload_file(files[0], xn.url('attach-create-image',1), '',function(code,ret){
+                    console.log(code,ret);
+if(code==0){
+   var imgNode = document.createElement("img");
+    $(imgNode).addClass("topic_img").attr('data-id',ret.id+'-'+ret.sha1);  
+
+   imgNode.src = ret.file_url;
+   $summernote.summernote('insertNode',imgNode);
+}else{
+   $.sns5i_notify(ret.message,'danger');
+}
+                        
+
+                  });
+                  
+                },
+onChange:function(contents,$editable){
+
+if($('.hidecontent').length>1){
+$.sns5i_notify("你已经添加了付费内容分割线",'danger');
+$('.hidecontent:gt(0)').remove();
+}
+
+},
+//onBlur:function(){console.log('Editable area loses focus');},
+//onPaste:function(e){console.log('Called event paste');},
+//onKeyup:function(e){console.log('Key is released:',e.keyCode);},
+//onEnter:function(){console.log('Enter/Return key pressed');}
+            }
+                 // set focus to editable area after initializing summe
+    });
+});
+        </script>

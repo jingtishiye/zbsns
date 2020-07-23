@@ -1,0 +1,136 @@
+<?php include ADMIN_PATH.'view/header.html';?>
+
+
+<div class="row" >
+	<div class="col-lg-12">
+		<div class="wrap">
+ <ul class="nav nav-tabs">
+        
+        <?php echo admin_tab_active($menu['setting']['tab'], 'smtp');?>
+
+    </ul>
+
+    </div>
+		<div class="card">
+			<div class="card-body">
+				<form  class="form-horizontal" action="<?php echo r_url('config-smtp');?>" method="post" id="form">
+					<div class="table-responsive arrlist">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>邮箱</th>
+									<th>邮箱服务器</th>
+									<th width="100" class="text-center">端口</th>
+									<th>用户名</th>
+									<th>密码</th>
+									<th>开启SSL</th>
+									<th>删除</th>
+								</tr>
+							<thead>
+							<tbody id="smtp_body">
+								<script type="text/plain" id="smtp_tpl">
+								<tr align="center" rowid="{rowid}">
+									<td><input type="text" class="form-control" name="email[]" value="{email}" placeholder="邮箱" /></td>
+									<td><input type="text" class="form-control" name="host[]" value="{host}"  placeholder="邮箱服务器" /></td>
+									<td width="100" class="text-center"><input type="text" class="form-control" name="port[]" value="{port}" placeholder="端口"/></td>
+									<td><input type="text" class="form-control" name="user[]" value="{user}" placeholder="用户名"  /></td>
+									<td><input type="password" class="form-control" name="pass[]" value="{pass}" placeholder="密码"  /></td>
+									<td>
+
+<select name="is_ssl[]">
+<option value="1" {yes}>是</option>
+<option value="2" {no} >否</option>
+</select>
+
+									
+
+									</td>
+									<td><a class="btn btn-danger row_delete" role="btn">删除</a></td>
+								</tr>
+								</script>
+							</tbody>
+						</table>
+					</div>
+					<p><a role="button" class="btn btn-success row_add">[+]增加一行</a></p>
+					<p class="text-center wi-margin-top">
+						<button type="submit" class="btn btn-primary" id="submit" data-loading-text="确定中..." style="width: 10rem;">确认</button>
+					</p>
+				</form>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php include ADMIN_PATH.'view/footer.html';?>
+
+<script>
+
+// 模板初始化
+
+var smtplist = <?php echo xn_json_encode($smtplist);?>;
+var maxrowid = Math.max(xn.array_keys(smtplist));
+var jsmtp_tpl = $('#smtp_tpl');
+var jsmtp_body = $('#smtp_body');
+var tpl = jsmtp_tpl.text();
+function row_add(v) {
+	var s = xn.template(tpl, v);
+	jsmtp_body.append(s);
+	
+}
+$.each(smtplist, function(k, v) {
+	v.rowid = k;
+	
+    if(v.is_ssl==2){
+    	v.no='selected';
+    }else{
+    	v.yes='selected';
+    }
+	row_add(v);
+});
+
+var jform = $("#form");
+var jsubmit = $("#submit");
+jform.on('submit', function(){
+	
+	jsubmit.button('loading');
+	var postdata = jform.serialize();
+	
+	$.xpost(jform.attr('action'), postdata, function(code, ret) {
+		if(code == 0) {
+			
+			$.sns5i_notify(ret.message,'success');
+
+			jsubmit.text(ret.message).delay(1000).button('reset');
+			return;
+		} else {
+			alert(ret.message);
+			jsubmit.button('reset');
+		}
+	});
+	return false;
+});
+
+// 删除 delete
+var jarrlist = $('.arrlist');
+var jdelete = $('a.row_delete');
+jarrlist.on('click', 'a.row_delete', function() {
+	var jthis = $(this);
+	var jtr = jthis.parents('tr');
+	var rowid = jtr.attr('rowid');
+	jtr.remove();
+	return false;
+});
+
+// 增加 add
+var jadd = $('a.row_add');
+jadd.on('click', function() {
+	var v = {email: '', host: '', port: '', user: '', pass: '' ,is_ssl : '', rowid: ++maxrowid};
+	row_add(v);
+	return false;
+});
+
+
+
+</script>
+
